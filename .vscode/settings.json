@@ -1,0 +1,51 @@
+{
+  "files.exclude": {
+    ".dart_tool": true,
+    ".idea": true,
+    "test": true,
+    ".metadata": true,
+    ".packages": true,
+    "README.md": true,
+    "wrg2.iml": true,
+    ".flutter-plugins-dependencies": true,
+    ".flutter-plugins": true,
+    "build": true,
+    "ios": true,
+    "android": true,
+    "assets" : false,
+    ".fvm" : true,
+    "gen" : true,
+    ".*" : true
+  },
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+        "dart.flutterSdkPaths": ["/Users/usr/fvm/versions/stable",
+            "/Users/usr/fvm/versions/dev"],
+        // Remove .fvm files from search
+        "search.exclude": {
+          "**/.fvm": true
+        },
+        // Remove from file watching
+        "files.watcherExclude": {
+          "**/.fvm": true
+        },
+        "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "on",
+
+     
+    },
+    "editor.overviewRulerBorder": true,
+    "editor.rulers": [
+
+    
+    ],
+}

@@ -1,0 +1,17 @@
+#mutation createComment($username : String, $userImageUrl : String, $userId : String, $content : String, $isOffer : Boolean, $postId : String, $postID:ID!){
+#    createComment(input: {data: {username: $username, userImageUrl: $userImageUrl, userId: $userId, content: $content, isOffer: $isOffer, postId: $postId, post: $postID}}){
+#        comment{
+#            id
+#           
+#        }
+#    }
+#}
+#
+#,
+
+mutation createComment($input : CreateCommentInput!){
+    createComment(createCommentInput: $input){
+        id
+        
+    }
+}

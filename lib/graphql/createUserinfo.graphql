@@ -1,0 +1,11 @@
+mutation createUserInfo($input : CreateUserInfoArgs!){
+
+
+    createUserInfo(input: $input){
+            userId
+            id
+            userImageUrl
+            username
+            email
+    }
+}

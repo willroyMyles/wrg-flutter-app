@@ -1,0 +1,18 @@
+{
+  "name": "Schema",
+  "schemaPath": "schema.graphql",
+  "schema": "./schema.graphql",
+  "documents": "lib/graphql/*.{graphql}",
+  "extensions": {
+    "endpoints": {
+      "default": {
+        "url": "http://localhost:3000/graphql",
+        "introspect": true
+      }
+    },
+    "languageService": {
+      "useSchemaFileDefinitions": false
+    }
+    
+  }
+}

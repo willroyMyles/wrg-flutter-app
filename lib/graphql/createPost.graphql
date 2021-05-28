@@ -1,0 +1,14 @@
+
+mutation createPost($postInput : CreatePostArgs!){
+   createPost(input: $postInput){
+           id
+           category
+           subCategory
+           content
+           make
+           model
+           year
+           views
+           title
+   }
+}

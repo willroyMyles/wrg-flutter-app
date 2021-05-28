@@ -1,0 +1,5 @@
+mutation createConversation($convo : CreateConversationInput!){
+    createConversation(createConversationInput: $convo){
+        id
+    }
+}

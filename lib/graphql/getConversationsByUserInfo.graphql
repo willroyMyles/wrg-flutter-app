@@ -1,0 +1,43 @@
+query getConversations($userId : String!){
+   getConversationsByUserInfo(id: $userId){
+       incomings{
+           ...convo
+       }
+       outgoings{
+           ...convo
+       }
+       id
+
+   }
+}
+
+
+fragment convo on Conversation{
+    comment{
+        content
+        createdAt
+    }
+    id
+    newMessage
+    locked
+    post{
+        id
+    }
+    messages{
+        content
+        sender
+        createdAt
+    }
+    reciever{
+        username
+        alias
+        id
+        userImageUrl
+    }
+    sender{
+        alias
+        username
+        id
+        userImageUrl
+    }
+}
