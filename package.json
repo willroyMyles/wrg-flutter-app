@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "generate": "flutter pub run build_runner build --delete-conflicting-outputs",
+        "connect": "adb connect 192.168.2.2:5000"
+    }
+}

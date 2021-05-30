@@ -3,10 +3,13 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.information.dart';
+import 'package:wrg2/fontend/pages/create/view.create.dart';
+import 'package:wrg2/fontend/pages/state.homepage.dart';
 
 class DiscoverState extends GetxController with StateMixin {
   final api = Get.find<APIService>();
   final info = Get.find<InformationService>();
+  final homeState = Get.find<HomePageState>();
   Map<String, PostModel> map = {};
 
   @override
@@ -34,6 +37,11 @@ class DiscoverState extends GetxController with StateMixin {
 
   onTap() {
     change(null, status: RxStatus.empty());
+  }
+
+  onFAB() {
+    homeState.setPanelWidget(CreatePost());
+    homeState.showPanel();
   }
 
   getMorePosts() async {

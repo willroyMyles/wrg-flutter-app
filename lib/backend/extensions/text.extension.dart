@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import './color.extension.dart';
 
 class Texxt {
   String data;
@@ -51,13 +52,17 @@ extension TextModifier on Texxt {
   Widget h1() {
     this.style = TextStyle(
         fontWeight: FontWeight.w600,
+        color: _ts.fgt.value.withOpacity(1.0),
         shadows: [BoxShadow(blurRadius: .5, color: Colors.grey)]);
     this.textScaleFactor = 1;
     return _getDefault();
   }
 
   Widget h2({bool withStr = true}) {
-    this.style = TextStyle(fontWeight: FontWeight.w500);
+    this.style = TextStyle(
+      fontWeight: FontWeight.w400,
+      color: _ts.fgt.value.withOpacity(1.0),
+    );
     this.textScaleFactor = 1;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 15),
@@ -82,10 +87,42 @@ extension TextModifier on Texxt {
   Widget h3() {
     this.style = TextStyle(
       fontWeight: FontWeight.w400,
-      color: _ts.fgt.value.withOpacity(.85),
+      color: _ts.fgt.value.withOpacity(.65),
     );
     this.textScaleFactor = .9;
     return _getDefault();
+  }
+
+  Widget hint() {
+    this.style = TextStyle(
+        fontWeight: FontWeight.w700,
+        color: _ts.fgt.value.withOpacity(.75),
+        shadows: [BoxShadow(blurRadius: .6, color: Colors.grey)]);
+    this.textScaleFactor = .75;
+    this.data = this.data.toUpperCase();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 3),
+      child: Opacity(
+        opacity: .5,
+        child: _getDefault(),
+      ),
+    );
+  }
+
+  Widget hunch() {
+    this.style = TextStyle(
+        fontWeight: FontWeight.w600,
+        color: _ts.fgt.value.darker(),
+        shadows: [Shadow(blurRadius: .6, color: Colors.black)]);
+    this.textScaleFactor = 1;
+    this.data = this.data.toUpperCase();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 3),
+      child: Opacity(
+        opacity: .5,
+        child: _getDefault(),
+      ),
+    );
   }
 
   Widget user() {
@@ -99,10 +136,16 @@ extension TextModifier on Texxt {
 
   Widget huge() {
     this.style = TextStyle(
-        fontWeight: FontWeight.w800,
-        color: _ts.fgt.value.withOpacity(.9),
-        shadows: [BoxShadow(blurRadius: .3, color: Colors.grey)]);
-    this.textScaleFactor = 3;
+        fontWeight: FontWeight.w900,
+        color: _ts.fgt.value.withOpacity(.6),
+        shadows: [
+          Shadow(
+              blurRadius: 5,
+              color: Colors.grey.withOpacity(.7),
+              offset: Offset(2, 5)),
+        ]);
+    this.textScaleFactor = 2;
+    this.data = this.data.toUpperCase();
     return _getDefault();
   }
 

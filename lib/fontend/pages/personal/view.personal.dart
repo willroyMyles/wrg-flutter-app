@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wrg2/backend/extensions/ext.dart';
 
 class Personal extends StatefulWidget {
   @override
@@ -13,6 +14,6 @@ class _PersonalState extends State<Personal> {
         alignment: Alignment.center,
         child: Text("personal view"),
       ),
-    );
+    ).gradient();
   }
 }

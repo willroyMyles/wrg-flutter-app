@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:group_button/group_button.dart';
+import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/item.post.dart';
 import 'package:wrg2/fontend/pages/discover/state.discover.dart';
+import 'package:wrg2/backend/extensions/ext.dart';
 
 class Discover extends StatefulWidget {
   @override
@@ -20,23 +23,26 @@ class _DiscoverState extends State<Discover>
     print("building discover");
     return Scaffold(
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(
-          bottom: 60,
-        ),
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: Container(
-            child: Icon(
-              Icons.add,
-              color: ts.fgt.value,
-            ),
-          ),
-        ),
-      ),
+      // floatingActionButton: Container(
+      //   margin: EdgeInsets.only(
+      //     bottom: 0,
+      //   ),
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       controller.onFAB();
+      //     },
+      //     child: Container(
+      //       child: Icon(
+      //         Icons.add,
+      //         color: ts.fgt.value,
+      //       ),
+      //     ),
+      //   ),
+      // ),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
+        backgroundColor: ts.bg.value,
+        shadowColor: ts.bg.value.darker().withOpacity(.4),
+        elevation: 0,
         actions: [
           Container(
             child: Icon(
@@ -49,22 +55,65 @@ class _DiscoverState extends State<Discover>
       body: InkWell(
         onTap: controller.onTap(),
         child: Container(
+            margin: EdgeInsets.only(top: 25),
             width: Get.width,
             alignment: Alignment.center,
             child: controller.obx(
               (state) {
-                return ListView.separated(
-                    itemBuilder: (context, index) {
-                      return PostItem(
-                        item: controller.map.values.elementAt(index),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemCount: controller.map.length);
+                return Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: Get.width,
+                        padding: EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ...Status.values.map((e) {
+                              return Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: ts.fg.value,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                        color: ts.bg.value.darker(), width: 1)
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     blurRadius: 0,
+                                    //     offset: Offset(1, 3),
+                                    //     color: Colors.grey.shade300,
+                                    //   )
+                                    // ],
+                                    ),
+                                child: Texxt(e.toCommonString()).hint(),
+                              );
+                            }).toList()
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 13,
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return PostItem(
+                                item: controller.map.values.elementAt(index),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                height: 20,
+                              );
+                            },
+                            itemCount: controller.map.length),
+                      ),
+                    ],
+                  ),
+                );
               },
               onEmpty: InkWell(
                   onTap: () => controller.getMorePosts(), child: emptySvg()),
@@ -77,7 +126,7 @@ class _DiscoverState extends State<Discover>
               ),
             )),
       ),
-    );
+    ).background();
   }
 
   @override

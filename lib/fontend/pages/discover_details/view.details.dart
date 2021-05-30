@@ -121,12 +121,12 @@ class DiscoverDetails extends StatelessWidget {
                       onPressed: () {},
                       child: Text("watch"),
                       color: ts.fg.value,
-                    ),
+                    ).secondary(),
                     FlatButton(
                       onPressed: () {},
                       child: Text("comment"),
                       color: ts.fg.value,
-                    ),
+                    ).secondary(),
                   ],
                 ),
               )
@@ -134,6 +134,6 @@ class DiscoverDetails extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ).gradient();
   }
 }

@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 class ServiceTheme {
   var lightTheme = ThemeData.light().copyWith(
       brightness: Brightness.light,
-      canvasColor: light,
-      scaffoldBackgroundColor: light,
-      backgroundColor: light,
+      canvasColor: Colors.transparent,
+      scaffoldBackgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
       primaryColor: Colors.white,
       floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: lightF,
@@ -48,11 +48,13 @@ class ServiceTheme {
   Rx<Color> get fg => lightF.obs;
   Rx<Color> get bg => light.obs;
   Rx<Color> get fgt => lightT.obs;
-  Color get pc => Colors.black;
+  Rx<Color> get fgbtn => lightT.obs;
+  Rx<Color> get fgbtnt => darkTextAbs.obs;
+  MaterialColor get pc => Colors.green;
 }
 
 var dark = Color.fromRGBO(24, 24, 24, 1);
-var light = Color.fromRGBO(224, 224, 224, 1);
+var light = Color.fromRGBO(244, 244, 244, 1);
 var darkF = Color.fromRGBO(64, 64, 64, 1);
 var lightF = Color.fromRGBO(255, 255, 255, 1);
 

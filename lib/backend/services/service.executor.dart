@@ -160,7 +160,8 @@ class ApiExecutor extends GetxController with ApiAuth {
             views: i.views * 1.0,
             year: i.year * 1.0),
       ));
-      await clientArt.execute(query);
+      var res = await clientArt.execute(query);
+      print(res);
       return Future.value(true);
     } catch (err) {
       print(err);
