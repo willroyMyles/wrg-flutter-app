@@ -9,17 +9,16 @@ import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.auth.dart';
 import 'package:wrg2/backend/services/service.information.dart';
+import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/gen/graphql/graphql_api.dart';
 
 class ApiExecutor extends GetxController with ApiAuth {
-  InformationService _informationService = Get.put(InformationService());
+  var _informationService = Get.put(InformationService());
+  var _toastService = Get.find<ToastService>();
   final clientArt = ArtemisClient(
     'http://192.168.2.5:3000/graphql',
   );
   bool firstStart = true;
-
-  RxList<dynamic> conversationStream = [].obs;
-  RxList<dynamic> watchingStream = [].obs;
 
   ApiExecutor() {
     auth.authStateChanges().listen((event) {
@@ -34,17 +33,11 @@ class ApiExecutor extends GetxController with ApiAuth {
     });
   }
 
-  _emptyStreams() {
-    conversationStream.value = [];
-    watchingStream.value = [];
-  }
-
   @override
   logout() {
     super.logout();
     firstStart = true;
     removeUser();
-    _emptyStreams();
     _informationService.setIsSIgnedIn(false);
   }
 
@@ -55,8 +48,10 @@ class ApiExecutor extends GetxController with ApiAuth {
   }
 
   @override
-  Future<FB.UserCredential> signInWithGoogle() {
-    return super.signInWithGoogle();
+  Future<FB.UserCredential> signInWithGoogle() async {
+    var cred = await super.signInWithGoogle();
+    _informationService.setIsSIgnedIn(true);
+    return Future.value(cred);
   }
 
   // @override
@@ -126,23 +121,29 @@ class ApiExecutor extends GetxController with ApiAuth {
     } catch (err) {
       print(err);
       return Future.value(null);
-    }
+    } finally {}
   }
 
   Future<Rx<UserInfoModel>> getUser(FB.User user) async {
     if (userInfo.value != null && userInfo.value.email == user.email)
-      return Future.value(userInfo);
+      return reutrnUserInfo();
     //get from database
     var res = await getUserInfo(user);
 
     if (res?.value != null) {
       _informationService.setIsSIgnedIn(true);
-      return Future.value(userInfo);
+      return reutrnUserInfo();
     } else {
       await createUser(user);
       _informationService.setIsSIgnedIn(true);
-      return Future.value(userInfo);
+      return reutrnUserInfo();
     }
+  }
+
+  Future<Rx<UserInfoModel>> reutrnUserInfo() {
+    _informationService.setIsSIgnedIn(true);
+    _toastService.success("Signed in successfully");
+    return Future.value(userInfo);
   }
 
   Future<bool> createPost(PostModel i) async {
@@ -240,8 +241,6 @@ class ApiExecutor extends GetxController with ApiAuth {
         list.add(p);
         userInfo.value.addToWatching(p);
       }
-
-      watchingStream.value = list;
       _informationService.setWatching(list);
       return Future.value(list);
     } catch (e) {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/login/view.login.dart';
 
 class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("building profile");
     return Scaffold(
       body: Container(
         alignment: Alignment.center,

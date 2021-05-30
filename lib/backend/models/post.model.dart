@@ -60,6 +60,7 @@ class PostModel {
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
+    if (map == null) return PostModel();
     return PostModel(
       title: map['title'] ?? '',
       id: map['id'] ?? '',

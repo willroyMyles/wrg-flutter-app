@@ -93,9 +93,9 @@ class UserInfoModel {
       posts: List<PostModel>.from(
           map['posts']?.map((x) => PostModel.fromMap(x) ?? PostModel()) ??
               const []),
-      watching: List<PostModel>.from(
-          map['watching']?.map((x) => PostModel.fromMap(x) ?? PostModel()) ??
-              const []),
+      watching: List<PostModel>.from(map['watching']?.map(
+              (x) => PostModel.fromMapWithoutUserinfo(x) ?? PostModel()) ??
+          const []),
       incomings: List<ConversationModel>.from(map['incomings']?.map(
               (x) => ConversationModel.fromMap(x) ?? ConversationModel()) ??
           const []),

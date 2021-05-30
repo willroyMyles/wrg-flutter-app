@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
+import 'package:wrg2/fontend/pages/login/login.state.dart';
 
 class LoginView extends StatelessWidget {
   final service = Get.find<APIService>();
+  final controller = Get.put(LoginState());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

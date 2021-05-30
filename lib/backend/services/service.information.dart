@@ -10,6 +10,7 @@ class InformationService extends GetxController {
 
   setIsSIgnedIn(bool value) {
     isSignedIn.value = value;
+    isSignedIn.refresh();
   }
 
   setConversation(List<dynamic> list) {

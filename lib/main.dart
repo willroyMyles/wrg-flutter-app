@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/view.homepage.dart';
 
 void main() {
@@ -25,6 +26,9 @@ class _MyAppState extends State<MyApp> {
     Get.put(APIService());
     home = GetMaterialApp(
         title: 'Flutter Demo',
+        onInit: () {
+          Get.put(ToastService(context));
+        },
         theme: ts.currentTheme.value,
         home: Container(
           child: HomePageView(),
@@ -39,6 +43,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    Get.put(ToastService(context));
+
     setState(() {
       api = configure();
     });

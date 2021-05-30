@@ -18,7 +18,10 @@ class APIService extends GetxController {
       switch (provider) {
         case 0:
           var ans = await _apiInterface.signInWithGoogle();
-          _apiInterface.getUser(ans.user);
+          var user = await _apiInterface.getUser(ans.user);
+          if (user.value == null || user.value.id == null) {
+            return Future.value(false);
+          }
           break;
       }
       return res;
