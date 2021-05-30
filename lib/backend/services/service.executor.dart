@@ -155,14 +155,17 @@ class ApiExecutor extends GetxController with ApiAuth {
             content: i.content,
             make: i.make,
             model: i.model,
-            subCategory: i.subCategory,
             userInfoId: userInfo.value.id,
             title: i.title,
             views: i.views * 1.0,
             year: i.year * 1.0),
       ));
       var res = await clientArt.execute(query);
-      print(res);
+      if (res.hasErrors) {}
+      if (res.data.createPost.id != null) {
+        i.userInfo = userInfo.value;
+        _informationService.addToFeed(i);
+      }
       return Future.value(true);
     } catch (err) {
       print(err);

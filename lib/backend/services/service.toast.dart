@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 
 class ToastService {
-  FToast ft;
   String msg;
   MaterialColor color;
-
-  ToastService(BuildContext context) {
-    ft = FToast();
-    ft.init(context);
-  }
 
   success(
     String msg,

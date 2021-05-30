@@ -2,7 +2,6 @@ import 'package:animated/animated.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/state.homepage.dart';

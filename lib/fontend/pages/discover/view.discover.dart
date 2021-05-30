@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:group_button/group_button.dart';
 import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
@@ -99,6 +98,7 @@ class _DiscoverState extends State<Discover>
                       ),
                       Expanded(
                         child: ListView.separated(
+                            padding: EdgeInsets.only(bottom: 30),
                             itemBuilder: (context, index) {
                               return PostItem(
                                 item: controller.map.values.elementAt(index),

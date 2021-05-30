@@ -1,197 +1,198 @@
 # This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
-    query: Query
-    mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
 
 type Comment {
-    content: String
-    createdAt: DateTime!
-    id: String
-    isOffer: Boolean
-    post: String
-    postId: String
-    title: String
-    userId: String
-    userImageUrl: String
-    username: String
+  content: String
+  createdAt: DateTime!
+  id: String
+  isOffer: Boolean
+  post: String
+  postId: String
+  title: String
+  userId: String
+  userImageUrl: String
+  username: String
 }
 
 type Conversation {
-    comment: Comment
-    commentId: String
-    createdAt: DateTime!
-    id: String
-    locked: Boolean
-    messages: [Message!]
-    newMessage: String
-    post: Post
-    postId: String
-    reciever: UserInfo
-    sender: UserInfo
-    userInfoId: String
+  comment: Comment
+  commentId: String
+  createdAt: DateTime!
+  id: String
+  locked: Boolean
+  messages: [Message!]
+  newMessage: String
+  post: Post
+  postId: String
+  reciever: UserInfo
+  sender: UserInfo
+  userInfoId: String
 }
 
 type Message {
-    content: String
-    conversationId: String
-    createdAt: DateTime!
-    id: String
-    sender: String
+  content: String
+  conversationId: String
+  createdAt: DateTime!
+  id: String
+  sender: String
 }
 
 type Mutation {
-    addMessageToConversation(input: AddMessageToConversationInput!): Boolean!
-    createComment(createCommentInput: CreateCommentInput!): Comment!
-    createConversation(createConversationInput: CreateConversationInput!): Conversation!
-    createMessage(createMessageInput: CreateMessageInput!): Message!
-    "creates a post"
-    createPost(input: CreatePostArgs!): Post!
-    "Returns a newly created user info"
-    createUserInfo(input: CreateUserInfoArgs!): UserInfo!
-    "adds a post to watching "
-    modifyWatching(input: AddPostToWatchArgs!): Boolean!
-    removeComment(id: Int!): Comment!
-    removeConversation(id: Int!): Conversation!
-    removeMessage(id: Int!): Message!
-    updateComment(updateCommentInput: UpdateCommentInput!): Comment!
-    updateConversation(updateConversationInput: UpdateConversationInput!): Conversation!
-    updateMessage(updateMessageInput: UpdateMessageInput!): Message!
+  addMessageToConversation(input: AddMessageToConversationInput!): Boolean!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  createConversation(
+    createConversationInput: CreateConversationInput!
+  ): Conversation!
+  createMessage(createMessageInput: CreateMessageInput!): Message!
+  "creates a post"
+  createPost(input: CreatePostArgs!): Post!
+  "Returns a newly created user info"
+  createUserInfo(input: CreateUserInfoArgs!): UserInfo!
+  "adds a post to watching "
+  modifyWatching(input: AddPostToWatchArgs!): Boolean!
+  removeComment(id: Int!): Comment!
+  removeConversation(id: Int!): Conversation!
+  removeMessage(id: Int!): Message!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  updateConversation(
+    updateConversationInput: UpdateConversationInput!
+  ): Conversation!
+  updateMessage(updateMessageInput: UpdateMessageInput!): Message!
 }
 
 type Post {
-    category: String
-    comments: [Comment!]!
-    content: String
-    createdAt: DateTime!
-    id: String
-    make: String
-    model: String
-    subCategory: String
-    title: String
-    userId: String
-    userImageUrl: String
-    userInfo: UserInfo!
-    username: String
-    views: Int
-    year: Int
+  category: String
+  comments: [Comment!]!
+  content: String
+  createdAt: DateTime!
+  id: String
+  make: String
+  model: String
+  title: String
+  userId: String
+  userImageUrl: String
+  userInfo: UserInfo!
+  username: String
+  views: Int
+  year: Int
 }
 
 type Query {
-    comment(id: Int!): Comment!
-    conversation(id: Int!): Conversation!
-    getCommentsByPostId(postId: String!): [Comment!]!
-    getConversationsByUserInfo(id: String!): UserInfo!
-    getPostById: Post!
-    getPosts: [Post!]!
-    getUserInfoByEmail(input: String!): UserInfo
-    getWatching(id: String!): [Post!]!
-    message(id: Int!): Message!
+  comment(id: Int!): Comment!
+  conversation(id: Int!): Conversation!
+  getCommentsByPostId(postId: String!): [Comment!]!
+  getConversationsByUserInfo(id: String!): UserInfo!
+  getPostById: Post!
+  getPosts: [Post!]!
+  getUserInfoByEmail(input: String!): UserInfo
+  getWatching(id: String!): [Post!]!
+  message(id: Int!): Message!
 }
 
 type UserInfo {
-    alias: String
-    conversation: Conversation!
-    createdAt: DateTime!
-    email: String
-    id: String
-    incomings: [Conversation]
-    outgoings: [Conversation]
-    posts: [Post!]!
-    userId: String
-    userImageUrl: String
-    username: String
-    watching: [Post]!
+  alias: String
+  conversation: Conversation!
+  createdAt: DateTime!
+  email: String
+  id: String
+  incomings: [Conversation]
+  outgoings: [Conversation]
+  posts: [Post!]!
+  userId: String
+  userImageUrl: String
+  username: String
+  watching: [Post]!
 }
 
 input AddMessageToConversationInput {
-    id: String!
-    message: CreateMessageInput!
-    newMessage: String!
+  id: String!
+  message: CreateMessageInput!
+  newMessage: String!
 }
 
 input AddPostToWatchArgs {
-    add: Boolean = true
-    postId: String!
-    userId: String!
+  add: Boolean = true
+  postId: String!
+  userId: String!
 }
 
 input CreateCommentInput {
-    content: String
-    isOffer: Boolean!
-    postId: String!
-    title: String
-    userId: String
-    userImageUrl: String!
-    username: String
+  content: String
+  isOffer: Boolean!
+  postId: String!
+  title: String
+  userId: String
+  userImageUrl: String!
+  username: String
 }
 
 input CreateConversationInput {
-    commentId: String
-    locked: Boolean
-    messages: [CreateMessageInput]
-    postId: String
-    recieverId: String
-    senderId: String
-    userInfoId: String
+  commentId: String
+  locked: Boolean
+  messages: [CreateMessageInput]
+  postId: String
+  recieverId: String
+  senderId: String
+  userInfoId: String
 }
 
 input CreateMessageInput {
-    content: String
-    conversationId: String
-    sender: String
+  content: String
+  conversationId: String
+  sender: String
 }
 
 input CreatePostArgs {
-    category: String
-    content: String
-    make: String
-    model: String
-    subCategory: String
-    title: String
-    userInfoId: String!
-    views: Float = 0.0
-    year: Float
+  category: String
+  content: String
+  make: String
+  model: String
+  title: String
+  userInfoId: String!
+  views: Float = 0.0
+  year: Float
 }
 
 input CreateUserInfoArgs {
-    alias: String
-    email: String
-    userId: String
-    userImageUrl: String
-    username: String
+  alias: String
+  email: String
+  userId: String
+  userImageUrl: String
+  username: String
 }
 
 input UpdateCommentInput {
-    content: String
-    id: Int!
-    isOffer: Boolean
-    postId: String
-    title: String
-    userId: String
-    userImageUrl: String
-    username: String
+  content: String
+  id: Int!
+  isOffer: Boolean
+  postId: String
+  title: String
+  userId: String
+  userImageUrl: String
+  username: String
 }
 
 input UpdateConversationInput {
-    commentId: String
-    id: Int!
-    locked: Boolean
-    messages: [CreateMessageInput!]
-    postId: String
-    recieverId: String
-    senderId: String
-    userInfoId: String
+  commentId: String
+  id: Int!
+  locked: Boolean
+  messages: [CreateMessageInput!]
+  postId: String
+  recieverId: String
+  senderId: String
+  userInfoId: String
 }
 
 input UpdateMessageInput {
-    content: String
-    conversationId: String
-    id: Int!
-    sender: String
+  content: String
+  conversationId: String
+  id: Int!
+  sender: String
 }
-
 
 "A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
 scalar DateTime

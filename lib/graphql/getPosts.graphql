@@ -1,24 +1,19 @@
-query getPosts{
-    getPosts{
-            id
-            category
-            subCategory
-            content
-            make
-            model
-            year
-            views
-            title
-            createdAt
-            userInfo{
-                id
-                userId
-                userImageUrl
-                username
-            }
-
-
-
-
-}
+query getPosts {
+  getPosts {
+    id
+    category
+    content
+    make
+    model
+    year
+    views
+    title
+    createdAt
+    userInfo {
+      id
+      userId
+      userImageUrl
+      username
+    }
+  }
 }

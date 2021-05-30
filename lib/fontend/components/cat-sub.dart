@@ -50,18 +50,8 @@ class CatList extends StatelessWidget {
                           String tag = "$index tag";
                           return InkWell(
                             onTap: () {
+                              cs.setCategory(index);
                               Get.close(1);
-                              Get.dialog(
-                                  Container(
-                                      height: 330,
-                                      width: Get.width,
-                                      alignment: Alignment.center,
-                                      child: SubList(
-                                        idx: index,
-                                        tag: tag,
-                                      )),
-                                  barrierColor: Colors.black.withOpacity(.4),
-                                  useRootNavigator: false);
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -82,7 +72,7 @@ class CatList extends StatelessWidget {
                                 child: Container(
                                   child: Texxt(cs.sub_catList
                                           .elementAt(index)
-                                          .elementAt(0))
+                                          .toString())
                                       .hunch(),
                                 ),
                               ),
@@ -93,94 +83,6 @@ class CatList extends StatelessWidget {
                               height: 13,
                             ),
                         itemCount: cs.sub_catList.length)),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SubList extends StatelessWidget {
-  final cs = Get.find<CreatePostState>();
-  final ts = Get.find<ServiceTheme>();
-
-  final String tag;
-  final int idx;
-
-  SubList({Key key, this.tag, this.idx}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          child: Container(
-            width: Get.width - 30,
-            height: Get.height / 2,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: ts.bg.value,
-                borderRadius: BorderRadius.circular(3),
-                border: Border.all(width: 1, color: ts.bg.value.darker()),
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 14,
-                      color: ts.fgt.value.withOpacity(.3),
-                      offset: Offset(1, 3))
-                ]),
-            child: Column(
-              children: [
-                Texxt("Select Sub category").huge(),
-                SizedBox(
-                  height: 12,
-                ),
-                Hero(
-                  tag: tag,
-                  child: Container(
-                    child: Texxt(cs.sub_catList.elementAt(idx).elementAt(0))
-                        .hunch(),
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Expanded(
-                    child: ListView.separated(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        itemBuilder: (context, index) {
-                          var list = cs.sub_catList.elementAt(idx);
-                          return InkWell(
-                            onTap: () {
-                              cs.setCategoryAndSubcategory(idx, index);
-                              Get.close(1);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 12),
-                              decoration: BoxDecoration(
-                                  color: ts.fg.value,
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                      width: 1, color: ts.bg.value.darker()),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 3,
-                                        color: ts.fgt.value.withOpacity(.05),
-                                        offset: Offset(1, 3))
-                                  ]),
-                              child: Texxt(list.elementAt(index).toString())
-                                  .hunch(),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) => SizedBox(
-                              height: 13,
-                            ),
-                        itemCount: cs.sub_catList.elementAt(idx).length)),
               ],
             ),
           ),

@@ -1,35 +1,28 @@
-query getUserInfoByEmail($email : String!){
-    getUserInfoByEmail(input: $email){
-        id
-        username
-        userId
-        email
-        alias
-        userImageUrl
-        watching{
-            ...p
-        }
-
-    }
-}
-
-fragment p on Post{
+query getUserInfoByEmail($email: String!) {
+  getUserInfoByEmail(input: $email) {
     id
-    category
-    content
-    createdAt
-    make
-    model
-    subCategory
-    title
-    userId
     username
+    userId
+    email
+    alias
     userImageUrl
-    views
-    year
+    watching {
+      ...p
+    }
+  }
 }
 
-
-
-
-
+fragment p on Post {
+  id
+  category
+  content
+  createdAt
+  make
+  model
+  title
+  userId
+  username
+  userImageUrl
+  views
+  year
+}

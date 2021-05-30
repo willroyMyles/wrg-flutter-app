@@ -102,7 +102,6 @@ GetPosts$Query$GetPosts _$GetPosts$Query$GetPostsFromJson(
   return GetPosts$Query$GetPosts()
     ..id = json['id'] as String
     ..category = json['category'] as String
-    ..subCategory = json['subCategory'] as String
     ..content = json['content'] as String
     ..make = json['make'] as String
     ..model = json['model'] as String
@@ -123,7 +122,6 @@ Map<String, dynamic> _$GetPosts$Query$GetPostsToJson(
     <String, dynamic>{
       'id': instance.id,
       'category': instance.category,
-      'subCategory': instance.subCategory,
       'content': instance.content,
       'make': instance.make,
       'model': instance.model,
@@ -566,7 +564,6 @@ GetUserInfoByEmail$Query$GetUserInfoByEmail$Watching
         : DateTime.parse(json['createdAt'] as String)
     ..make = json['make'] as String
     ..model = json['model'] as String
-    ..subCategory = json['subCategory'] as String
     ..title = json['title'] as String
     ..userId = json['userId'] as String
     ..username = json['username'] as String
@@ -585,7 +582,6 @@ Map<String, dynamic>
           'createdAt': instance.createdAt?.toIso8601String(),
           'make': instance.make,
           'model': instance.model,
-          'subCategory': instance.subCategory,
           'title': instance.title,
           'userId': instance.userId,
           'username': instance.username,
@@ -644,7 +640,6 @@ CreatePost$Mutation$CreatePost _$CreatePost$Mutation$CreatePostFromJson(
   return CreatePost$Mutation$CreatePost()
     ..id = json['id'] as String
     ..category = json['category'] as String
-    ..subCategory = json['subCategory'] as String
     ..content = json['content'] as String
     ..make = json['make'] as String
     ..model = json['model'] as String
@@ -658,7 +653,6 @@ Map<String, dynamic> _$CreatePost$Mutation$CreatePostToJson(
     <String, dynamic>{
       'id': instance.id,
       'category': instance.category,
-      'subCategory': instance.subCategory,
       'content': instance.content,
       'make': instance.make,
       'model': instance.model,
@@ -687,7 +681,6 @@ CreatePostArgs _$CreatePostArgsFromJson(Map<String, dynamic> json) {
     content: json['content'] as String,
     make: json['make'] as String,
     model: json['model'] as String,
-    subCategory: json['subCategory'] as String,
     title: json['title'] as String,
     userInfoId: json['userInfoId'] as String,
     views: (json['views'] as num)?.toDouble(),
@@ -701,7 +694,6 @@ Map<String, dynamic> _$CreatePostArgsToJson(CreatePostArgs instance) =>
       'content': instance.content,
       'make': instance.make,
       'model': instance.model,
-      'subCategory': instance.subCategory,
       'title': instance.title,
       'userInfoId': instance.userInfoId,
       'views': instance.views,
@@ -719,7 +711,6 @@ GetWatching$Query$GetWatching _$GetWatching$Query$GetWatchingFromJson(
         : DateTime.parse(json['createdAt'] as String)
     ..make = json['make'] as String
     ..model = json['model'] as String
-    ..subCategory = json['subCategory'] as String
     ..title = json['title'] as String
     ..userId = json['userId'] as String
     ..username = json['username'] as String
@@ -737,7 +728,6 @@ Map<String, dynamic> _$GetWatching$Query$GetWatchingToJson(
       'createdAt': instance.createdAt?.toIso8601String(),
       'make': instance.make,
       'model': instance.model,
-      'subCategory': instance.subCategory,
       'title': instance.title,
       'userId': instance.userId,
       'username': instance.username,

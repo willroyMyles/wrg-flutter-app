@@ -12,7 +12,7 @@ class CreatePostState extends GetxController with StateMixin {
   var formKey = GlobalKey<FormState>();
   List<List<dynamic>> carsList = [];
   // ignore: non_constant_identifier_names
-  List<List<dynamic>> sub_catList = [];
+  List<dynamic> sub_catList = [];
 
   final service = Get.find<APIService>();
 
@@ -37,7 +37,6 @@ class CreatePostState extends GetxController with StateMixin {
       model: crtls["model"].text,
       make: crtls["make"].text,
       category: crtls["category"].text,
-      subCategory: crtls["sub_category"].text,
       views: 0,
       // user_info: service.getUserInfo()
     );
@@ -101,6 +100,9 @@ class CreatePostState extends GetxController with StateMixin {
     crtls.putIfAbsent("model", () => TextEditingController());
     crtls.putIfAbsent("year", () => TextEditingController());
     crtls.putIfAbsent("category", () => TextEditingController());
-    crtls.putIfAbsent("sub_category", () => TextEditingController());
+  }
+
+  void setCategory(int index) {
+    crtls["category"].text = sub_catList.elementAt(index);
   }
 }

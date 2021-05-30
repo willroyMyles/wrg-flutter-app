@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
-import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/view.homepage.dart';
@@ -27,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     home = GetMaterialApp(
         title: 'Flutter Demo',
         onInit: () {
-          Get.put(ToastService(context));
+          Get.put(ToastService());
         },
         theme: ts.currentTheme.value,
         home: Container(
@@ -43,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Get.put(ToastService(context));
+    Get.put(ToastService());
 
     setState(() {
       api = configure();

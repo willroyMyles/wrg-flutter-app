@@ -96,7 +96,6 @@ class DiscoverDetails extends StatelessWidget {
                       ),
                     ),
                     Texxt(item.category).h3(),
-                    Texxt(item.subCategory).h3(),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Row(

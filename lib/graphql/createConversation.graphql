@@ -1,5 +1,5 @@
-mutation createConversation($convo : CreateConversationInput!){
-    createConversation(createConversationInput: $convo){
-        id
-    }
+mutation createConversation($convo: CreateConversationInput!) {
+  createConversation(createConversationInput: $convo) {
+    id
+  }
 }

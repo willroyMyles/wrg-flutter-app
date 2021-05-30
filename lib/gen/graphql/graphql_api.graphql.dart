@@ -24,7 +24,6 @@ mixin PMixin {
   DateTime createdAt;
   String make;
   String model;
-  String subCategory;
   String title;
   String userId;
   String username;
@@ -151,8 +150,6 @@ class GetPosts$Query$GetPosts with EquatableMixin {
 
   String category;
 
-  String subCategory;
-
   String content;
 
   String make;
@@ -173,7 +170,6 @@ class GetPosts$Query$GetPosts with EquatableMixin {
   List<Object> get props => [
         id,
         category,
-        subCategory,
         content,
         make,
         model,
@@ -607,7 +603,6 @@ class GetUserInfoByEmail$Query$GetUserInfoByEmail$Watching
         createdAt,
         make,
         model,
-        subCategory,
         title,
         userId,
         username,
@@ -673,8 +668,6 @@ class CreatePost$Mutation$CreatePost with EquatableMixin {
 
   String category;
 
-  String subCategory;
-
   String content;
 
   String make;
@@ -689,7 +682,7 @@ class CreatePost$Mutation$CreatePost with EquatableMixin {
 
   @override
   List<Object> get props =>
-      [id, category, subCategory, content, make, model, year, views, title];
+      [id, category, content, make, model, year, views, title];
   Map<String, dynamic> toJson() => _$CreatePost$Mutation$CreatePostToJson(this);
 }
 
@@ -714,7 +707,6 @@ class CreatePostArgs with EquatableMixin {
       this.content,
       this.make,
       this.model,
-      this.subCategory,
       this.title,
       @required this.userInfoId,
       this.views,
@@ -731,8 +723,6 @@ class CreatePostArgs with EquatableMixin {
 
   String model;
 
-  String subCategory;
-
   String title;
 
   String userInfoId;
@@ -742,17 +732,8 @@ class CreatePostArgs with EquatableMixin {
   double year;
 
   @override
-  List<Object> get props => [
-        category,
-        content,
-        make,
-        model,
-        subCategory,
-        title,
-        userInfoId,
-        views,
-        year
-      ];
+  List<Object> get props =>
+      [category, content, make, model, title, userInfoId, views, year];
   Map<String, dynamic> toJson() => _$CreatePostArgsToJson(this);
 }
 
@@ -771,7 +752,6 @@ class GetWatching$Query$GetWatching with EquatableMixin, PMixin {
         createdAt,
         make,
         model,
-        subCategory,
         title,
         userId,
         username,
@@ -943,12 +923,6 @@ class GetPostsQuery extends GraphQLQuery<GetPosts$Query, JsonSerializable> {
                     selectionSet: null),
                 FieldNode(
                     name: NameNode(value: 'category'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'subCategory'),
                     alias: null,
                     arguments: [],
                     directives: [],
@@ -1734,12 +1708,6 @@ class GetUserInfoByEmailQuery extends GraphQLQuery<GetUserInfoByEmail$Query,
               directives: [],
               selectionSet: null),
           FieldNode(
-              name: NameNode(value: 'subCategory'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
               name: NameNode(value: 'title'),
               alias: null,
               arguments: [],
@@ -1842,12 +1810,6 @@ class CreatePostMutation
                     selectionSet: null),
                 FieldNode(
                     name: NameNode(value: 'category'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'subCategory'),
                     alias: null,
                     arguments: [],
                     directives: [],
@@ -1989,12 +1951,6 @@ class GetWatchingQuery
               selectionSet: null),
           FieldNode(
               name: NameNode(value: 'model'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'subCategory'),
               alias: null,
               arguments: [],
               directives: [],

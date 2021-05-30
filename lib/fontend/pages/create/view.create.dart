@@ -159,24 +159,6 @@ class CreatePost extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () async {
-                                  cps.showCat();
-                                },
-                                child: IgnorePointer(
-                                  child: Container(
-                                    width: Get.width / 2.14,
-                                    child: TextFormField(
-                                      validator: (value) =>
-                                          cps.validateFunction(
-                                              "sub category", value),
-                                      controller: cps.crtls["sub_category"],
-                                      decoration: InputDecoration(
-                                          hintText: "sub-category"),
-                                    ).input(label: "sub category"),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),

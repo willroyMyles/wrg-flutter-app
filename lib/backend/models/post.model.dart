@@ -10,7 +10,6 @@ class PostModel {
   String id = "";
   String content = "";
   String category = "";
-  String subCategory = "";
   String make = "";
   String model = "";
   String username = "";
@@ -28,7 +27,6 @@ class PostModel {
     this.id = '',
     this.content = '',
     this.category = '',
-    this.subCategory = '',
     this.make = '',
     this.model = '',
     this.username = '',
@@ -46,7 +44,6 @@ class PostModel {
       'id': id,
       'content': content,
       'category': category,
-      'subCategory': subCategory,
       'make': make,
       'model': model,
       'username': username,
@@ -60,22 +57,20 @@ class PostModel {
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
-    if (map == null) return PostModel();
     return PostModel(
-      title: map['title'] ?? '',
-      id: map['id'] ?? '',
-      content: map['content'] ?? '',
-      category: map['category'] ?? '',
-      subCategory: map['subCategory'] ?? '',
-      make: map['make'] ?? '',
-      model: map['model'] ?? '',
-      username: map['username'] ?? '',
-      userId: map['userId'] ?? '',
-      userImage: map['userImage'] ?? '',
-      year: map['year'] ?? 0,
-      views: map['views'] ?? 0,
-      userInfoId: map['userInfoId'] ?? '',
-      userInfo: UserInfoModel.forPost(map['userInfo']),
+      title: map['title'],
+      id: map['id'],
+      content: map['content'],
+      category: map['category'],
+      make: map['make'],
+      model: map['model'],
+      username: map['username'],
+      userId: map['userId'],
+      userImage: map['userImage'],
+      year: map['year'],
+      views: map['views'],
+      userInfoId: map['userInfoId'],
+      userInfo: UserInfoModel.fromMap(map['userInfo']),
     );
   }
 
@@ -87,7 +82,6 @@ class PostModel {
       id: map['id'],
       content: map['content'],
       category: map['category'],
-      subCategory: map['subCategory'],
       make: map['make'],
       model: map['model'],
       year: map['year'],
@@ -102,7 +96,7 @@ class PostModel {
 
   @override
   String toString() {
-    return 'PostModel(title: $title, id: $id, content: $content, category: $category, subCategory: $subCategory, make: $make, model: $model, username: $username, userId: $userId, userImage: $userImage, year: $year, views: $views, userInfoId: $userInfoId, userInfo: $userInfo)';
+    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, username: $username, userId: $userId, userImage: $userImage, year: $year, views: $views, userInfoId: $userInfoId, userInfo: $userInfo)';
   }
 
   @override
@@ -114,7 +108,6 @@ class PostModel {
         other.id == id &&
         other.content == content &&
         other.category == category &&
-        other.subCategory == subCategory &&
         other.make == make &&
         other.model == model &&
         other.username == username &&
@@ -132,7 +125,6 @@ class PostModel {
         id.hashCode ^
         content.hashCode ^
         category.hashCode ^
-        subCategory.hashCode ^
         make.hashCode ^
         model.hashCode ^
         username.hashCode ^
@@ -140,7 +132,8 @@ class PostModel {
         userImage.hashCode ^
         year.hashCode ^
         views.hashCode ^
-        createdAt.hashCode;
+        userInfoId.hashCode ^
+        userInfo.hashCode;
   }
 
   bool isWatching() {
@@ -153,5 +146,37 @@ class PostModel {
   amIOwner() {
     var service = Get.find<ApiExecutor>();
     return this.userId == service.userInfo.value.userId;
+  }
+
+  PostModel copyWith({
+    String title,
+    String id,
+    String content,
+    String category,
+    String make,
+    String model,
+    String username,
+    String userId,
+    String userImage,
+    int year,
+    int views,
+    String userInfoId,
+    UserInfoModel userInfo,
+  }) {
+    return PostModel(
+      title: title ?? this.title,
+      id: id ?? this.id,
+      content: content ?? this.content,
+      category: category ?? this.category,
+      make: make ?? this.make,
+      model: model ?? this.model,
+      username: username ?? this.username,
+      userId: userId ?? this.userId,
+      userImage: userImage ?? this.userImage,
+      year: year ?? this.year,
+      views: views ?? this.views,
+      userInfoId: userInfoId ?? this.userInfoId,
+      userInfo: userInfo ?? this.userInfo,
+    );
   }
 }
