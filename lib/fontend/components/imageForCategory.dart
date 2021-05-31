@@ -10,11 +10,11 @@ class ImageForCategory extends StatelessWidget {
     return Container(
       clipBehavior: Clip.none,
       child: Container(
-        height: 60,
-        width: 60,
+        height: 80,
+        width: 80,
         child: Image.asset(
           GetImage(),
-          fit: BoxFit.contain,
+          fit: BoxFit.fill,
           colorBlendMode: BlendMode.color,
         ),
       ),
@@ -22,20 +22,20 @@ class ImageForCategory extends StatelessWidget {
   }
 
   String GetImage() {
-    String str = "assets/images/";
+    String str = "assets/images/edited/";
     switch (item.category) {
       case "Engine":
         str += "engine.png";
         break;
       case "Body Parts":
-        str += "bodyparts1.jpg";
+        str += "body light.png";
         break;
       case "Transmission":
-        str += "trans.jpg";
+        str += "tran.png";
 
         break;
       case "Wheels & Rims":
-        str += "tyres2.png";
+        str += "tyres.png";
 
         break;
       case "Accessories":
@@ -43,12 +43,12 @@ class ImageForCategory extends StatelessWidget {
 
         break;
       case "Misc":
-        str += "misc1.jpg";
+        str += "misc.png";
 
         break;
 
       default:
-        str += "misc1.jpg";
+        str += "misc.png";
     }
 
     return str;

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
+import 'package:wrg2/backend/services/service.information.dart';
 
 class PostModel {
   String title = "";
@@ -137,10 +138,8 @@ class PostModel {
   }
 
   bool isWatching() {
-    var service = Get.find<ApiExecutor>();
-    var ui = service.userInfo.value;
-    if (ui == null) return false;
-    return ui.watchingMap.containsKey(id);
+    var service = Get.find<InformationService>();
+    return service.watching.containsKey(id);
   }
 
   amIOwner() {

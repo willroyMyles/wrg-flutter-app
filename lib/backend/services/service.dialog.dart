@@ -13,6 +13,7 @@ class DialogService {
                 height: Get.height / 3,
                 width: Get.width,
                 alignment: Alignment.center,
+                margin: EdgeInsets.only(bottom: 50),
                 child: widget,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7),

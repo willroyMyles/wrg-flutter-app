@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/avd.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';

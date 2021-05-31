@@ -7,6 +7,7 @@ import 'package:wrg2/fontend/components/avatar.dart';
 import 'package:wrg2/fontend/pages/comment/state.comment.dart';
 import 'package:wrg2/fontend/pages/comment/view.comment.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
+import 'package:wrg2/fontend/pages/discover_details/state.details.dart';
 
 class DiscoverDetails extends StatelessWidget {
   final PostModel item;
@@ -15,6 +16,7 @@ class DiscoverDetails extends StatelessWidget {
 
   final ts = Get.find<ServiceTheme>();
   final commentController = Get.put(CommentState());
+  final controller = Get.put(FeedDetailsState());
 
   @override
   Widget build(BuildContext context) {
@@ -111,22 +113,28 @@ class DiscoverDetails extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FlatButton(
-                      onPressed: () {},
-                      child: Text("watch"),
-                      color: ts.fg.value,
-                    ).secondary(),
-                    FlatButton(
-                      onPressed: () {},
-                      child: Text("comment"),
-                      color: ts.fg.value,
-                    ).secondary(),
-                  ],
+              GetBuilder(
+                init: controller,
+                builder: (controller) => Container(
+                  margin: EdgeInsets.symmetric(vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FlatButton(
+                        onPressed: () {
+                          controller.onWatchPressed(item);
+                        },
+                        child:
+                            Text(item.isWatching() ? "stop watching" : "watch"),
+                        color: ts.fg.value,
+                      ).secondary(),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Text("comment"),
+                        color: ts.fg.value,
+                      ).secondary(),
+                    ],
+                  ),
                 ),
               )
             ],

@@ -98,6 +98,7 @@ class _DiscoverState extends State<Discover>
                       ),
                       Expanded(
                         child: ListView.separated(
+                            physics: BouncingScrollPhysics(),
                             padding: EdgeInsets.only(bottom: 30),
                             itemBuilder: (context, index) {
                               return PostItem(

@@ -14,5 +14,6 @@ extension StatusExtension on Status {
     if (this == Status.IN_PROGRESS) return Colors.amber;
     if (this == Status.COMPLETED) return Colors.green;
     if (this == Status.EXPIRED) return Colors.grey;
+    return Colors.grey;
   }
 }

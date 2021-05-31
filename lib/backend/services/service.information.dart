@@ -1,7 +1,6 @@
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:wrg2/backend/models/conversation.dart';
-import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 
 class InformationService extends GetxController {
@@ -42,7 +41,7 @@ class InformationService extends GetxController {
     if (!watching.containsKey(p.id) && add)
       watching.putIfAbsent(p.id as dynamic, () => p);
     else
-      watching.remove(p);
+      watching.removeWhere((key, value) => key == p.id);
     watching.refresh();
   }
 

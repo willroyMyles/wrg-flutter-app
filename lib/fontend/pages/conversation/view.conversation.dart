@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/conversation.dart';
-import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/conversation/state.conversation.dart';
@@ -61,6 +59,7 @@ class ConversationView extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
+        color: ts.fg.value,
         child: GetBuilder(
           init: controller,
           builder: (controller) => ListView.separated(
@@ -78,8 +77,8 @@ class ConversationView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                         boxShadow: [
                           BoxShadow(
-                              blurRadius: 4,
-                              offset: Offset(3, 3),
+                              blurRadius: 10,
+                              offset: Offset(3, 5),
                               color: ts.fgt.value.withOpacity(.1))
                         ],
                         border:
@@ -91,7 +90,7 @@ class ConversationView extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) => SizedBox(
-                    height: 15,
+                    height: 19,
                   ),
               itemCount: item.messages.length),
         ),

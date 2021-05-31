@@ -12,7 +12,7 @@ class CommentView extends StatelessWidget {
     Key key,
     this.postId,
   }) : super(key: key);
-  CommentState controller = Get.find<CommentState>();
+  final CommentState controller = Get.find<CommentState>();
   @override
   Widget build(BuildContext context) {
     return controller.obx(
