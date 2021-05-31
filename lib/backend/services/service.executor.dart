@@ -333,6 +333,8 @@ class ApiExecutor extends GetxController with ApiAuth {
         throw res.errors;
       }
 
+      _informationService.updateConversation(model);
+
       return Future.value(true);
     } catch (err) {
       print(err);

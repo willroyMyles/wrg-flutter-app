@@ -1,5 +1,7 @@
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:wrg2/backend/models/conversation.dart';
+import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 
 class InformationService extends GetxController {
@@ -11,12 +13,21 @@ class InformationService extends GetxController {
   setIsSIgnedIn(bool value) {
     isSignedIn.value = value;
     isSignedIn.refresh();
+    isSignedIn.subject.add(value);
   }
 
   setConversation(List<dynamic> list) {
     for (var item in list) {
       conversations.putIfAbsent(item.id, () => item);
     }
+    conversations.refresh();
+  }
+
+  updateConversation(ConversationModel model) {
+    conversations.update(
+      model.id,
+      (value) => model,
+    );
     conversations.refresh();
   }
 

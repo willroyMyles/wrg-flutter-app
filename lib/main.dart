@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
+import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/view.homepage.dart';
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     Get.put(ToastService());
+    Get.put(DialogService());
 
     setState(() {
       api = configure();

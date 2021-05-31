@@ -149,6 +149,21 @@ extension TextModifier on Texxt {
     return _getDefault();
   }
 
+  Widget humungous() {
+    this.style = TextStyle(
+        fontWeight: FontWeight.w900,
+        color: _ts.fgt.value.withOpacity(.1),
+        shadows: [
+          Shadow(
+              blurRadius: 5,
+              color: Colors.grey.withOpacity(.1),
+              offset: Offset(2, 5)),
+        ]);
+    this.textScaleFactor = 10;
+    this.data = this.data.toUpperCase();
+    return _getDefault();
+  }
+
   _getDefault() {
     return Text(
       this.data,

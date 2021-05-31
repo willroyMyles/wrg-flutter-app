@@ -76,7 +76,7 @@ class ConversationModel {
           const []),
       locked: map['locked'] ?? false,
       comment: CommentModel.fromMap(map['comment']) ?? CommentModel(),
-      post: PostModel.fromMap(map['post']) ?? PostModel(),
+      // post: PostModel.fromMap(map['post']) ?? PostModel(),
       newMessage: map['newMessage'] ?? '',
       id: map['id'] ?? '',
     );
