@@ -14,9 +14,9 @@ import 'package:wrg2/gen/graphql/graphql_api.dart';
 
 class ApiExecutor extends GetxController with ApiAuth {
   var _informationService = Get.put(InformationService());
-  var _toastService = Get.find<ToastService>();
+  var _toastService = Get.put(ToastService());
   final clientArt = ArtemisClient(
-    'http://192.168.2.5:3000/graphql',
+    'http://192.168.100.194:3000/graphql',
   );
   bool firstStart = true;
 
@@ -61,6 +61,7 @@ class ApiExecutor extends GetxController with ApiAuth {
 
   _updateUserInfo(Map<String, dynamic> map) {
     userInfo.value = UserInfoModel.fromMap(map);
+    _informationService.setWatching(userInfo.value.watching);
     userInfo.refresh();
     getConversations();
     refresh();
@@ -176,6 +177,7 @@ class ApiExecutor extends GetxController with ApiAuth {
 
   void removeUser() {
     userInfo = UserInfoModel.empty().obs;
+    userInfo.refresh();
     refresh();
   }
 

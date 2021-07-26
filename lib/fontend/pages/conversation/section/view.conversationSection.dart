@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/pages/conversation/section/view.conversationList.dart';
 import 'package:wrg2/fontend/pages/conversation/state.conversation.dart';
 
 class ConversationSection extends StatelessWidget {
@@ -25,8 +26,7 @@ class ConversationSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Texxt(controller.map.length.toString() + " Conversation")
-                      .h1(),
+                  Text(controller.map.length.toString() + " Conversation").h1(),
                   Expanded(
                     child: Container(
                       alignment: Alignment.center,
@@ -34,19 +34,21 @@ class ConversationSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Texxt(controller.map.values
+                          Text(controller.map.values
                                       .takeWhile(
                                           (value) => value.hasNewMessageForMe())
                                       .length
                                       .toString() +
                                   " New Messages")
-                              .h2(withStr: false),
+                              .h2(),
                           SizedBox(
                             height: 3,
                           ),
                           SizedBox(height: 10),
                           FlatButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.to(() => ConversationList());
+                                  },
                                   child: Text("view conversations"))
                               .primary()
                         ],
@@ -59,7 +61,7 @@ class ConversationSection extends StatelessWidget {
       },
       onEmpty: emptySvg(),
       onLoading: loadingSvg(),
-      onError: (error) => Container(child: Texxt("error").huge()),
+      onError: (error) => Container(child: Text("error").huge()),
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:wrg2/backend/services/service.toast.dart';
 
 class LoginState extends GetxController {
   final infoService = Get.find<InformationService>();
-  final toastService = Get.find<ToastService>();
   @override
   void onInit() {
     super.onInit();

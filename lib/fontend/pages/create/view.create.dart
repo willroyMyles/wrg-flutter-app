@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:group_button/group_button.dart';
+import 'package:wrg2/backend/enums/enum.tags.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/create/state.create.dart';
@@ -14,7 +16,7 @@ class CreatePost extends StatelessWidget {
         appBar: AppBar(
           title: Container(
               alignment: Alignment.centerLeft,
-              child: Texxt("create post").huge()),
+              child: Text("create post").huge()),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           flexibleSpace: FlexibleSpaceBar(),
@@ -168,6 +170,16 @@ class CreatePost extends StatelessWidget {
                       ],
                     ),
                   ),
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(top: 5),
+                      child: GroupButton(
+                        isRadio: false,
+                        buttons: Tags.values.map((e) => e.name),
+                        onSelected: (index, isSelected) {
+                          //should add to selected
+                        },
+                      )),
                   Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.only(top: 10),

@@ -39,6 +39,9 @@ dependencies:
   group_button: ^2.1.2
   animated: ^2.0.0
   csv:
+  oktoast: ^3.0.0
+  fluttertoast: null
+
 
 
   # The following adds the Cupertino Icons font to your application.

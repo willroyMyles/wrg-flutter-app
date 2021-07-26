@@ -39,9 +39,14 @@ class _DiscoverState extends State<Discover>
       //   ),
       // ),
       appBar: AppBar(
-        backgroundColor: ts.bg.value,
+        // backgroundColor: ts.bg.value,
         shadowColor: ts.bg.value.darker().withOpacity(.4),
         elevation: 0,
+        title: Text("Discover".toUpperCase()).h1(),
+        centerTitle: true,
+        leadingWidth: 64,
+        leading: FlatButton.icon(
+            onPressed: () {}, icon: Icon(Icons.menu), label: Text("")),
         actions: [
           Container(
             child: Icon(
@@ -69,28 +74,40 @@ class _DiscoverState extends State<Discover>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            ...Status.values.map((e) {
-                              return Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
-                                decoration: BoxDecoration(
-                                    color: ts.fg.value,
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: ts.bg.value.darker(), width: 1)
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //     blurRadius: 0,
-                                    //     offset: Offset(1, 3),
-                                    //     color: Colors.grey.shade300,
-                                    //   )
-                                    // ],
-                                    ),
-                                child: Texxt(e.toCommonString()).hint(),
-                              );
-                            }).toList()
+                            // FlatButton.icon(
+                            //     onPressed: () {},
+                            //     icon: Opacity(
+                            //         opacity: .5,
+                            //         child: Icon(
+                            //           Icons.keyboard_arrow_down,
+                            //         )),
+                            //     label: Text(controller.filter
+                            //             .elementAt(controller.filterIndex))
+                            //         .h1())
                           ],
+                          // children: [
+                          //   ...Status.values.map((e) {
+                          //     return Container(
+                          //       alignment: Alignment.center,
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: 12, vertical: 8),
+                          //       decoration: BoxDecoration(
+                          //           color: ts.fg.value,
+                          //           borderRadius: BorderRadius.circular(4),
+                          //           border: Border.all(
+                          //               color: ts.bg.value.darker(), width: 1)
+                          //           // boxShadow: [
+                          //           //   BoxShadow(
+                          //           //     blurRadius: 0,
+                          //           //     offset: Offset(1, 3),
+                          //           //     color: Colors.grey.shade300,
+                          //           //   )
+                          //           // ],
+                          //           ),
+                          //       child: Text(e.toCommonString()).hint(),
+                          //     );
+                          //   }).toList()
+                          // ],
                         ),
                       ),
                       SizedBox(
@@ -102,15 +119,16 @@ class _DiscoverState extends State<Discover>
                             padding: EdgeInsets.only(bottom: 30),
                             itemBuilder: (context, index) {
                               return PostItem(
-                                item: controller.map.values.elementAt(index),
-                              );
+                                  // item: controller.map.values.elementAt(index),
+                                  item: controller.info.feed.values
+                                      .elementAt(index));
                             },
                             separatorBuilder: (context, index) {
                               return SizedBox(
                                 height: 20,
                               );
                             },
-                            itemCount: controller.map.length),
+                            itemCount: controller.info.feed.values.length),
                       ),
                     ],
                   ),

@@ -38,7 +38,7 @@ class CatList extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Texxt("Select category").huge(),
+                Text("Select category").huge(),
                 SizedBox(
                   height: 12,
                 ),
@@ -69,7 +69,7 @@ class CatList extends StatelessWidget {
                               child: Hero(
                                 tag: tag,
                                 child: Container(
-                                  child: Texxt(cs.sub_catList
+                                  child: Text(cs.sub_catList
                                           .elementAt(index)
                                           .toString())
                                       .hunch(),

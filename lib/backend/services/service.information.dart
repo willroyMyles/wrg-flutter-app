@@ -9,10 +9,25 @@ class InformationService extends GetxController {
   RxMap<dynamic, dynamic> feed = {}.obs;
   RxBool isSignedIn = false.obs;
 
+  clearAll() {
+    conversations.clear();
+    watching.clear();
+    feed.clear();
+    announceAll();
+  }
+
+  announceAll() {
+    conversations.refresh();
+    watching.refresh();
+    feed.refresh();
+    refresh();
+  }
+
   setIsSIgnedIn(bool value) {
     isSignedIn.value = value;
     isSignedIn.refresh();
     isSignedIn.subject.add(value);
+    if (!value) clearAll();
   }
 
   setConversation(List<dynamic> list) {

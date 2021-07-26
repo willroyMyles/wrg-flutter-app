@@ -63,7 +63,11 @@ class DiscoverDetails extends StatelessWidget {
           },
           collapsed: Container(
             alignment: Alignment.center,
-            child: Texxt("view comments").h2(withStr: false),
+            child: InkWell(
+                onTap: () {
+                  commentController.pc.open();
+                },
+                child: Text("view comments").h2()),
           ),
           panel: Container(
             alignment: Alignment.center,
@@ -82,22 +86,22 @@ class DiscoverDetails extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Texxt(item.title).h1(),
+                    Text(item.title).h1(),
                     Divider(),
-                    Texxt(item.content).h2(),
+                    Text(item.content).h2(),
                     Divider(),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Texxt(item.make).h3(),
-                          Texxt(item.model).h3(),
-                          Texxt(item.year.toString()).h3(),
+                          Text(item.make).h3(),
+                          Text(item.model).h3(),
+                          Text(item.year.toString()).h3(),
                         ],
                       ),
                     ),
-                    Texxt(item.category).h3(),
+                    Text(item.category).h3(),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Row(
@@ -106,7 +110,7 @@ class DiscoverDetails extends StatelessWidget {
                             size: 25,
                             imgSrc: item.userInfo.userImageUrl,
                           ),
-                          Texxt(item.userInfo.username).user(),
+                          Text(item.userInfo.username).h2(),
                         ],
                       ),
                     ),
@@ -128,11 +132,11 @@ class DiscoverDetails extends StatelessWidget {
                             Text(item.isWatching() ? "stop watching" : "watch"),
                         color: ts.fg.value,
                       ).secondary(),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Text("comment"),
-                        color: ts.fg.value,
-                      ).secondary(),
+                      // FlatButton(
+                      //   onPressed: () {},
+                      //   child: Text("comment"),
+                      //   color: ts.fg.value,
+                      // ).secondary(),
                     ],
                   ),
                 ),

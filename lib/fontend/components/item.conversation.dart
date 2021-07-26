@@ -26,11 +26,11 @@ class ConversationItem extends StatelessWidget {
             Container(
               child: Column(
                 children: [
-                  Texxt(item.getOthersName()).h1(),
+                  Text(item.getOthersName()).h1(),
                   Container(
                     child: Column(
                       children: [
-                        Texxt(item.messages.last.content).h3(),
+                        Text(item.messages.last.content).h3(),
                       ],
                     ),
                   )
@@ -41,7 +41,7 @@ class ConversationItem extends StatelessWidget {
             //   child: Container(
             //     height: 300,
             //     width: 300,
-            //     child: Texxt(item.messages.length.toString()).humungous(),
+            //     child: Text(item.messages.length.toString()).humungous(),
             //   ),
             // )
           ],

@@ -55,7 +55,7 @@ class ConversationView extends StatelessWidget {
       ),
       appBar: AppBar(
         centerTitle: true,
-        title: Texxt(item.getOthersName()).h1(),
+        title: Text(item.getOthersName()).h1(),
         elevation: 0,
       ),
       body: Container(
@@ -84,8 +84,8 @@ class ConversationView extends StatelessWidget {
                         border:
                             Border.all(width: 0, color: ts.bg.value.darker())),
                     child:
-                        Texxt(item.messages.elementAt(index).content.toString())
-                            .h2(withStr: false),
+                        Text(item.messages.elementAt(index).content.toString())
+                            .h2(),
                   ),
                 );
               },

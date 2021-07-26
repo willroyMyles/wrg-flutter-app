@@ -15,7 +15,7 @@ extension TFF on TextFormField {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 3),
-            child: Texxt(label).hint(),
+            child: Text(label).hint(),
           ),
           TextFormField(
             validator: this.validator,

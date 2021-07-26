@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
+import 'package:wrg2/fontend/components/avatar.dart';
 import 'package:wrg2/fontend/components/item.comment.dart';
 import 'package:wrg2/fontend/pages/comment/state.comment.dart';
 
@@ -59,6 +61,60 @@ class CommentView extends StatelessWidget {
                               height: 7,
                             ),
                         itemCount: controller.map.length),
+                  ),
+                  AnimatedOpacity(
+                    duration: Duration(milliseconds: 150),
+                    opacity: controller.hideInput ? 1 : 1,
+                    child: Container(
+                      height: 50,
+                      width: Get.width,
+                      color: Colors.grey.shade200.withOpacity(.2),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          WRGAvatar(
+                            imgSrc: controller.infoService.isSignedIn.value
+                                ? controller.apis.userInfo.value.userImageUrl
+                                : "",
+                            size: 30,
+                          ),
+                          Hero(
+                            tag: "TextEditing",
+                            child: InkWell(
+                              onTap: () {
+                                controller.onInputPressed(
+                                    context, inputWidget());
+                              },
+                              child: Container(
+                                height: 47,
+                                width: Get.width - 120,
+                                child: IgnorePointer(
+                                  child: TextField(
+                                    controller:
+                                        controller.textEditingController,
+                                    decoration: InputDecoration(
+                                        hintText: "Place your comment",
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 12),
+                                        enabledBorder: InputBorder.none),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey.shade100),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                              onTap: () {},
+                              child: Container(
+                                  padding: EdgeInsets.all(4),
+                                  child: Icon(Icons.send)))
+                        ],
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -67,6 +123,60 @@ class CommentView extends StatelessWidget {
       onEmpty: emptySvg(),
       onError: (error) => Container(),
       onLoading: loadingSvg(),
+    );
+  }
+
+  Widget inputWidget() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Container(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                WRGAvatar(
+                  imgSrc: controller.infoService.isSignedIn.value
+                      ? controller.apis.userInfo.value.userImageUrl
+                      : "",
+                  size: 30,
+                ),
+                Container(
+                  height: 47,
+                  width: Get.width - 120,
+                  child: TextField(
+                    controller: controller.textEditingController,
+                    decoration: InputDecoration(
+                        hintText: "Place your comment",
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                        enabledBorder: InputBorder.none),
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade100),
+                ),
+                InkWell(
+                    onTap: () {},
+                    child: Container(
+                        padding: EdgeInsets.all(4), child: Icon(Icons.send)))
+              ],
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                Checkbox(
+                  value: false,
+                  onChanged: (value) {},
+                ),
+                Text("is an Offer?")
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

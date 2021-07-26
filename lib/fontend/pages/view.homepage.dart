@@ -2,6 +2,8 @@ import 'package:animated/animated.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:wrg2/backend/services/service.api.dart';
+import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/state.homepage.dart';
@@ -9,6 +11,8 @@ import 'package:wrg2/fontend/pages/state.homepage.dart';
 class HomePageView extends StatelessWidget {
   final state = Get.put(HomePageState());
   final ts = Get.find<ServiceTheme>();
+  final infoService = Get.find<InformationService>();
+  final service = Get.find<APIService>();
   final double padding = 20.0;
   @override
   Widget build(BuildContext context) {
@@ -66,42 +70,64 @@ class HomePageView extends StatelessWidget {
                               child: AnimatedOpacity(
                                 duration: Duration(milliseconds: 200),
                                 opacity: isSelected ? 1 : .5,
-                                child: AnimatedSwitcher(
-                                  child: isSelected && index == 1
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    blurRadius: 7,
-                                                    color: Colors.grey.shade100,
-                                                    offset: Offset(0, 3))
-                                              ]),
-                                          child: InkWell(
-                                            onTap: () {
-                                              // state.onAddPost();
-                                              Get.to(() => CreatePost());
-                                            },
-                                            child: Icon(
-                                              Icons.add_circle,
-                                              color: ts.pc,
-                                              key: Key("icon"),
+                                child: Obx(
+                                  () => AnimatedSwitcher(
+                                    child: isSelected && index == 1
+                                        ? Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      blurRadius: 7,
+                                                      color:
+                                                          Colors.grey.shade100,
+                                                      offset: Offset(0, 3))
+                                                ]),
+                                            child: InkWell(
+                                              onTap: () {
+                                                // state.onAddPost();
+                                                Get.to(() => CreatePost());
+                                              },
+                                              child: Icon(
+                                                Icons.add_circle,
+                                                color: ts.pc,
+                                                key: Key("icon"),
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      : Icon(e.icon,
-                                          color:
-                                              isSelected ? ts.pc : Colors.grey),
-                                  transitionBuilder: (child, animation) =>
-                                      FadeTransition(
-                                    opacity: animation,
-                                    child: ScaleTransition(
-                                      scale: animation,
-                                      child: child,
+                                          )
+                                        : infoService.isSignedIn.value &&
+                                                index == 2
+                                            ? Container(
+                                                height: 26,
+                                                width: 26,
+                                                alignment: Alignment.center,
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            60)),
+                                                child: Image.network(
+                                                  service.userInfo.value
+                                                      .userImageUrl,
+                                                  height: 26,
+                                                  width: 26,
+                                                ),
+                                              )
+                                            : Icon(e.icon,
+                                                color: isSelected
+                                                    ? ts.pc
+                                                    : Colors.grey),
+                                    transitionBuilder: (child, animation) =>
+                                        FadeTransition(
+                                      opacity: animation,
+                                      child: ScaleTransition(
+                                        scale: animation,
+                                        child: child,
+                                      ),
                                     ),
+                                    duration: Duration(milliseconds: 200),
                                   ),
-                                  duration: Duration(milliseconds: 200),
                                 ),
                               ),
                             ),

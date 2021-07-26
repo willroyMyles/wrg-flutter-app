@@ -35,31 +35,21 @@ class PostItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Container(
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.start,
-                  //     children: [
-                  //       CircleAvatar(
-                  //         backgroundImage:
-                  //             Image.network(item.userInfo.userImageUrl).image,
-                  //         radius: 15,
-                  //       ),
-                  //       SizedBox(
-                  //         width: 10,
-                  //       ),
-                  //       Text(item.userInfo.username),
-                  //     ],
-                  //   ),
-                  // ),
-                  Texxt(item.title).h1(),
-                  Texxt(item.content).h2(withStr: false),
+                  Text(item.title).h1(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(item.content).h2(),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Texxt(item.make).h3(),
-                        Texxt(item.model).h3(),
-                        Texxt(item.year.toString()).h3(),
+                        Text(item.make).h3(),
+                        Text(item.model).h3(),
+                        Text(item.year.toString()).h3(),
                       ],
                     ),
                   )

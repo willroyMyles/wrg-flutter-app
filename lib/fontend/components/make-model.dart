@@ -38,7 +38,7 @@ class MakeList extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Texxt("Select Make").huge(),
+                Text("Select Make").huge(),
                 SizedBox(
                   height: 12,
                 ),
@@ -79,7 +79,7 @@ class MakeList extends StatelessWidget {
                               child: Hero(
                                 tag: tag,
                                 child: Container(
-                                  child: Texxt(cs.carsList
+                                  child: Text(cs.carsList
                                           .elementAt(index)
                                           .elementAt(0))
                                       .hunch(),
@@ -133,7 +133,7 @@ class ModelList extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Texxt("Select Model").huge(),
+                Text("Select Model").huge(),
                 SizedBox(
                   height: 12,
                 ),
@@ -141,7 +141,7 @@ class ModelList extends StatelessWidget {
                   tag: tag,
                   child: Container(
                     child:
-                        Texxt(cs.carsList.elementAt(idx).elementAt(0)).hunch(),
+                        Text(cs.carsList.elementAt(idx).elementAt(0)).hunch(),
                   ),
                 ),
                 SizedBox(
@@ -171,7 +171,7 @@ class ModelList extends StatelessWidget {
                                         color: ts.fgt.value.withOpacity(.05),
                                         offset: Offset(1, 3))
                                   ]),
-                              child: Texxt(list.elementAt(index).toString())
+                              child: Text(list.elementAt(index).toString())
                                   .hunch(),
                             ),
                           );

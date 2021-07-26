@@ -1,32 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:wrg2/backend/extensions/ext.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-class ToastService {
-  String msg;
-  MaterialColor color;
-
-  success(
-    String msg,
-  ) {
-    this.msg = msg;
-    color = Colors.green;
-
-    _show();
+class ToastService extends GetxController {
+  success(String str) {
+    Fluttertoast.showToast(msg: str);
   }
 
-  _show() {
-    if (Get.isSnackbarOpen) {
-      Get.close(1);
-    }
-    Get.showSnackbar(GetBar(
-      backgroundColor: color.shade300,
-      messageText: Texxt(msg).hint(),
-      duration: Duration(seconds: 3),
-      snackPosition: SnackPosition.TOP,
-      borderRadius: 5,
-      barBlur: 5,
-      margin: EdgeInsets.all(10),
-    ));
+  error(String str) {
+    Fluttertoast.showToast(msg: str, backgroundColor: Colors.red.shade200);
   }
 }

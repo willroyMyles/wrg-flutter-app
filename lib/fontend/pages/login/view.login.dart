@@ -21,10 +21,10 @@ class LoginView extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.center,
-              child: Texxt(
+              child: Text(
                       "For your enhanced security, we only allow login via third party platforms",
                       textAlign: TextAlign.center)
-                  .h2(withStr: false),
+                  .h2(),
             ),
             SizedBox(
               height: 0,

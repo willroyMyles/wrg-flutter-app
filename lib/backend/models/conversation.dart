@@ -41,6 +41,11 @@ class ConversationModel {
         : sender.username;
   }
 
+  UserInfoModel getOthersUserInfo() {
+    final APIService ser = Get.find();
+    return sender.id == ser.userInfo.value.id ? reciever : sender;
+  }
+
   ConversationModel({
     this.reciever,
     this.sender,

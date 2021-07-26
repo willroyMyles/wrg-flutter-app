@@ -4,6 +4,7 @@ import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/components/imageForCategory.dart';
 
 class WatchingSection extends StatelessWidget {
   final InformationService informationService = Get.find();
@@ -23,7 +24,7 @@ class WatchingSection extends StatelessWidget {
 
   Widget buildList() {
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.only(left: 12, right: 12, bottom: 40),
       sliver: SliverGrid(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -31,35 +32,58 @@ class WatchingSection extends StatelessWidget {
                 informationService.watching.values.elementAt(index);
             return Container(
               height: 180,
+              decoration: BoxDecoration(
+                  color: ts.fg.value,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(blurRadius: 3, color: ts.bg.value.darker())
+                  ]),
               child: Stack(
                 children: [
+                  Positioned(
+                    bottom: 2,
+                    right: 7,
+                    child: Opacity(
+                      opacity: .5,
+                      child: Container(
+                        child: ImageForCategory(
+                          item: element,
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     height: 180,
                     padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: ts.fg.value,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          child: Column(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Texxt(element.title).h1(),
-                              Texxt(element.createdAt.toString()).h3(),
+                              Container(
+                                  width: Get.width / 4,
+                                  child: Text(element.title).h1()),
+                              Text("").hdate(element.createdAt),
                             ],
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [Text("some icons here")],
                           ),
                         ),
                         Container(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Texxt(element.make).h1(),
-                              Texxt(element.model).h1(),
-                              Texxt(element.year.toString()).h1(),
+                              Text(element.make).h1(),
+                              Text(element.model).h1(),
+                              Text(element.year.toString()).h1(),
                             ],
                           ),
                         )
@@ -73,10 +97,10 @@ class WatchingSection extends StatelessWidget {
           childCount: informationService.watching.length,
         ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 1),
       ),
     );
   }
@@ -87,7 +111,7 @@ class WatchingSection extends StatelessWidget {
         height: 50,
         width: Get.width,
         alignment: Alignment.center,
-        child: Texxt("not watching any posts").hunch(),
+        child: Text("not watching any posts").hunch(),
       ),
     );
   }

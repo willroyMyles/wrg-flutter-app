@@ -18,12 +18,12 @@ class PostModel {
   String userImage = "";
   int year = 0;
   int views = 0;
-  DateTime createdAt = DateTime.now();
+  DateTime createdAt;
   String userInfoId;
   UserInfoModel userInfo;
 
   PostModel({
-    DateTime createdAt,
+    this.createdAt,
     this.title = '',
     this.id = '',
     this.content = '',
@@ -71,14 +71,15 @@ class PostModel {
       year: map['year'],
       views: map['views'],
       userInfoId: map['userInfoId'],
+      createdAt: DateTime.parse(map['createdAt']),
       userInfo: UserInfoModel.fromMap(map['userInfo']),
     );
   }
 
   factory PostModel.fromMapWithoutUserinfo(Map<String, dynamic> map) {
     if (map == null) return PostModel();
-
-    return PostModel(
+    var cat = DateTime.parse(map["createdAt"]);
+    var p = PostModel(
       title: map['title'],
       id: map['id'],
       content: map['content'],
@@ -87,8 +88,10 @@ class PostModel {
       model: map['model'],
       year: map['year'],
       views: map['views'],
-      createdAt: DateTime.parse(map['createdAt']),
+      createdAt: cat,
     );
+
+    return p;
   }
   String toJson() => json.encode(toMap());
 

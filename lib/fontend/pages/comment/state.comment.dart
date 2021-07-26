@@ -1,17 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
+import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 
 class CommentState extends GetxController with StateMixin {
   final infoService = Get.find<InformationService>();
+  final dialogService = Get.find<DialogService>();
   final apis = Get.find<APIService>();
   Map<String, CommentModel> map = {};
   double topPadding = 40;
   PanelController pc = PanelController();
+  TextEditingController textEditingController = TextEditingController();
   bool ableToFetch = true;
+  bool hideInput = false;
 
   @override
   void onInit() {
@@ -47,5 +52,14 @@ class CommentState extends GetxController with StateMixin {
 
   void setEmpty() {
     change("", status: RxStatus.empty());
+  }
+
+  void onInputPressed(BuildContext context, Widget widget) async {
+    hideInput = true;
+    change("");
+    await dialogService
+        .showDialog(Hero(tag: "TextEditingchild", child: widget));
+    hideInput = false;
+    change("h");
   }
 }

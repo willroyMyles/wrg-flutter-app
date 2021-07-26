@@ -21,4 +21,6 @@ class FeedDetailsState extends GetxController {
   onWatchPressed(PostModel post) {
     service.modifyWatched(post, add: !post.isWatching());
   }
+
+  onCommentPressed(PostModel post) {}
 }
