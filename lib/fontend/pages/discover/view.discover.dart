@@ -19,107 +19,73 @@ class _DiscoverState extends State<Discover>
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: GetBuilder<DiscoverState>(
+        init: controller,
+        builder: (state) => CustomScrollView(
+          slivers: [
+            if (controller.status.isSuccess)
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  ...controller.map.values
+                      .map(
+                        (e) => PostItem(item: e),
+                      )
+                      .toList()
+                ]),
+              ),
+            if (controller.status.isEmpty)
+              SliverFillRemaining(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text("Nothing to see here"),
+                ),
+              )
+          ],
+        ),
+      ),
+    );
+
     print("building discover");
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      // floatingActionButton: Container(
-      //   margin: EdgeInsets.only(
-      //     bottom: 0,
-      //   ),
-      //   child: FloatingActionButton(
-      //     onPressed: () {
-      //       controller.onFAB();
-      //     },
-      //     child: Container(
-      //       child: Icon(
-      //         Icons.add,
-      //         color: ts.fgt.value,
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      appBar: AppBar(
-        // backgroundColor: ts.bg.value,
-        shadowColor: ts.bg.value.darker().withOpacity(.4),
-        elevation: 0,
-        title: Text("Discover".toUpperCase()).h1(),
-        centerTitle: true,
-        leadingWidth: 64,
-        leading: FlatButton.icon(
-            onPressed: () {}, icon: Icon(Icons.menu), label: Text("")),
-        actions: [
-          Container(
-            child: Icon(
-              Icons.search,
-              color: ts.fgt.value,
-            ),
-          ),
-        ],
-      ),
       body: InkWell(
         onTap: controller.onTap(),
         child: Container(
-            margin: EdgeInsets.only(top: 25),
+            // margin: EdgeInsets.only(top: 25),
             width: Get.width,
             alignment: Alignment.center,
             child: controller.obx(
               (state) {
                 return Container(
+                  color: Colors.yellow,
                   child: Column(
                     children: [
-                      Container(
-                        width: Get.width,
-                        padding: EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            // FlatButton.icon(
-                            //     onPressed: () {},
-                            //     icon: Opacity(
-                            //         opacity: .5,
-                            //         child: Icon(
-                            //           Icons.keyboard_arrow_down,
-                            //         )),
-                            //     label: Text(controller.filter
-                            //             .elementAt(controller.filterIndex))
-                            //         .h1())
-                          ],
-                          // children: [
-                          //   ...Status.values.map((e) {
-                          //     return Container(
-                          //       alignment: Alignment.center,
-                          //       padding: EdgeInsets.symmetric(
-                          //           horizontal: 12, vertical: 8),
-                          //       decoration: BoxDecoration(
-                          //           color: ts.fg.value,
-                          //           borderRadius: BorderRadius.circular(4),
-                          //           border: Border.all(
-                          //               color: ts.bg.value.darker(), width: 1)
-                          //           // boxShadow: [
-                          //           //   BoxShadow(
-                          //           //     blurRadius: 0,
-                          //           //     offset: Offset(1, 3),
-                          //           //     color: Colors.grey.shade300,
-                          //           //   )
-                          //           // ],
-                          //           ),
-                          //       child: Text(e.toCommonString()).hint(),
-                          //     );
-                          //   }).toList()
-                          // ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 13,
-                      ),
+                      // Container(
+                      //   width: Get.width,
+                      //   padding: EdgeInsets.only(bottom: 8),
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       FlatButton.icon(
+                      //           onPressed: () {},
+                      //           icon: Opacity(
+                      //               opacity: .5,
+                      //               child: Icon(
+                      //                 Icons.keyboard_arrow_down,
+                      //               )),
+                      //           label: Text(controller.filter
+                      //                   .elementAt(controller.filterIndex))
+                      //               .h1())
+                      //     ],
+                      //   ),
+                      // ),
                       Expanded(
                         child: ListView.separated(
                             physics: BouncingScrollPhysics(),
                             padding: EdgeInsets.only(bottom: 30),
                             itemBuilder: (context, index) {
                               return PostItem(
-                                  // item: controller.map.values.elementAt(index),
                                   item: controller.info.feed.values
                                       .elementAt(index));
                             },

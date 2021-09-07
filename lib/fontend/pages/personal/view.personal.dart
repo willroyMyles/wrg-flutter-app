@@ -25,11 +25,11 @@ class _PersonalState extends State<Personal> {
                 SliverToBoxAdapter(
                   child: ConversationSection(),
                 ),
-                SliverToBoxAdapter(
-                    child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                  child: Text("posts your watching").hint(),
-                )),
+                // SliverToBoxAdapter(
+                //     child: Container(
+                //   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                //   child: Text("posts your watching").hint(),
+                // )),
                 WatchingSection(),
               ],
             )),

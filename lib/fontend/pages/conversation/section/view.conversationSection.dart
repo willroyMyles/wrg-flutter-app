@@ -11,8 +11,19 @@ class ConversationSection extends StatelessWidget {
   var ts = Get.find<ServiceTheme>();
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-      (state) {
+    return GetBuilder<ConversationState>(builder: (controller) {
+      if (controller.status.isEmpty)
+        return Container(
+          alignment: Alignment.center,
+          height: 100,
+          padding: EdgeInsets.all(30),
+          margin: EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(7)),
+          child: Text("No Conversations As Yet..."),
+        );
+      if (controller.status.isSuccess)
         return Container(
             width: Get.width,
             height: 150,
@@ -58,10 +69,8 @@ class ConversationSection extends StatelessWidget {
                 ],
               ),
             ));
-      },
-      onEmpty: emptySvg(),
-      onLoading: loadingSvg(),
-      onError: (error) => Container(child: Text("error").huge()),
-    );
+
+      return Container();
+    });
   }
 }

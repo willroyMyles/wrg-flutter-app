@@ -9,11 +9,13 @@ import 'package:wrg2/fontend/pages/personal/view.personal.dart';
 import 'package:wrg2/fontend/pages/profile/view.profile.dart';
 import 'package:get/get.dart';
 
-class HomePageState extends GetxController {
+class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   PageController pc = PageController(initialPage: 0, keepPage: true);
   RxInt currentIndex = 0.obs;
   var panelController = PanelController();
   Widget currentPanelWidget = Container();
+
+  TabController tabController;
 
   bool panelDraggable = false;
 
@@ -26,16 +28,10 @@ class HomePageState extends GetxController {
   ];
 
   onIndexTapped(int index) {
-    // if (index == 2) {
-    //   setPanelWidget(views.elementAt(index));
-    //   showPanel();
-    //   return;
-    // }
     pc.jumpToPage(
       index,
     );
-    currentIndex.value = index;
-    refresh();
+    setCurrentIndex(index);
   }
 
   void setCurrentIndex(int value) {
@@ -62,5 +58,17 @@ class HomePageState extends GetxController {
   onAddPost() {
     setPanelWidget(CreatePost());
     showPanel();
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
+  void updateTabs(int value) {
+    tabController.animateTo(value);
+    setCurrentIndex(value);
   }
 }

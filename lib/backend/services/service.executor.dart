@@ -15,8 +15,12 @@ import 'package:wrg2/gen/graphql/graphql_api.dart';
 class ApiExecutor extends GetxController with ApiAuth {
   var _informationService = Get.put(InformationService());
   var _toastService = Get.put(ToastService());
+  // final clientArt = ArtemisClient(
+  //   'http://192.168.100.194:3000/graphql',
+  // );
   final clientArt = ArtemisClient(
-    'http://192.168.100.194:3000/graphql',
+    // 'http://192.168.100.194:3000/graphql',
+    'https://wrg-flutter-server.herokuapp.com/graphql',
   );
   bool firstStart = true;
 

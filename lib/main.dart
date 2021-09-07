@@ -20,19 +20,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ServiceTheme ts;
   Widget home;
+  bool building = true;
 
   Future<bool> configure() async {
     await Firebase.initializeApp();
+    Get.put(DialogService());
     ts = Get.put(ServiceTheme());
     Get.put(APIService());
-    home = GetMaterialApp(
-        title: 'Flutter Demo',
-        theme: ts.currentTheme.value,
-        home: Container(
-          child: HomePageView(),
-          decoration: BoxDecoration(gradient: ts.gradient.value),
-        ));
-
+    setState(() {
+      building = false;
+    });
     return Future.value(true);
   }
 
@@ -41,35 +38,34 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Get.put(DialogService());
 
-    setState(() {
-      api = configure();
-    });
+    configure();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: api,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return GetMaterialApp(
-            home: Container(
-              alignment: Alignment.center,
-              child: Text(
-                "loading",
-                textScaleFactor: 2,
+    return Builder(
+      builder: (context) {
+        if (building)
+          return MaterialApp(
+            home: Scaffold(
+              body: Container(
+                alignment: Alignment.center,
+                child: Text(
+                  "loading",
+                  textScaleFactor: 2,
+                ),
               ),
             ),
           );
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return home;
-        }
-
-        return Container();
+        else
+          return MaterialApp(
+              title: 'Flutter Demo',
+              theme: ts.currentTheme.value,
+              home: Container(
+                child: HomePageView(),
+                decoration: BoxDecoration(gradient: ts.gradient.value),
+              ));
       },
     );
   }

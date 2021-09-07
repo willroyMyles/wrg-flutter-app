@@ -9,197 +9,112 @@ import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/state.homepage.dart';
 
 class HomePageView extends StatelessWidget {
-  final state = Get.put(HomePageState());
+  final controller = Get.put(HomePageState());
   final ts = Get.find<ServiceTheme>();
   final infoService = Get.find<InformationService>();
   final service = Get.find<APIService>();
   final double padding = 20.0;
+  final col = Colors.green;
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomePageState>(builder: (state) {
-      return SlidingUpPanel(
-        controller: state.panelController,
-        minHeight: 70,
-        maxHeight: Get.height - 200,
-        boxShadow: [BoxShadow(blurRadius: 0, color: Colors.grey)],
-        backdropEnabled: true,
-        parallaxEnabled: true,
-        backdropOpacity: .3,
-        backdropColor: Colors.black,
-        isDraggable: state.panelDraggable,
-        panel: state.currentPanelWidget,
-        onPanelClosed: () {
-          state.setDraggable(false);
-        },
-        collapsed: Container(
-          width: Get.width,
-          color: ts.bg.value,
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ...state.icons.map((e) {
-                var index = state.icons.indexOf(e);
-                var isSelected = state.currentIndex.value == index;
-                return Material(
-                  // color: Colors.white,
-                  // borderRadius: BorderRadius.circular(100),
-                  // elevation: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      state.onIndexTapped(index);
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Stack(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            clipBehavior: Clip.antiAlias,
-                            child: Animated(
-                              duration: Duration(milliseconds: 200),
-                              value: isSelected ? 1.5 : 1,
-                              builder: (context, child, animation) {
-                                return Transform.translate(
-                                  offset:
-                                      Offset(0, -((animation.value - 1) * 15)),
-                                  child: Transform.scale(
-                                      scale: animation.value, child: child),
-                                );
-                              },
-                              child: AnimatedOpacity(
-                                duration: Duration(milliseconds: 200),
-                                opacity: isSelected ? 1 : .5,
-                                child: Obx(
-                                  () => AnimatedSwitcher(
-                                    child: isSelected && index == 1
-                                        ? Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      blurRadius: 7,
-                                                      color:
-                                                          Colors.grey.shade100,
-                                                      offset: Offset(0, 3))
-                                                ]),
-                                            child: InkWell(
-                                              onTap: () {
-                                                // state.onAddPost();
-                                                Get.to(() => CreatePost());
-                                              },
-                                              child: Icon(
-                                                Icons.add_circle,
-                                                color: ts.pc,
-                                                key: Key("icon"),
-                                              ),
-                                            ),
-                                          )
-                                        : infoService.isSignedIn.value &&
-                                                index == 2
-                                            ? Container(
-                                                height: 26,
-                                                width: 26,
-                                                alignment: Alignment.center,
-                                                clipBehavior: Clip.antiAlias,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            60)),
-                                                child: Image.network(
-                                                  service.userInfo.value
-                                                      .userImageUrl,
-                                                  height: 26,
-                                                  width: 26,
-                                                ),
-                                              )
-                                            : Icon(e.icon,
-                                                color: isSelected
-                                                    ? ts.pc
-                                                    : Colors.grey),
-                                    transitionBuilder: (child, animation) =>
-                                        FadeTransition(
-                                      opacity: animation,
-                                      child: ScaleTransition(
-                                        scale: animation,
-                                        child: child,
-                                      ),
-                                    ),
-                                    duration: Duration(milliseconds: 200),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              // color: isSelected
-                              //     ? Colors.blue.shade100
-                              //     : Colors.white,
-                            ),
-                          ),
-                          AnimatedPositioned(
-                            duration: Duration(milliseconds: 200),
-                            bottom: isSelected ? 10 : -30,
-                            left: padding,
-                            child: AnimatedContainer(
-                                // width: Get.width / state.icons.length,
-                                alignment: Alignment.bottomCenter,
-                                height: 60,
-                                child: Container(
-                                  height: 7,
-                                  width: 7,
-                                  decoration: BoxDecoration(
-                                      color: ts.pc,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(blurRadius: 10, color: ts.pc)
-                                      ]),
-                                ),
-                                duration: Duration(milliseconds: 200)),
-                          ),
-                        ],
-                      ),
-                    ),
+    return Stack(
+      children: [
+        GetMaterialApp(
+          key: ValueKey("get"),
+          theme: ts.currentTheme.value,
+          home: Scaffold(
+            appBar: AppBar(
+              // title: Text("WRG Auto"),
+              toolbarHeight: 50,
+              bottom: PreferredSize(
+                preferredSize: Size(Get.width, 80),
+                child: TabBar(
+                  isScrollable: true,
+                  controller: controller.tabController,
+                  onTap: (value) {
+                    controller.onIndexTapped(value);
+                  },
+                  // indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: Colors.black,
+                  labelColor: Colors.black.withOpacity(.7),
+                  unselectedLabelColor: Colors.black.withOpacity(.5),
+                  labelStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w800,
+                      shadows: [
+                        Shadow(
+                            blurRadius: 18, color: Colors.black.withOpacity(.2))
+                      ],
+                      fontSize: 30),
+                  unselectedLabelStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16),
+
+                  // indicatorWeight: 5,
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(
+                        width: 2,
+                        color: Colors.grey.withOpacity(.9),
+                        style: BorderStyle.solid),
+                    insets: EdgeInsets.symmetric(horizontal: 30),
                   ),
-                );
-              })
-            ],
-          ),
-        ),
-        body: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.only(bottom: 65),
-              child: PageView.builder(
-                controller: state.pc,
-                itemCount: state.views.length,
-                onPageChanged: (value) {
-                  state.setCurrentIndex(value);
-                },
-                itemBuilder: (context, index) {
-                  return state.views.elementAt(index);
-                },
+
+                  tabs: [
+                    Tab(
+                      text: "Personal",
+                      // icon: Icon(Icons.gps_fixed_rounded),
+                    ),
+                    Tab(
+                      text: "Discover",
+                      // icon: Icon(Icons.all_inbox_sharp),
+                    ),
+                    Tab(
+                      text: "Account",
+                      // icon: Icon(Icons.disc_full),
+                    ),
+                  ],
+                ),
               ),
             ),
-
-            // AnimatedPositioned(
-            //     bottom: 0,
-            //     child: Container(
-            //       width: Get.width,
-            //       child: Container(
-            //         height: 60,
-            //         margin: EdgeInsets.symmetric(horizontal: 34, vertical: 4),
-            //         decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(100)),
-            //       ),
-            //     ),
-            //     duration: Constants.duration)
-          ],
+            body: PageView(
+              onPageChanged: (value) {
+                controller.updateTabs(value);
+              },
+              controller: controller.pc,
+              physics: AlwaysScrollableScrollPhysics(),
+              children: [...controller.views],
+            ),
+          ),
         ),
-      );
-    });
+        Obx(
+          () => AnimatedPositioned(
+            duration: Duration(milliseconds: 250),
+            bottom: controller.currentIndex.value == 1 ? 30 : -50,
+            right: 20,
+            child: AnimatedContainer(
+              height: controller.currentIndex.value == 1 ? 50 : 0,
+              width: 50,
+              alignment: Alignment.center,
+              duration: Duration(milliseconds: 250),
+              decoration: BoxDecoration(
+                  color: col,
+                  borderRadius: BorderRadius.circular(50),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 15,
+                        color: col.withOpacity(.6),
+                        offset: Offset(2, 4))
+                  ]),
+              child: Icon(
+                Icons.add,
+                size: 33,
+                color: ts.fg.value,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

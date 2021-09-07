@@ -58,6 +58,10 @@ extension TextModifier on Text {
     return Text(
       tago,
       textScaleFactor: .8,
+      maxLines: 3,
+      overflow: TextOverflow.fade,
+      softWrap: true,
+      textAlign: TextAlign.end,
       style: TextStyle(
           fontWeight: FontWeight.w700, color: ts.fgt.value.withOpacity(.6)),
     );

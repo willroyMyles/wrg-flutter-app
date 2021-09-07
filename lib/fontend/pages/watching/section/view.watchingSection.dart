@@ -67,7 +67,9 @@ class WatchingSection extends StatelessWidget {
                               Container(
                                   width: Get.width / 4,
                                   child: Text(element.title).h1()),
-                              Text("").hdate(element.createdAt),
+                              Container(
+                                  width: Get.width / 7.4,
+                                  child: Text("").hdate(element.createdAt)),
                             ],
                           ),
                         ),

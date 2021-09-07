@@ -27,32 +27,32 @@ class CommentView extends StatelessWidget {
                 child: Container(
                   child: Column(
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: Get.width,
-                              padding: EdgeInsets.only(top: 15),
-                              alignment: Alignment.center,
-                              child: GroupButton(
-                                isRadio: true,
-                                spacing: 10,
-                                onSelected: (index, isSelected) => controller
-                                    .updateSelected(index, isSelected),
-                                buttons: ["all", "offers"],
-                                selectedButtons: ["all"],
-                                selectedColor: ts.pc,
-                                borderRadius: BorderRadius.circular(10),
-                                unselectedBorderColor: Colors.grey,
-                                unselectedShadow: [],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
+                      // Container(
+                      //   child: Row(
+                      //     children: [
+                      //       Container(
+                      //         width: Get.width,
+                      //         padding: EdgeInsets.only(top: 15),
+                      //         alignment: Alignment.center,
+                      //         child: GroupButton(
+                      //           isRadio: true,
+                      //           spacing: 10,
+                      //           onSelected: (index, isSelected) => controller
+                      //               .updateSelected(index, isSelected),
+                      //           buttons: ["all", "offers"],
+                      //           selectedButtons: ["all"],
+                      //           selectedColor: ts.pc,
+                      //           borderRadius: BorderRadius.circular(10),
+                      //           unselectedBorderColor: Colors.grey,
+                      //           unselectedShadow: [],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 30,
+                      // ),
                       Expanded(
                         child: ListView.separated(
                             itemBuilder: (context, index) {
