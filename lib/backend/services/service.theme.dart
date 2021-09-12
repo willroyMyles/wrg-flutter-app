@@ -8,6 +8,7 @@ class ServiceTheme {
       scaffoldBackgroundColor: Colors.transparent,
       backgroundColor: Colors.transparent,
       primaryColor: Colors.white,
+      inputDecorationTheme: InputDecorationTheme(),
       textTheme: TextTheme(
         bodyText1: TextStyle(color: Colors.black),
         bodyText2: TextStyle(color: Colors.black),

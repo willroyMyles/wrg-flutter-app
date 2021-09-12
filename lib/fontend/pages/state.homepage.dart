@@ -16,6 +16,7 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   Widget currentPanelWidget = Container();
 
   TabController tabController;
+  AnimationController animationController;
 
   bool panelDraggable = false;
 
@@ -56,8 +57,12 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   }
 
   onAddPost() {
-    setPanelWidget(CreatePost());
-    showPanel();
+    // setPanelWidget(CreatePost());
+    // showPanel();
+    showBottomSheet(
+      context: Get.context,
+      builder: (context) => CreatePost(),
+    );
   }
 
   @override
@@ -65,6 +70,7 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
     // TODO: implement onInit
     super.onInit();
     tabController = TabController(length: 3, vsync: this);
+    animationController = AnimationController(vsync: this);
   }
 
   void updateTabs(int value) {

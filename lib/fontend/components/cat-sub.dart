@@ -5,13 +5,6 @@ import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/create/state.create.dart';
 
 class CatSubView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CatList();
-  }
-}
-
-class CatList extends StatelessWidget {
   final cs = Get.find<CreatePostState>();
   final ts = Get.find<ServiceTheme>();
 

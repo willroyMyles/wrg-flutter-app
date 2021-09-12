@@ -20,6 +20,9 @@ extension TFF on TextFormField {
           TextFormField(
             validator: this.validator,
             controller: this.controller,
+            style: TextStyle(
+              color: Colors.black,
+            ),
             decoration: InputDecoration(
                 fillColor: ts.bg.value.lighter().withOpacity(.4),
                 filled: true,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:wrg2/backend/extensions/text.extension.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.carData.dart';
@@ -13,6 +14,7 @@ class CreatePostState extends GetxController with StateMixin {
   List<List<dynamic>> carsList = [];
   // ignore: non_constant_identifier_names
   List<dynamic> sub_catList = [];
+  int make = 0;
 
   final service = Get.find<APIService>();
 
@@ -52,27 +54,52 @@ class CreatePostState extends GetxController with StateMixin {
 
   void showMake() async {
     carsList = processCars();
-    var ans = await Get.dialog(
-        Container(
-            height: 330,
-            width: Get.width,
-            alignment: Alignment.center,
-            child: MakeModelView()),
-        barrierColor: Colors.black.withOpacity(.4),
-        useRootNavigator: true);
-    print(ans);
+    await showModalBottomSheet(
+      context: Get.context,
+      isDismissible: true,
+      isScrollControlled: true,
+      barrierColor: ts.fgt.value,
+      builder: (context) {
+        return MakeList(
+          callback: (value) => setMake,
+        );
+      },
+    );
+
+    await showModalBottomSheet(
+      context: Get.context,
+      isDismissible: true,
+      isScrollControlled: true,
+      barrierColor: ts.fgt.value,
+      builder: (context) {
+        return ModelList(
+          callback: (value) => setModel,
+          idx: make,
+        );
+      },
+    );
   }
 
   void showCat() async {
     sub_catList = processList();
-    await Get.dialog(
-        Container(
-            height: 330,
-            width: Get.width,
-            alignment: Alignment.center,
-            child: CatSubView()),
-        barrierColor: Colors.black.withOpacity(.4),
-        useRootNavigator: true);
+    await showModalBottomSheet(
+      context: Get.context,
+      isDismissible: true,
+      isScrollControlled: true,
+      barrierColor: ts.fgt.value,
+      builder: (context) {
+        return CatSubView();
+      },
+    );
+  }
+
+  void setMake(dynamic make) {
+    crtls["make"].text = carsList.elementAt(make).elementAt(0).toString();
+    this.make = make;
+  }
+
+  void setModel(dynamic model) {
+    crtls["model"].text = carsList.elementAt(make).elementAt(model).toString();
   }
 
   void setMakeAndModel(int make, int model) {

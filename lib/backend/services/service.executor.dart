@@ -19,8 +19,8 @@ class ApiExecutor extends GetxController with ApiAuth {
   //   'http://192.168.100.194:3000/graphql',
   // );
   final clientArt = ArtemisClient(
-    // 'http://192.168.100.194:3000/graphql',
-    'https://wrg-flutter-server.herokuapp.com/graphql',
+    'http://192.168.100.194:3000/graphql',
+    // 'https://wrg-flutter-server.herokuapp.com/graphql',
   );
   bool firstStart = true;
 

@@ -82,7 +82,7 @@ class HomePageView extends StatelessWidget {
                 controller.updateTabs(value);
               },
               controller: controller.pc,
-              physics: AlwaysScrollableScrollPhysics(),
+              // physics: AlwaysScrollableScrollPhysics(),
               children: [...controller.views],
             ),
           ),
@@ -92,24 +92,31 @@ class HomePageView extends StatelessWidget {
             duration: Duration(milliseconds: 250),
             bottom: controller.currentIndex.value == 1 ? 30 : -50,
             right: 20,
-            child: AnimatedContainer(
-              height: controller.currentIndex.value == 1 ? 50 : 0,
-              width: 50,
-              alignment: Alignment.center,
-              duration: Duration(milliseconds: 250),
-              decoration: BoxDecoration(
-                  color: col,
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 15,
-                        color: col.withOpacity(.6),
-                        offset: Offset(2, 4))
-                  ]),
-              child: Icon(
-                Icons.add,
-                size: 33,
-                color: ts.fg.value,
+            child: Material(
+              child: InkWell(
+                onTap: () {
+                  Get.to(() => CreatePost());
+                },
+                child: AnimatedContainer(
+                  height: controller.currentIndex.value == 1 ? 50 : 0,
+                  width: 50,
+                  alignment: Alignment.center,
+                  duration: Duration(milliseconds: 250),
+                  decoration: BoxDecoration(
+                      color: col,
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 15,
+                            color: col.withOpacity(.6),
+                            offset: Offset(2, 4))
+                      ]),
+                  child: Icon(
+                    Icons.add,
+                    size: 33,
+                    color: ts.fg.value,
+                  ),
+                ),
               ),
             ),
           ),
