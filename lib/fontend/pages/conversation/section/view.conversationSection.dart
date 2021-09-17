@@ -21,7 +21,7 @@ class ConversationSection extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(7)),
-          child: Text("No Conversations As Yet..."),
+          child: Text("No Conversations As Yet...").hunch(),
         );
       if (controller.status.isSuccess)
         return Container(

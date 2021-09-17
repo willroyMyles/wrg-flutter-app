@@ -29,6 +29,8 @@ extension TextModifier on Text {
     return Text(
       this.data,
       textScaleFactor: .9,
+      overflow: TextOverflow.fade,
+      maxLines: 3,
       style:
           TextStyle(fontWeight: FontWeight.w500, color: ts.fgt.value.lighter()),
     );

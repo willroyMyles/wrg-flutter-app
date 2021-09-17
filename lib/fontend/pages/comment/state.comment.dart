@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
@@ -14,7 +13,6 @@ class CommentState extends GetxController with StateMixin {
   final apis = Get.find<APIService>();
   Map<String, CommentModel> map = {};
   double topPadding = 40;
-  PanelController pc = PanelController();
   TextEditingController textEditingController = TextEditingController();
   bool ableToFetch = true;
   bool hideInput = false;

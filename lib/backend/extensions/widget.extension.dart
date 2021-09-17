@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 
 extension WD on Widget {
@@ -44,9 +43,5 @@ extension WD on Widget {
       ).createShader(bounds),
       child: this,
     );
-  }
-
-  Widget toasty(){
-    return OKToast(child: this);
   }
 }

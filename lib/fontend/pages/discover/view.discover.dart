@@ -38,7 +38,15 @@ class _DiscoverState extends State<Discover>
               SliverFillRemaining(
                 child: Container(
                   alignment: Alignment.center,
-                  child: Text("Nothing to see here"),
+                  child: InkWell(
+                    onTap: () {
+                      controller.getMorePosts();
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(20),
+                        color: Colors.white,
+                        child: Text("Nothing to see here")),
+                  ),
                 ),
               )
           ],

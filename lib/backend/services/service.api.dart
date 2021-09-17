@@ -4,10 +4,11 @@ import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
+import 'package:wrg2/backend/services/service.httpExecutor.dart';
 
 class APIService extends GetxController {
-  ApiExecutor _apiInterface = Get.put(ApiExecutor());
-  ApiExecutor get interface => _apiInterface;
+  final _apiInterface = Get.put(HttpExecutor());
+  HttpExecutor get interface => _apiInterface;
   Rx<UserInfoModel> get userInfo => _apiInterface.userInfo;
 
   /// 0 for gooogle
@@ -18,10 +19,10 @@ class APIService extends GetxController {
       switch (provider) {
         case 0:
           var ans = await _apiInterface.signInWithGoogle();
-          var user = await _apiInterface.getUser(ans.user);
-          if (user.value == null || user.value.id == null) {
-            return Future.value(false);
-          }
+          // var user = await _apiInterface.getUser(ans.user);
+          // if (user.value == null || user.value.id == null) {
+          //   return Future.value(false);
+          // }
           break;
       }
       return res;

@@ -13,9 +13,6 @@ class PostModel {
   String category = "";
   String make = "";
   String model = "";
-  String username = "";
-  String userId = "";
-  String userImage = "";
   int year = 0;
   int views = 0;
   DateTime createdAt;
@@ -23,18 +20,15 @@ class PostModel {
   UserInfoModel userInfo;
 
   PostModel({
-    this.createdAt,
     this.title = '',
     this.id = '',
     this.content = '',
     this.category = '',
     this.make = '',
     this.model = '',
-    this.username = '',
-    this.userId = '',
-    this.userImage = '',
     this.year = 0,
     this.views = 0,
+    this.createdAt,
     this.userInfoId = '',
     this.userInfo,
   });
@@ -42,22 +36,23 @@ class PostModel {
   Map<String, dynamic> toMap() {
     return {
       'title': title,
-      'id': id,
+      // 'id': id,
       'content': content,
       'category': category,
       'make': make,
       'model': model,
-      'username': username,
-      'userId': userId,
-      'userImage': userImage,
       'year': year,
       'views': views,
       'userInfoId': userInfoId,
-      'userInfo': userInfo.toMap(),
+      // 'createdAt': createdAt.millisecondsSinceEpoch,
+      // 'userInfo': userInfo.toMap(),
     };
   }
 
-  factory PostModel.fromMap(Map<String, dynamic> map) {
+  bool contains(Map<String, dynamic> map, String key) => map.containsKey(key);
+
+  factory PostModel.fromMap(Map<dynamic, dynamic> map) {
+    print(map);
     return PostModel(
       title: map['title'],
       id: map['id'],
@@ -65,14 +60,11 @@ class PostModel {
       category: map['category'],
       make: map['make'],
       model: map['model'],
-      username: map['username'],
-      userId: map['userId'],
-      userImage: map['userImage'],
       year: map['year'],
       views: map['views'],
+      createdAt: DateTime.tryParse(map['createdAt']),
       userInfoId: map['userInfoId'],
-      createdAt: DateTime.parse(map['createdAt']),
-      userInfo: UserInfoModel.fromMap(map['userInfo']),
+      userInfo: UserInfoModel.fromMap(map['UserInfo']),
     );
   }
 
@@ -100,7 +92,7 @@ class PostModel {
 
   @override
   String toString() {
-    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, username: $username, userId: $userId, userImage: $userImage, year: $year, views: $views, userInfoId: $userInfoId, userInfo: $userInfo)';
+    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, year: $year, views: $views, createdAt: $createdAt, userInfoId: $userInfoId, userInfo: $userInfo)';
   }
 
   @override
@@ -114,11 +106,9 @@ class PostModel {
         other.category == category &&
         other.make == make &&
         other.model == model &&
-        other.username == username &&
-        other.userId == userId &&
-        other.userImage == userImage &&
         other.year == year &&
         other.views == views &&
+        other.createdAt == createdAt &&
         other.userInfoId == userInfoId &&
         other.userInfo == userInfo;
   }
@@ -131,11 +121,9 @@ class PostModel {
         category.hashCode ^
         make.hashCode ^
         model.hashCode ^
-        username.hashCode ^
-        userId.hashCode ^
-        userImage.hashCode ^
         year.hashCode ^
         views.hashCode ^
+        createdAt.hashCode ^
         userInfoId.hashCode ^
         userInfo.hashCode;
   }
@@ -147,7 +135,7 @@ class PostModel {
 
   amIOwner() {
     var service = Get.find<ApiExecutor>();
-    return this.userId == service.userInfo.value.userId;
+    return this.userInfo.id == service.userInfo.value.userId;
   }
 
   PostModel copyWith({
@@ -157,11 +145,9 @@ class PostModel {
     String category,
     String make,
     String model,
-    String username,
-    String userId,
-    String userImage,
     int year,
     int views,
+    DateTime createdAt,
     String userInfoId,
     UserInfoModel userInfo,
   }) {
@@ -172,11 +158,9 @@ class PostModel {
       category: category ?? this.category,
       make: make ?? this.make,
       model: model ?? this.model,
-      username: username ?? this.username,
-      userId: userId ?? this.userId,
-      userImage: userImage ?? this.userImage,
       year: year ?? this.year,
       views: views ?? this.views,
+      createdAt: createdAt ?? this.createdAt,
       userInfoId: userInfoId ?? this.userInfoId,
       userInfo: userInfo ?? this.userInfo,
     );

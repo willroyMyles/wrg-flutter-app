@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/services/service.api.dart';
@@ -12,7 +11,6 @@ class ConversationState extends GetxController with StateMixin {
   final service = Get.find<APIService>();
 
   var map = Map<String, ConversationModel>();
-  var panelController = PanelController();
   var textControler = TextEditingController();
   final dialog = Get.find<DialogService>();
 

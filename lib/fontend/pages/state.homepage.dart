@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/discover/view.discover.dart';
@@ -12,7 +11,6 @@ import 'package:get/get.dart';
 class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   PageController pc = PageController(initialPage: 0, keepPage: true);
   RxInt currentIndex = 0.obs;
-  var panelController = PanelController();
   Widget currentPanelWidget = Container();
 
   TabController tabController;
@@ -50,8 +48,8 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   }
 
   showPanel() {
-    panelController.show();
-    panelController.animatePanelToPosition(1);
+    // panelController.show();
+    // panelController.animatePanelToPosition(1);
     panelDraggable = true;
     refresh();
   }

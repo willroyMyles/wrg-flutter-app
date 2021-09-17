@@ -110,10 +110,15 @@ class WatchingSection extends StatelessWidget {
   Widget buildEmpty() {
     return SliverToBoxAdapter(
       child: Container(
-        height: 50,
         width: Get.width,
         alignment: Alignment.center,
-        child: Text("not watching any posts").hunch(),
+        height: 100,
+        padding: EdgeInsets.all(30),
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(7)),
+        child: Text("Not watching any posts as yet...").hunch(),
       ),
     );
   }

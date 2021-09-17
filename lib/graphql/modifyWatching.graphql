@@ -1,3 +1,0 @@
-mutation modifyWatching($input : AddPostToWatchArgs!){
-    modifyWatching(input: $input)
-}
