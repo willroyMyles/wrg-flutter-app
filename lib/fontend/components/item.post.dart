@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.helper.dart';
+import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/imageForCategory.dart';
 import 'package:wrg2/fontend/pages/discover_details/view.details.dart';
@@ -14,6 +15,7 @@ class PostItem extends StatelessWidget {
 
   final ts = Get.find<ServiceTheme>();
   final tag = getTag();
+  final infoService = Get.find<InformationService>();
 
   @override
   Widget build(BuildContext context) {

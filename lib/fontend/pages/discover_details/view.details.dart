@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/models/post.model.dart';
@@ -20,8 +21,78 @@ class DiscoverDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.setPostModel(item);
     return Scaffold(
       // extendBodyBehindAppBar: true,
+      bottomNavigationBar: InkWell(
+        onTap: () {
+          controller.onCommentPressed(item);
+        },
+        child: Container(
+          margin: EdgeInsets.only(bottom: 40),
+          width: Get.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 0),
+                width: 50,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("10"),
+                    Icon(CupertinoIcons.eyeglasses),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                width: 50,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("10"),
+                    Icon(CupertinoIcons.eye),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 0),
+                width: 50,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.0),
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 1, color: Colors.black.withOpacity(.0))
+                    ]),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("10"),
+                    Icon(CupertinoIcons.chat_bubble),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ts.fg.value,

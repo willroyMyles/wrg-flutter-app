@@ -8,6 +8,7 @@ class InformationService extends GetxController {
   RxMap<dynamic, dynamic> watching = {}.obs;
   RxMap<dynamic, dynamic> feed = {}.obs;
   RxBool isSignedIn = false.obs;
+  RxBool isFabVisible = false.obs;
 
   clearAll() {
     conversations.clear();
@@ -21,6 +22,11 @@ class InformationService extends GetxController {
     watching.refresh();
     feed.refresh();
     refresh();
+  }
+
+  updateFab(bool val) {
+    isFabVisible.value = val;
+    isFabVisible.refresh();
   }
 
   setIsSIgnedIn(bool value) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
+import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/item.post.dart';
 import 'package:wrg2/fontend/pages/discover/state.discover.dart';
@@ -16,40 +18,48 @@ class _DiscoverState extends State<Discover>
     with AutomaticKeepAliveClientMixin {
   final ts = Get.find<ServiceTheme>();
   final DiscoverState controller = Get.put(DiscoverState());
+  final infoService = Get.find<InformationService>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetBuilder<DiscoverState>(
         init: controller,
-        builder: (state) => CustomScrollView(
-          slivers: [
-            if (controller.status.isSuccess)
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  ...controller.map.values
-                      .map(
-                        (e) => PostItem(item: e),
-                      )
-                      .toList()
-                ]),
-              ),
-            if (controller.status.isEmpty)
-              SliverFillRemaining(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {
-                      controller.getMorePosts();
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(20),
-                        color: Colors.white,
-                        child: Text("Nothing to see here")),
-                  ),
+        builder: (state) => VisibilityDetector(
+          key: ValueKey("fab vis"),
+          onVisibilityChanged: (info) {
+            var val = info.visibleFraction > .5;
+            infoService.updateFab(val);
+          },
+          child: CustomScrollView(
+            slivers: [
+              if (controller.status.isSuccess)
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    ...controller.map.values
+                        .map(
+                          (e) => PostItem(item: e),
+                        )
+                        .toList()
+                  ]),
                 ),
-              )
-          ],
+              if (controller.status.isEmpty)
+                SliverFillRemaining(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      onTap: () {
+                        controller.getMorePosts();
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          color: Colors.white,
+                          child: Text("Nothing to see here")),
+                    ),
+                  ),
+                )
+            ],
+          ),
         ),
       ),
     );

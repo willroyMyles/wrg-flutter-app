@@ -25,13 +25,15 @@ class CommentModel {
     this.username = '',
   });
 
+  factory CommentModel.empty() => CommentModel();
+
   Map<String, dynamic> toMap() {
     return {
       'content': content,
-      'id': id,
+      // 'id': id,
       'isOffer': isOffer,
       'postId': postId,
-      'createdAt': createdAt,
+      // 'createdAt': createdAt,
       'userId': userId,
       'userImageUrl': userImageUrl,
       'username': username,

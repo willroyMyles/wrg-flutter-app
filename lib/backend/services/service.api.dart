@@ -53,8 +53,20 @@ class APIService extends GetxController {
     return _apiInterface.getWatchingPosts();
   }
 
-  getComments(String id) {
-    return _apiInterface.getCommentsForPost(id);
+  Future<List<CommentModel>> getComments(String id) async {
+    List<dynamic> res = await _apiInterface.getCommentsForPost(id);
+    List<CommentModel> models = [];
+    try {
+      for (var item in res) {
+        CommentModel model = CommentModel.fromMap(item);
+        models.add(model);
+      }
+
+      return Future.value(models);
+    } catch (e) {
+      print(e);
+      return Future.value(models);
+    }
   }
 
   modifyWatched(PostModel post, {bool add = true}) {

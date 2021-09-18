@@ -16,6 +16,8 @@ class HomePageView extends StatelessWidget {
   final col = Colors.green;
   @override
   Widget build(BuildContext context) {
+    infoService.updateFab(true);
+
     return Stack(
       children: [
         GetMaterialApp(
@@ -88,8 +90,8 @@ class HomePageView extends StatelessWidget {
         ),
         Obx(
           () => AnimatedPositioned(
-            duration: Duration(milliseconds: 250),
-            bottom: controller.currentIndex.value == 1 ? 30 : -50,
+            duration: Duration(milliseconds: 150),
+            bottom: infoService.isFabVisible.value ? 30 : -50,
             right: 20,
             child: Material(
               child: InkWell(
@@ -97,10 +99,10 @@ class HomePageView extends StatelessWidget {
                   Get.to(() => CreatePost());
                 },
                 child: AnimatedContainer(
-                  height: controller.currentIndex.value == 1 ? 50 : 0,
+                  height: infoService.isFabVisible.value ? 50 : 0,
                   width: 50,
                   alignment: Alignment.center,
-                  duration: Duration(milliseconds: 250),
+                  duration: Duration(milliseconds: 150),
                   decoration: BoxDecoration(
                       color: col,
                       borderRadius: BorderRadius.circular(50),

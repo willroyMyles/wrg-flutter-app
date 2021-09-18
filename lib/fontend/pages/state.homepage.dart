@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/discover/view.discover.dart';
@@ -12,6 +13,7 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   PageController pc = PageController(initialPage: 0, keepPage: true);
   RxInt currentIndex = 0.obs;
   Widget currentPanelWidget = Container();
+  final infoService = Get.find<InformationService>();
 
   TabController tabController;
   AnimationController animationController;
@@ -35,6 +37,7 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
 
   void setCurrentIndex(int value) {
     currentIndex.value = value;
+    // infoService.updateFab(value == 1);
     refresh();
   }
 
