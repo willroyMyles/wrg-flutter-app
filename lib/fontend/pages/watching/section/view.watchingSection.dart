@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
+import 'package:wrg2/backend/services/service.helper.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/imageForCategory.dart';
+import 'package:wrg2/fontend/components/item.watching.dart';
+import 'package:wrg2/fontend/pages/watching/section/view.wtchingList.dart';
 
 class WatchingSection extends StatelessWidget {
   final InformationService informationService = Get.find();
@@ -23,88 +26,66 @@ class WatchingSection extends StatelessWidget {
   }
 
   Widget buildList() {
+    var length = informationService.watching.length;
+    List<String> tags = [];
+
     return SliverPadding(
-      padding: EdgeInsets.only(left: 12, right: 12, bottom: 40),
-      sliver: SliverGrid(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            PostModel element =
-                informationService.watching.values.elementAt(index);
-            return Container(
-              height: 180,
-              decoration: BoxDecoration(
-                  color: ts.fg.value,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(blurRadius: 3, color: ts.bg.value.darker())
-                  ]),
-              child: Stack(
-                children: [
-                  Positioned(
-                    bottom: 2,
-                    right: 7,
-                    child: Opacity(
-                      opacity: .5,
-                      child: Container(
-                        child: ImageForCategory(
-                          item: element,
-                        ),
+        padding: EdgeInsets.only(left: 12, right: 12, bottom: 40),
+        sliver: SliverToBoxAdapter(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(Get.context).push(PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return WatchingListView(tags: tags, anim: animation);
+                },
+                transitionDuration: Duration(milliseconds: 650),
+                reverseTransitionDuration: Duration(milliseconds: 650),
+              ));
+            },
+            child: Container(
+                height: 300,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      alignment: Alignment.centerLeft,
+                      child: Text.rich(TextSpan(children: [
+                        TextSpan(text: "your watching "),
+                        TextSpan(
+                            text: "$length",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                                fontSize: 20)),
+                        TextSpan(text: " posts"),
+                      ])),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(top: 80),
+                        itemCount: length,
+                        itemBuilder: (context, index) {
+                          PostModel element = informationService.watching.values
+                              .elementAt(index);
+                          tags.add(getTag());
+                          return Align(
+                            heightFactor: .1,
+                            child: Hero(
+                              tag: tags.elementAt(index),
+                              child: WatchingItem(
+                                element: element,
+                                index: index,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 180,
-                    padding: EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  width: Get.width / 4,
-                                  child: Text(element.title).h1()),
-                              Container(
-                                  width: Get.width / 7.4,
-                                  child: Text("").hdate(element.createdAt)),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Row(
-                            children: [Text("some icons here")],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(element.make).h1(),
-                              Text(element.model).h1(),
-                              Text(element.year.toString()).h1(),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-          childCount: informationService.watching.length,
-        ),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 1),
-      ),
-    );
+                  ],
+                )),
+          ),
+        ));
   }
 
   Widget buildEmpty() {

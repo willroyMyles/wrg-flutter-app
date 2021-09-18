@@ -84,4 +84,8 @@ class APIService extends GetxController {
   addMessageToConversation(ConversationModel model) {
     return _apiInterface.addMessageToConversation(model);
   }
+
+  incrimentView(String id) {
+    return _apiInterface.incrimentView(id);
+  }
 }

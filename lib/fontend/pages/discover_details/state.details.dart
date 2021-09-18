@@ -21,8 +21,18 @@ class FeedDetailsState extends GetxController with StateMixin {
     configure();
   }
 
-  void setPostModel(PostModel model) {
+  void setPostModel(PostModel model) async {
     currentPostModel = model;
+    try {
+      var res = await service.incrimentView(currentPostModel.id);
+      if (res) {
+        model.views += 1;
+        infoService.feed.update(model.id, (value) => model);
+        refresh();
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void configure() {
