@@ -85,6 +85,10 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
 
       var res = await create(commentUrl, input.toMap());
       if (acceptable(res.statusCode)) {
+        PostModel p = _informationService.feed.values
+            .firstWhere((element) => element.id == input.postId);
+        p.commentss += 1;
+        _informationService.feed.update(p.id, (value) => p);
         return Future.value(true);
       }
       return Future.value(false);
@@ -122,6 +126,8 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       var res = await dio.post("$baseUrl$userinfo/watching", data: mw.toMap());
       if (acceptable(res.statusCode)) {
         _informationService.modifyWatching(post, add: add);
+        post.watching += add ? 1 : -1;
+        _informationService.feed.update(post.id, (value) => post);
         return Future.value(true);
       }
       return Future.value(false);
@@ -131,7 +137,21 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
     }
   }
 
-  createConversation(ConversationModel conversation, PostModel post) {}
+  createConversation(ConversationModel conversation, PostModel post) async {
+    try {
+      conversation.senderId = userInfo.value.userId;
+      conversation.recieverId = post.userInfoId;
+      conversation.postId = post.id;
+      var mm = conversation.messages.first;
+      mm.sender = userInfo.value.userId;
+      conversation.messages.clear();
+      conversation.messages.add(mm);
+
+      var ans = await create(convoUrl, conversation.toMap());
+    } catch (e) {
+      print(e);
+    }
+  }
 
   getConversations() {}
 
@@ -145,6 +165,8 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       userInfo.refresh();
       _informationService.setIsSIgnedIn(true);
       _informationService.setWatching(userInfo.value.watching);
+      _informationService.setConversation(
+          [...userInfo.value.incomings, ...userInfo.value.outgoings]);
       print(userInfo.value.email);
     } on DioError catch (e) {
       print(e);

@@ -15,6 +15,8 @@ class PostModel {
   String model = "";
   int year = 0;
   int views = 0;
+  int watching = 0;
+  int commentss = 0;
   DateTime createdAt;
   String userInfoId;
   UserInfoModel userInfo;
@@ -28,6 +30,8 @@ class PostModel {
     this.model = '',
     this.year = 0,
     this.views = 0,
+    this.watching = 0,
+    this.commentss = 0,
     this.createdAt,
     this.userInfoId = '',
     this.userInfo,
@@ -44,6 +48,8 @@ class PostModel {
       'year': year,
       'views': views,
       'userInfoId': userInfoId,
+      'watching': watching,
+      'commentss': commentss
       // 'createdAt': createdAt.millisecondsSinceEpoch,
       // 'userInfo': userInfo.toMap(),
     };
@@ -62,6 +68,8 @@ class PostModel {
       model: map['model'],
       year: map['year'],
       views: map['views'],
+      commentss: map['commentss'],
+      watching: map['watching'],
       createdAt: DateTime.tryParse(map['createdAt']),
       userInfoId: map['userInfoId'],
       userInfo: UserInfoModel.fromMap(map['UserInfo']),
@@ -80,6 +88,8 @@ class PostModel {
       model: map['model'],
       year: map['year'],
       views: map['views'],
+      commentss: map['commentss'],
+      watching: map['watching'],
       createdAt: cat,
     );
 
@@ -147,6 +157,8 @@ class PostModel {
     String model,
     int year,
     int views,
+    int commentss,
+    int watching,
     DateTime createdAt,
     String userInfoId,
     UserInfoModel userInfo,
@@ -163,6 +175,8 @@ class PostModel {
       createdAt: createdAt ?? this.createdAt,
       userInfoId: userInfoId ?? this.userInfoId,
       userInfo: userInfo ?? this.userInfo,
+      commentss: commentss ?? this.commentss,
+      watching: watching ?? this.watching,
     );
   }
 }

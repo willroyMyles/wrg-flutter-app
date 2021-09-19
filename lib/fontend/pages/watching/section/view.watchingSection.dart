@@ -63,19 +63,26 @@ class WatchingSection extends StatelessWidget {
                     Expanded(
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(top: 80),
+                        padding: EdgeInsets.only(top: 130),
                         itemCount: length,
+                        // reverse: false,
                         itemBuilder: (context, index) {
+                          var idx = length - 1 - index;
                           PostModel element = informationService.watching.values
-                              .elementAt(index);
+                              .toList()
+                              // .reversed
+                              .elementAt(idx);
                           tags.add(getTag());
-                          return Align(
-                            heightFactor: .1,
-                            child: Hero(
-                              tag: tags.elementAt(index),
-                              child: WatchingItem(
-                                element: element,
-                                index: index,
+                          return Transform.translate(
+                            offset: Offset(-10.0 * index, -10.0 * index),
+                            child: Align(
+                              heightFactor: .0001,
+                              child: Hero(
+                                tag: tags.elementAt(index),
+                                child: WatchingItem(
+                                  element: element,
+                                  // index: index,
+                                ),
                               ),
                             ),
                           );

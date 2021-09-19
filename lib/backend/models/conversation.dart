@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/post.model.dart';
@@ -17,6 +18,10 @@ class ConversationModel {
   PostModel post;
   String newMessage;
   String id;
+  String recieverId;
+  String senderId;
+  String commentId;
+  String postId;
 
   bool hasNewMessageForMe() {
     final APIService ser = Get.find();
@@ -49,41 +54,48 @@ class ConversationModel {
   ConversationModel({
     this.reciever,
     this.sender,
-    this.messages = const [],
+    this.messages,
     this.locked = false,
     this.comment,
     this.post,
     this.newMessage = '',
     this.id = '',
+    this.recieverId,
+    this.senderId,
   });
 
-  factory ConversationModel.empty() => ConversationModel();
+  factory ConversationModel.empty() => ConversationModel(messages: []);
 
   Map<String, dynamic> toMap() {
     return {
-      'reciever': reciever.toMap(),
-      'sender': sender.toMap(),
-      'messages': messages.map((x) => x.toMap())?.toList(),
+      // 'reciever': reciever.toMap(),
+      // 'sender': sender.toMap(),
+      'messages': messages?.map((x) => x.toMap())?.toList(),
       'locked': locked,
-      'comment': comment.toMap(),
-      'post': post?.toMap(),
-      'newMessage': newMessage,
-      'id': id,
+      // 'comment': comment.toMap(),
+      // 'post': post.toMap(),
+      // 'newMessage': newMessage,
+      // 'id': id,
+      'recieverId': recieverId,
+      'senderId': senderId,
+      'commentId': commentId,
+      'postId': postId
     };
   }
 
   factory ConversationModel.fromMap(Map<String, dynamic> map) {
     return ConversationModel(
-      reciever: UserInfoModel.fromMap(map['reciever']) ?? UserInfoModel(),
-      sender: UserInfoModel.fromMap(map['sender']) ?? UserInfoModel(),
-      messages: List<MessagesModel>.from(map['messages']
-              ?.map((x) => MessagesModel.fromMap(x) ?? MessagesModel()) ??
-          const []),
-      locked: map['locked'] ?? false,
-      comment: CommentModel.fromMap(map['comment']) ?? CommentModel(),
-      // post: PostModel.fromMap(map['post']) ?? PostModel(),
-      newMessage: map['newMessage'] ?? '',
-      id: map['id'] ?? '',
+      reciever: UserInfoModel.fromMap(map['reciever']),
+      sender: UserInfoModel.fromMap(map['sender']),
+      messages: List<MessagesModel>.from(
+          map['messages']?.map((x) => MessagesModel.fromMap(x))),
+      locked: map['locked'],
+      // comment: CommentModel.fromMap(map['comment']),
+      // post: PostModel.fromMap(map['post']),
+      newMessage: map['newMessage'],
+      id: map['id'],
+      recieverId: map['recieverId'],
+      senderId: map['senderId'],
     );
   }
 
@@ -94,7 +106,7 @@ class ConversationModel {
 
   @override
   String toString() {
-    return 'ConversationModel(reciever: $reciever, sender: $sender, messages: $messages, locked: $locked, comment: $comment, post: $post, newMessage: $newMessage, id: $id)';
+    return 'ConversationModel(reciever: $reciever, sender: $sender, messages: $messages, locked: $locked, comment: $comment, post: $post, newMessage: $newMessage, id: $id, recieverId: $recieverId, senderId: $senderId)';
   }
 
   @override
@@ -109,9 +121,22 @@ class ConversationModel {
         other.comment == comment &&
         other.post == post &&
         other.newMessage == newMessage &&
-        other.id == id;
+        other.id == id &&
+        other.recieverId == recieverId &&
+        other.senderId == senderId;
   }
 
   @override
-  int get hashCode => super.hashCode;
+  int get hashCode {
+    return reciever.hashCode ^
+        sender.hashCode ^
+        messages.hashCode ^
+        locked.hashCode ^
+        comment.hashCode ^
+        post.hashCode ^
+        newMessage.hashCode ^
+        id.hashCode ^
+        recieverId.hashCode ^
+        senderId.hashCode;
+  }
 }

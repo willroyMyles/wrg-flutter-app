@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/text.extension.dart';
@@ -5,16 +7,17 @@ import 'package:wrg2/backend/services/service.theme.dart';
 import 'color.extension.dart';
 
 extension TFF on TextFormField {
-  input({String label = ""}) {
+  Widget input({String label = ""}) {
     ServiceTheme ts = Get.find<ServiceTheme>();
     var bc = ts.bg.value.darker();
+    var lineHeight = 2.0;
 
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 3),
+            padding: const EdgeInsets.only(left: 3, bottom: 7),
             child: Text(label).hint(),
           ),
           TextFormField(
@@ -26,22 +29,36 @@ extension TFF on TextFormField {
             decoration: InputDecoration(
                 fillColor: ts.bg.value.lighter().withOpacity(.4),
                 filled: true,
-                focusedBorder: OutlineInputBorder(
+                // labelText: this.labelText,
+                focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: bc,
-                  width: 1.6,
+                  width: lineHeight,
                 )),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: bc,
-                  width: 1.6,
+                  width: lineHeight,
                 )),
-                border: OutlineInputBorder(
+                border: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: bc.withOpacity(.1),
-                  width: 1,
+                  width: lineHeight,
                 ))),
           ),
+          Container(
+            height: 1,
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(.3))
+                ],
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Colors.green.shade100, Colors.green.shade800],
+                    stops: [Random().nextDouble(), Random().nextDouble()])),
+          )
         ],
       ),
     );

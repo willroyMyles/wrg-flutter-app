@@ -5,7 +5,6 @@ import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/avatar.dart';
 import 'package:wrg2/fontend/pages/comment/state.comment.dart';
-import 'package:wrg2/fontend/pages/comment/view.comment.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/fontend/pages/discover_details/state.details.dart';
 
@@ -16,7 +15,6 @@ class DiscoverDetails extends StatelessWidget {
   DiscoverDetails({Key key, this.item, this.tag}) : super(key: key);
 
   final ts = Get.find<ServiceTheme>();
-  // final commentController = Get.put(CommentState());
   final controller = Get.put(FeedDetailsState());
 
   @override
@@ -48,7 +46,7 @@ class DiscoverDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("10"),
+                      Text("${item.watching}"),
                       Icon(CupertinoIcons.eyeglasses),
                     ],
                   ),
@@ -86,7 +84,7 @@ class DiscoverDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("10"),
+                      Text("${item.commentss}"),
                       Icon(CupertinoIcons.chat_bubble),
                     ],
                   ),

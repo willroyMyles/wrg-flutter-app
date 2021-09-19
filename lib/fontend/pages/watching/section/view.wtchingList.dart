@@ -115,8 +115,10 @@ class WatchingListView extends StatelessWidget {
                   mainAxisSpacing: 5),
               itemCount: informationService.watching.values.length,
               itemBuilder: (context, index) {
-                var element =
-                    informationService.watching.values.elementAt(index);
+                var element = informationService.watching.values
+                    .toList()
+                    .reversed
+                    .elementAt(index);
                 return Align(
                   child: Hero(
                     tag: tags.elementAt(index),

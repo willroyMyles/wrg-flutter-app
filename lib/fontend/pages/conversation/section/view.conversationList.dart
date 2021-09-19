@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/conversation/state.conversation.dart';
+import 'package:wrg2/fontend/pages/conversation/view.conversation.dart';
 
 class ConversationList extends StatelessWidget {
   final cs = Get.find<ConversationState>();
@@ -49,71 +50,84 @@ class ConversationList extends StatelessWidget {
                                   color: ts.bg.value.darker())
                             ],
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Image.network(
-                                    e.getOthersUserInfo().userImageUrl),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        child: Row(
-                                      children: [
-                                        Container(
-                                            width: Get.width / 3,
-                                            child:
-                                                Text(e.getOthersName()).h1()),
-                                        // Text("").hdate(e.messages.last.)
-                                      ],
-                                    )),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(e.messages.last.content).h2()
-                                  ],
-                                ),
-                              ),
-                              Spacer(),
-                              if (e.hasNewMessageForMe())
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(() => ConversationView(
+                                    item: e,
+                                  ));
+                            },
+                            child: Row(
+                              children: [
                                 Container(
-                                  width: 10,
-                                  height: 10,
-                                  // child: Icon(
-                                  //   Icons.fiber_new_outlined,
-                                  //   color: Colors.white,
-                                  // ).linearGradientMask(
-                                  //     [ts.pc.shade300, ts.pc.shade800]),
-                                  alignment: Alignment.center,
-                                  // child: Text("!").h1(),
+                                  height: 40,
+                                  width: 40,
+                                  clipBehavior: Clip.antiAlias,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 4,
-                                          offset: Offset(2, 4),
-                                          color: Colors.black12),
-                                      BoxShadow(
-                                          blurRadius: 0,
-                                          offset: Offset(0, 0),
-                                          color: ts.pc)
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Image.network(
+                                      e.getOthersUserInfo().userImageUrl),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          child: Column(
+                                        children: [
+                                          Container(
+                                              width: Get.width / 3,
+                                              child:
+                                                  Text(e.getOthersName()).h1()),
+                                          Container(
+                                              width: Get.width / 3,
+                                              child:
+                                                  Text(e.messages.last.content)
+                                                      .h4()),
+                                          // Text("").hdate(e.messages.last.)
+                                        ],
+                                      )),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      // Text(e.messages.last.content).h2()
                                     ],
-                                    // color: Colors.amber,
-                                    borderRadius: BorderRadius.circular(50),
                                   ),
-                                ).linearGradientMask(
-                                    [ts.pc.shade100, ts.pc.shade400])
-                            ],
+                                ),
+                                Spacer(),
+                                if (e.hasNewMessageForMe())
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    // child: Icon(
+                                    //   Icons.fiber_new_outlined,
+                                    //   color: Colors.white,
+                                    // ).linearGradientMask(
+                                    //     [ts.pc.shade300, ts.pc.shade800]),
+                                    alignment: Alignment.center,
+                                    // child: Text("!").h1(),
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 4,
+                                            offset: Offset(2, 4),
+                                            color: Colors.black12),
+                                        BoxShadow(
+                                            blurRadius: 0,
+                                            offset: Offset(0, 0),
+                                            color: ts.pc)
+                                      ],
+                                      // color: Colors.amber,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  ).linearGradientMask(
+                                      [ts.pc.shade100, ts.pc.shade400])
+                              ],
+                            ),
                           ),
                         );
                       })

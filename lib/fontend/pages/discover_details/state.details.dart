@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
+import 'package:wrg2/backend/models/conversation.dart';
+import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/fontend/components/item.comment.dart';
 import 'package:wrg2/fontend/components/loading.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+import 'package:wrg2/fontend/pages/conversation/view.conversation.dart';
 
 class FeedDetailsState extends GetxController with StateMixin {
   final infoService = Get.find<InformationService>();
@@ -15,6 +19,11 @@ class FeedDetailsState extends GetxController with StateMixin {
   List<CommentModel> listOfComments = [];
   PostModel currentPostModel;
   TextEditingController input = TextEditingController();
+  TextEditingController convo = TextEditingController();
+  bool isOffer = false;
+  bool showAll = true;
+  bool isShowing = false;
+  String id = "";
   @override
   void onInit() {
     super.onInit();
@@ -45,6 +54,63 @@ class FeedDetailsState extends GetxController with StateMixin {
     service.modifyWatched(post, add: !post.isWatching());
   }
 
+  onSendMessagePressed(CommentModel item) {
+    Get.close(1);
+    Get.bottomSheet(this.obx(
+      (state) => AnimatedContainer(
+          duration: Duration(milliseconds: 350),
+          margin: EdgeInsets.only(bottom: 0),
+          padding: EdgeInsets.all(10),
+          height: 100,
+          width: Get.width,
+          decoration: BoxDecoration(color: Colors.white),
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                        width: Get.width - 100,
+                        child: TextFormField(
+                          controller: convo,
+                        ).input(label: "start conversation")),
+                    InkWell(
+                      onTap: () {
+                        sendConversation(item);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(.2))
+                              ]),
+                          child: Icon(CupertinoIcons.chat_bubble_2)),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
+    ));
+  }
+
+  onCommentItemPressed(CommentModel model) {
+    if (isShowing) {
+      id = "";
+      isShowing = false;
+    } else {
+      id = model.id;
+      isShowing = true;
+    }
+    refresh();
+  }
+
   onCommentPressed(PostModel post) {
     currentPostModel = post;
     getComments();
@@ -60,43 +126,70 @@ class FeedDetailsState extends GetxController with StateMixin {
                 builder: (context, scrollController) {
                   return GetBuilder<FeedDetailsState>(
                     init: this,
-                    builder: (controller) => CustomScrollView(
-                      physics: ClampingScrollPhysics(),
-                      controller: scrollController,
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Container(
-                            padding: EdgeInsets.all(20),
-                            alignment: Alignment.center,
-                            child: Text("Comments").h1(),
-                            color: Colors.white,
-                          ),
-                        ),
-                        if (this.status.isLoading)
-                          SliverFillRemaining(
-                            child: LoadingView(),
-                          ),
-                        if (this.status.isSuccess)
-                          SliverFillRemaining(
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return CommentItem(
-                                  item: listOfComments.elementAt(index),
-                                );
-                              },
-                              itemCount: listOfComments.length,
-                              controller: scrollController,
+                    builder: (controller) {
+                      List<CommentModel> lis = listOfComments;
+                      lis = listOfComments
+                          .where((element) => showAll ? true : element.isOffer)
+                          .toList();
+                      return CustomScrollView(
+                        physics: ClampingScrollPhysics(),
+                        controller: scrollController,
+                        slivers: [
+                          SliverAppBar(
+                            automaticallyImplyLeading: false,
+                            title: Container(
+                              padding: EdgeInsets.all(20),
+                              alignment: Alignment.center,
+                              child: Text("Comments").h1(),
+                              color: Colors.white,
                             ),
                           ),
-                        SliverToBoxAdapter(
-                          child: Container(
-                            height: 70,
-                            width: Get.width,
-                            color: Colors.white,
+                          SliverAppBar(
+                            elevation: 5,
+                            shadowColor: Colors.green.withOpacity(.2),
+                            pinned: true,
+                            floating: true,
+                            snap: true,
+                            automaticallyImplyLeading: false,
+                            // toolbarHeight: 10,
+                            title: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                children: [
+                                  ToggleSwitch(
+                                    totalSwitches: 2,
+                                    labels: ["All", "Offers"],
+                                    initialLabelIndex: showAll ? 0 : 1,
+                                    activeBgColor: [Colors.green],
+                                    onToggle: (index) {
+                                      showAll = index == 0;
+                                      refresh();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        )
-                      ],
-                    ),
+                          if (this.status.isLoading)
+                            SliverFillRemaining(
+                              child: LoadingView(),
+                            ),
+                          if (this.status.isSuccess)
+                            SliverPadding(
+                              padding: EdgeInsets.only(bottom: 100),
+                              sliver: SliverList(
+                                  delegate: SliverChildListDelegate([
+                                ...lis.map((e) {
+                                  return CommentItem(
+                                    item: e,
+                                  );
+                                })
+                              ])),
+                            ),
+                        ],
+                      );
+                    },
                   );
                 },
               ),
@@ -130,7 +223,7 @@ class FeedDetailsState extends GetxController with StateMixin {
 
   void sendComment() async {
     CommentModel model = CommentModel.empty();
-    model.isOffer = false;
+    model.isOffer = isOffer;
     model.postId = currentPostModel.id;
     model.content = input.text;
     var ans = await service.createComment(model);
@@ -148,45 +241,73 @@ class FeedDetailsState extends GetxController with StateMixin {
 
   void showInputBottomSheet() {
     Get.close(1);
-    Get.bottomSheet(Container(
-        margin: EdgeInsets.all(10),
-        height: 80,
-        width: Get.width,
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(
-                width: Get.width - 100,
-                child: TextFormField(
-                  controller: input,
-                  decoration: InputDecoration(
-                      fillColor: Colors.white.withOpacity(.9),
-                      filled: true,
-                      hasFloatingPlaceholder: false,
-                      focusColor: Colors.black,
-                      labelText: "Comment here",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(100),
-                      )),
-                )),
-            InkWell(
-              onTap: () {
-                sendComment();
-              },
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 10, color: Colors.black.withOpacity(.2))
-                      ]),
-                  child: Icon(CupertinoIcons.paperplane)),
-            )
-          ],
-        )));
+    Get.bottomSheet(this.obx(
+      (state) => AnimatedContainer(
+          duration: Duration(milliseconds: 350),
+          margin: EdgeInsets.only(bottom: 0),
+          padding: EdgeInsets.all(10),
+          height: 170,
+          width: Get.width,
+          decoration: BoxDecoration(color: Colors.white),
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                        width: Get.width - 100,
+                        child: TextFormField(
+                          controller: input,
+                        ).input()),
+                    InkWell(
+                      onTap: () {
+                        sendComment();
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(.2))
+                              ]),
+                          child: Icon(isOffer
+                              ? CupertinoIcons.paperplane_fill
+                              : CupertinoIcons.paperplane)),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: isOffer,
+                  subtitle: Text("when selected, you can make an offer").h4(),
+                  onChanged: (value) {
+                    isOffer = value;
+                    refresh();
+                  },
+                  title: Text("is offer?").h2(),
+                ),
+              )
+            ],
+          )),
+    ));
+  }
+
+  void sendConversation(CommentModel item) async {
+    try {
+      ConversationModel model = ConversationModel.empty();
+      model.commentId = item.id;
+      MessagesModel mm = MessagesModel(content: convo.text, id: "", sender: "");
+      model.messages.add(mm);
+      var res = await service.createConversation(model, currentPostModel);
+    } catch (e) {
+      print(e);
+    }
   }
 }

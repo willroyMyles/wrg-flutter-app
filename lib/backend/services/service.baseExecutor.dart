@@ -8,6 +8,7 @@ mixin BaseExecutor {
   String userinfo = "/user-info";
   String post = "/post";
   String commentUrl = "/comment";
+  String convoUrl = "/conversation";
 
   initialize() {}
 

@@ -15,7 +15,7 @@ class MessagesModel {
     return {
       'sender': sender,
       'content': content,
-      'id': id,
+      // 'id': id,
     };
   }
 
