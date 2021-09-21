@@ -8,6 +8,7 @@ import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.auth.dart';
 import 'package:wrg2/backend/services/service.information.dart';
+import 'package:wrg2/backend/services/service.slack.dart';
 import 'package:wrg2/backend/services/service.toast.dart';
 
 class ApiExecutor extends GetxController with ApiAuth {

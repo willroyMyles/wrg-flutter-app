@@ -25,7 +25,7 @@ extension BTN on FlatButton {
         child: this.child,
         textColor: ts.fgbtnt.value,
         color: ts.fgbtn.value,
-        elevation: 2,
+        elevation: 5,
         splashColor: ts.pc,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),

@@ -7,10 +7,11 @@ import 'package:wrg2/backend/services/service.theme.dart';
 import 'color.extension.dart';
 
 extension TFF on TextFormField {
-  Widget input({String label = ""}) {
+  Widget input({String label = "", int minLines = 1}) {
     ServiceTheme ts = Get.find<ServiceTheme>();
     var bc = ts.bg.value.darker();
     var lineHeight = 2.0;
+    var tff = this;
 
     return Container(
       child: Column(
@@ -23,6 +24,8 @@ extension TFF on TextFormField {
           TextFormField(
             validator: this.validator,
             controller: this.controller,
+            minLines: minLines,
+            maxLines: minLines,
             style: TextStyle(
               color: Colors.black,
             ),

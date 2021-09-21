@@ -33,10 +33,9 @@ dependencies:
   equatable:
   flutter_svg: ^0.22.0
   group_button: ^2.1.2
-  animated: ^2.0.0
   csv:
   fluttertoast: null
-  keyboard_visibility: any
+  flutter_keyboard_visibility:
   dio:
   toggle_switch: ^1.2.0
   flutter_anywhere_menus: ^0.1.2

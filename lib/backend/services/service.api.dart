@@ -5,8 +5,9 @@ import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
 import 'package:wrg2/backend/services/service.httpExecutor.dart';
+import 'package:wrg2/backend/services/service.slack.dart';
 
-class APIService extends GetxController {
+class APIService extends GetxController with SlackExecutor {
   final _apiInterface = Get.put(HttpExecutor());
   HttpExecutor get interface => _apiInterface;
   Rx<UserInfoModel> get userInfo => _apiInterface.userInfo;
