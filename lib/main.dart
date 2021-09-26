@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/pages/intro/introScreen.dart';
 import 'package:wrg2/fontend/pages/view.homepage.dart';
 import './backend/extensions/ext.dart';
 
@@ -62,7 +63,8 @@ class _MyAppState extends State<MyApp> {
               title: 'Flutter Demo',
               theme: ts.currentTheme,
               home: Container(
-                child: HomePageView(),
+                // child: HomePageView(),
+                child: IntroScreen(),
                 decoration: BoxDecoration(gradient: ts.gradient),
               ));
       },

@@ -1,4 +1,4 @@
-package com.example.wrg2
+package com.myles.wrg2
 
 import io.flutter.embedding.android.FlutterActivity
 

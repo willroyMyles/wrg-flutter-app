@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wrg2">
+    package="com.myles.wrg2">
    <application
-        android:label="wrg2"
+        android:label="WRG Autoparts"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
