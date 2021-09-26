@@ -25,7 +25,9 @@ class DiscoverState extends GetxController with StateMixin {
     info.feed.listen((posts) {
       map.addAll(Map<String, PostModel>.from(posts));
       if (map.length == 0) return change("", status: RxStatus.empty());
-      return change("", status: RxStatus.success());
+      Future.delayed(Duration(milliseconds: 2250), () {
+        return change("", status: RxStatus.success());
+      });
     });
     // filter = ["all", ...Status.values.map((e) => e.toString())];
   }

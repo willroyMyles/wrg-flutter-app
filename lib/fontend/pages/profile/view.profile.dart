@@ -55,21 +55,57 @@ class ProfileView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    height: 190,
-                    width: double.infinity,
-                    decoration: BoxDecoration(color: ts.grey1, boxShadow: [
-                      BoxShadow(
-                          blurRadius: 20,
-                          color: ts.grey.withOpacity(.3),
-                          offset: Offset(-140, 3)),
-                      BoxShadow(
-                          blurRadius: 30,
-                          spreadRadius: 10,
-                          color: ts.grey.withOpacity(.3),
-                          offset: Offset(150, 13)),
-                    ]),
-                  ),
+                  if (infoService.isSignedIn.value)
+                    Container(
+                      height: 190,
+                      width: double.infinity,
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(color: ts.grey1, boxShadow: [
+                        BoxShadow(
+                            blurRadius: 20,
+                            color: ts.grey.withOpacity(.3),
+                            offset: Offset(-140, 3)),
+                        BoxShadow(
+                            blurRadius: 30,
+                            spreadRadius: 10,
+                            color: ts.grey.withOpacity(.3),
+                            offset: Offset(150, 13)),
+                      ]),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            PhysicalModel(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(100),
+                              elevation: 5,
+                              shadowColor: ts.grey1.withOpacity(1),
+                              child: CircleAvatar(
+                                backgroundImage: Image.network(
+                                        service.userInfo.value.userImageUrl)
+                                    .image,
+                                radius: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(service.userInfo.value.username),
+                                  Text("LVL1"),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   SizedBox(
                     height: 100,
                   ),

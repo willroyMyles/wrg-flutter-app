@@ -7,6 +7,7 @@ import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/item.post.dart';
+import 'package:wrg2/fontend/components/loading.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/discover/state.discover.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
@@ -25,15 +26,17 @@ class _DiscoverState extends State<Discover>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
+        // mini: true,
         onPressed: () {
           Get.to(() => CreatePost());
         },
-        child: Icon(CupertinoIcons.add_circled),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: ts.grey1,
-      ).glass(),
+        child: Icon(
+          CupertinoIcons.add_circled,
+          color: ts.white,
+        ),
+      ),
       body: GetBuilder<DiscoverState>(
         init: controller,
         builder: (state) => VisibilityDetector(
@@ -72,7 +75,9 @@ class _DiscoverState extends State<Discover>
                             child: Text("Nothing to see here")),
                       ),
                     ),
-                  )
+                  ),
+                if (controller.status.isLoading)
+                  SliverFillRemaining(child: LoadingView())
               ],
             ),
           ),

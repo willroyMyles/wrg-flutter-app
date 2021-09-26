@@ -21,16 +21,15 @@ class CommentItem extends StatelessWidget {
   Container buildComment() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: 1, vertical: 6),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(Constants.br),
         boxShadow: [
           BoxShadow(
-            blurRadius: 5,
-            offset: Offset(0, 5),
-            // color: ts.bg.value.withOpacity(1)
-          )
+              blurRadius: 2,
+              offset: Offset(0, 2),
+              color: ts.grey.withOpacity(.1))
         ],
         // border: Border.all(color: ts.bg.value, width: 0),
       ),
@@ -50,7 +49,7 @@ class CommentItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             WRGAvatar(
-                              size: 25,
+                              // size: 25,
                               imgSrc: item.userImageUrl,
                             ),
                             SizedBox(

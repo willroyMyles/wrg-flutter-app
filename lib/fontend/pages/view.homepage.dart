@@ -116,47 +116,45 @@ class HomePageView extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: 30,
+          bottom: 40,
           // right: 20,
-          child: GestureDetector(
-            onTap: () {
-              Get.to(() => CreatePost());
-            },
-            child: Builder(builder: (context) {
-              var width = 50.0;
-              var height = 50.0;
-              return Container(
-                height: height,
-                width: Get.width,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        // color: ts.grey1,
-                        borderRadius: BorderRadius.circular(50),
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //       blurRadius: 0,
-                        //       color: Colors.green,
-                        //       offset: Offset(4, 6))
-                        // ]
-                      ),
-                      child: Row(
-                        children: [
-                          buildTab(CupertinoIcons.house, 0),
-                          buildTab(CupertinoIcons.tray_full, 1),
-                          // buildTab(CupertinoIcons.add_circled, 2),
-                        ],
-                      ).glass(),
+          child: Builder(builder: (context) {
+            return Container(
+              height: 70,
+              width: Get.width,
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    clipBehavior: Clip.antiAlias,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: ts.grey1,
+                      borderRadius: BorderRadius.circular(50),
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //       blurRadius: 0,
+                      //       color: Colors.green,
+                      //       offset: Offset(4, 6))
+                      // ]
                     ),
-                  ],
-                ),
-              );
-            }),
-          ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        buildTab(CupertinoIcons.house, 0),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        buildTab(CupertinoIcons.tray_full, 1),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         )
       ],
     );
@@ -167,23 +165,23 @@ class HomePageView extends StatelessWidget {
       init: controller,
       builder: (controller) {
         var selected = i == controller.currentIndex.value;
-        return Material(
-          child: InkWell(
-            onTap: () {
-              controller.onIndexTapped(i);
-            },
-            child: Container(
-              width: 50,
-              height: 50,
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.all(5),
-              alignment: Alignment.center,
-              child: Icon(
-                data,
-                size: 33,
-                color: selected ? ts.blue : ts.grey.withOpacity(.5),
-                // color: ts.fg.value,
-              ),
+        return GestureDetector(
+          onTap: () {
+            controller.onIndexTapped(i);
+          },
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 350),
+            width: selected ? 50 : 50,
+            height: selected ? 50 : 50,
+            // margin: EdgeInsets.symmetric(horizontal: 10),
+            // padding: EdgeInsets.all(10),
+            alignment: Alignment.center,
+            child: Icon(
+              data,
+              size: 33,
+
+              color: selected ? ts.red : ts.white.withOpacity(.5),
+              // color: ts.fg.value,
             ),
           ),
         );

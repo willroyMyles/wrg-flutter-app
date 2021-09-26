@@ -54,16 +54,15 @@ extension WD on Widget {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: ts.white.withOpacity(1)),
-        // gradient: ts.fin,
-        borderRadius: BorderRadius.circular(100),
-        // boxShadow: [BoxShadow(color: ts.blue.withOpacity(.4))],
-        // color: Colors.transparent
-      ),
+          border: Border.all(width: 2, color: ts.white.withOpacity(1)),
+          // gradient: ts.fin,
+          borderRadius: BorderRadius.circular(100),
+          // boxShadow: [BoxShadow(color: ts.blue.withOpacity(.4))],
+          color: ts.grey1.withOpacity(0)),
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: 10,
-          sigmaY: 10,
+          sigmaX: 5,
+          sigmaY: 5,
         ),
         child: this,
       ),

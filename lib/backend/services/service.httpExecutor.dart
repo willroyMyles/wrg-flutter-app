@@ -155,7 +155,11 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
     }
   }
 
-  getConversations() {}
+  getConversations() async {
+    try {
+      // var res = await dio.post(path);
+    } catch (e) {}
+  }
 
   addMessageToConversation(ConversationModel model, MessagesModel msg) async {
     try {

@@ -135,13 +135,17 @@ class FeedDetailsState extends GetxController with StateMixin {
                         controller: scrollController,
                         slivers: [
                           SliverAppBar(
-                            backgroundColor: Colors.transparent,
+                            backgroundColor: ts.grey1,
                             automaticallyImplyLeading: false,
+                            toolbarHeight: 50,
                             title: Container(
-                              padding: EdgeInsets.all(20),
                               alignment: Alignment.center,
-                              child: Text("Comments").h2(),
-                              color: Colors.white,
+                              child: Text(
+                                "Comments",
+                                style: TextStyle(
+                                    color: ts.white,
+                                    backgroundColor: Colors.transparent),
+                              ),
                             ),
                           ),
                           SliverAppBar(
@@ -208,15 +212,13 @@ class FeedDetailsState extends GetxController with StateMixin {
                       color: ts.lightTheme.primaryColor,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ts.grey1,
                         borderRadius: BorderRadius.circular(100),
                         boxShadow: [
                           BoxShadow(
                               offset: Offset(5, 5),
                               blurRadius: 10,
-                              color: ts.lightTheme.primaryColor
-                                  .lighter()
-                                  .withOpacity(.3))
+                              color: ts.grey.withOpacity(.9))
                         ]),
                   ),
                 ),
@@ -233,6 +235,10 @@ class FeedDetailsState extends GetxController with StateMixin {
     model.postId = currentPostModel.id;
     model.content = input.text;
     var ans = await service.createComment(model);
+    input.clear();
+    if (Get.isDialogOpen) {
+      Get.close(1);
+    }
   }
 
   void getComments() async {
@@ -273,17 +279,15 @@ class FeedDetailsState extends GetxController with StateMixin {
                       },
                       child: Container(
                           padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.only(top: 10),
+                          margin: EdgeInsets.only(top: 20),
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: ts.grey1,
                               borderRadius: BorderRadius.circular(100),
                               boxShadow: [
                                 BoxShadow(
                                     offset: Offset(5, 5),
                                     blurRadius: 10,
-                                    color: ts.lightTheme.primaryColor
-                                        .lighter()
-                                        .withOpacity(.2))
+                                    color: ts.grey.withOpacity(.9))
                               ]),
                           child: Icon(
                             isOffer
@@ -304,7 +308,10 @@ class FeedDetailsState extends GetxController with StateMixin {
                     isOffer = value;
                     refresh();
                   },
-                  title: Text("is offer?").h2(),
+                  title: Text(
+                    "is offer?",
+                    style: TextStyle(color: ts.grey1),
+                  ),
                 ),
               )
             ],

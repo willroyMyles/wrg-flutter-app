@@ -71,13 +71,13 @@ class WatchingItem extends StatelessWidget {
                   ),
                   Container(
                     child: Transform.scale(
-                      scale: .0,
+                      scale: 0,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 0),
-                            width: 50,
+                            width: 45,
                             height: 50,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
