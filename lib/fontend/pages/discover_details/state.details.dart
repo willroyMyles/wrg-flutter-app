@@ -10,7 +10,6 @@ import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/fontend/components/item.comment.dart';
 import 'package:wrg2/fontend/components/loading.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:wrg2/fontend/pages/conversation/view.conversation.dart';
 
 class FeedDetailsState extends GetxController with StateMixin {
@@ -136,11 +135,12 @@ class FeedDetailsState extends GetxController with StateMixin {
                         controller: scrollController,
                         slivers: [
                           SliverAppBar(
+                            backgroundColor: Colors.transparent,
                             automaticallyImplyLeading: false,
                             title: Container(
                               padding: EdgeInsets.all(20),
                               alignment: Alignment.center,
-                              child: Text("Comments").h1(),
+                              child: Text("Comments").h2(),
                               color: Colors.white,
                             ),
                           ),
@@ -151,22 +151,22 @@ class FeedDetailsState extends GetxController with StateMixin {
                             floating: true,
                             snap: true,
                             automaticallyImplyLeading: false,
-                            // toolbarHeight: 10,
+                            toolbarHeight: 2,
                             title: Container(
                               alignment: Alignment.center,
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Column(
                                 children: [
-                                  ToggleSwitch(
-                                    totalSwitches: 2,
-                                    labels: ["All", "Offers"],
-                                    initialLabelIndex: showAll ? 0 : 1,
-                                    activeBgColor: [Colors.green],
-                                    onToggle: (index) {
-                                      showAll = index == 0;
-                                      refresh();
-                                    },
-                                  ),
+                                  // ToggleSwitch(
+                                  //   totalSwitches: 2,
+                                  //   labels: ["All", "Offers"],
+                                  //   initialLabelIndex: showAll ? 0 : 1,
+                                  //   activeBgColor: [Colors.green],
+                                  //   onToggle: (index) {
+                                  //     showAll = index == 0;
+                                  //     refresh();
+                                  //   },
+                                  // ),
                                 ],
                               ),
                             ),
@@ -203,14 +203,20 @@ class FeedDetailsState extends GetxController with StateMixin {
                   child: Container(
                     width: 60,
                     height: 60,
-                    child: Icon(CupertinoIcons.chat_bubble),
+                    child: Icon(
+                      CupertinoIcons.chat_bubble_2_fill,
+                      color: ts.lightTheme.primaryColor,
+                    ),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(100),
                         boxShadow: [
                           BoxShadow(
+                              offset: Offset(5, 5),
                               blurRadius: 10,
-                              color: Colors.black.withOpacity(.2))
+                              color: ts.lightTheme.primaryColor
+                                  .lighter()
+                                  .withOpacity(.3))
                         ]),
                   ),
                 ),
@@ -267,17 +273,24 @@ class FeedDetailsState extends GetxController with StateMixin {
                       },
                       child: Container(
                           padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.only(top: 10),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(100),
                               boxShadow: [
                                 BoxShadow(
+                                    offset: Offset(5, 5),
                                     blurRadius: 10,
-                                    color: Colors.black.withOpacity(.2))
+                                    color: ts.lightTheme.primaryColor
+                                        .lighter()
+                                        .withOpacity(.2))
                               ]),
-                          child: Icon(isOffer
-                              ? CupertinoIcons.paperplane_fill
-                              : CupertinoIcons.paperplane)),
+                          child: Icon(
+                            isOffer
+                                ? CupertinoIcons.paperplane_fill
+                                : CupertinoIcons.paperplane,
+                            color: ts.lightTheme.primaryColor,
+                          )),
                     )
                   ],
                 ),

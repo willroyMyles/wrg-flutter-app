@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
+import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
@@ -82,11 +83,15 @@ class APIService extends GetxController with SlackExecutor {
     return _apiInterface.getConversations();
   }
 
-  addMessageToConversation(ConversationModel model) {
-    return _apiInterface.addMessageToConversation(model);
+  addMessageToConversation(ConversationModel model, MessagesModel msg) {
+    return _apiInterface.addMessageToConversation(model, msg);
   }
 
   incrimentView(String id) {
     return _apiInterface.incrimentView(id);
+  }
+
+  getMessages(String id) {
+    return _apiInterface.getMessages(id);
   }
 }

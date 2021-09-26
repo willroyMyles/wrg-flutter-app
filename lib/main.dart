@@ -58,12 +58,12 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         else
-          return MaterialApp(
+          return GetMaterialApp(
               title: 'Flutter Demo',
-              theme: ts.currentTheme.value,
+              theme: ts.currentTheme,
               home: Container(
                 child: HomePageView(),
-                decoration: BoxDecoration(gradient: ts.gradient.value),
+                decoration: BoxDecoration(gradient: ts.gradient),
               ));
       },
     );

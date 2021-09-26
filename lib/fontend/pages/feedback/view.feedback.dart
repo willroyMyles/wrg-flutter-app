@@ -29,7 +29,9 @@ class FeedbackView extends StatelessWidget {
             ),
             FlatButton(
                 onPressed: () {
-                  controller.sendMessage();
+                  controller.cal.crazy();
+                  var p = controller.sendMessage.runtimeType;
+                  print(p);
                 },
                 child: Text(
                   "send feedback",

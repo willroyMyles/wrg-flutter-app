@@ -9,7 +9,7 @@ import 'color.extension.dart';
 extension TFF on TextFormField {
   Widget input({String label = "", int minLines = 1}) {
     ServiceTheme ts = Get.find<ServiceTheme>();
-    var bc = ts.bg.value.darker();
+    var bc = Colors.grey;
     var lineHeight = 2.0;
     var tff = this;
 
@@ -30,7 +30,7 @@ extension TFF on TextFormField {
               color: Colors.black,
             ),
             decoration: InputDecoration(
-                fillColor: ts.bg.value.lighter().withOpacity(.4),
+                // fillColor: ts.bg.value.lighter().withOpacity(.4),
                 filled: true,
                 // labelText: this.labelText,
                 focusedBorder: UnderlineInputBorder(
@@ -59,8 +59,15 @@ extension TFF on TextFormField {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Colors.green.shade100, Colors.green.shade800],
-                    stops: [Random().nextDouble(), Random().nextDouble()])),
+                    // colors: [Colors.green.shade100, Colors.green.shade800],
+                    colors: [
+                      ts.lightTheme.primaryColor.lighter().lighter(),
+                      ts.lightTheme.primaryColor.darker().darker()
+                    ],
+                    stops: [
+                      Random().nextDouble(),
+                      Random().nextDouble()
+                    ])),
           )
         ],
       ),

@@ -17,10 +17,11 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
 
   TabController tabController;
   AnimationController animationController;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool panelDraggable = false;
 
-  List<Widget> views = [Personal(), Discover(), ProfileView()];
+  List<Widget> views = [Personal(), Discover()];
 
   List<Icon> icons = [
     Icon(Icons.gps_fixed_rounded),
@@ -29,10 +30,11 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   ];
 
   onIndexTapped(int index) {
-    pc.jumpToPage(
-      index,
-    );
+    pc.animateToPage(index,
+        duration: Duration(milliseconds: 120), curve: Curves.easeInOutCubic);
+
     setCurrentIndex(index);
+    refresh();
   }
 
   void setCurrentIndex(int value) {
@@ -70,7 +72,7 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: views.length, vsync: this);
     animationController = AnimationController(vsync: this);
   }
 

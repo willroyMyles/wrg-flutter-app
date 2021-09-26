@@ -5,6 +5,7 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
+import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/modifyWatching.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
@@ -68,6 +69,7 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       input.userInfoId = userInfo.value.userId;
       var info = await create(post, input.toMap());
       if (acceptable(info.statusCode)) {
+        input.userInfo = userInfo.value;
         _informationService.addToFeed(input);
         return Future.value(true);
       }
@@ -155,7 +157,18 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
 
   getConversations() {}
 
-  addMessageToConversation(ConversationModel model) {}
+  addMessageToConversation(ConversationModel model, MessagesModel msg) async {
+    try {
+      var res =
+          await dio.post("$baseUrl$messageUrl/${model.id}", data: msg.toMap());
+      if (acceptable(res.statusCode)) {
+        return Future.value(true);
+      }
+      return Future.value(false);
+    } catch (e) {
+      return Future.value(false);
+    }
+  }
 
   void getUserInfo(User user) async {
     try {
@@ -201,6 +214,24 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       var res = await dio.patch("$baseUrl$post/view/$id");
       if (acceptable(res.statusCode)) return Future.value(true);
       return Future.value(false);
+    } catch (e) {
+      return Future.value(false);
+    }
+  }
+
+  getMessages(String id) async {
+    try {
+      var res = await dio.get("$baseUrl$convoUrl/$id");
+      if (acceptable(res.statusCode)) {
+        ConversationModel model = _informationService.conversations[id];
+        List<MessagesModel> list = [];
+        for (var msg in res.data["messages"]) {
+          var message = MessagesModel.fromMap(msg);
+          list.add(message);
+        }
+        model.messages = list;
+        _informationService.updateConversation(model);
+      }
     } catch (e) {
       return Future.value(false);
     }

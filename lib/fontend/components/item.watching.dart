@@ -29,9 +29,11 @@ class WatchingItem extends StatelessWidget {
         width: 200,
         // constraints: BoxConstraints(maxHeight: 180, maxWidth: 200),
         decoration: BoxDecoration(
-            color: ts.fg.value,
+            color: ts.white,
             borderRadius: BorderRadius.circular(5),
-            boxShadow: [BoxShadow(blurRadius: 3, color: ts.bg.value.darker())]),
+            boxShadow: [
+              BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
+            ]),
         child: Stack(
           children: [
             Positioned(

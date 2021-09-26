@@ -37,8 +37,7 @@ dependencies:
   fluttertoast: null
   flutter_keyboard_visibility:
   dio:
-  toggle_switch: ^1.2.0
-  flutter_anywhere_menus: ^0.1.2
+  progress_state_button: ^1.0.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

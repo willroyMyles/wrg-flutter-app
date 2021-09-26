@@ -19,60 +19,69 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: tag,
+    return GestureDetector(
+      onTapDown: (details) {
+        print(details);
+      },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: EdgeInsets.all(12),
-        clipBehavior: Clip.none,
-        decoration: BoxDecoration(
-            color: ts.fg.value, borderRadius: BorderRadius.circular(4)),
-        child: InkWell(
-          onTap: () {
-            Get.to(() => DiscoverDetails(item: item, tag: tag));
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: Get.width * .6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
+        ], color: ts.white, borderRadius: BorderRadius.circular(4)),
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.all(12),
+              child: InkWell(
+                onTap: () {
+                  Get.to(() => DiscoverDetails(item: item, tag: tag));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(item.title).h1(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      item.content,
-                      overflow: TextOverflow.fade,
-                      maxLines: 2,
-                    ).h2(),
-                    SizedBox(
-                      height: 20,
-                    ),
                     Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      width: Get.width * .6,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.make).h3(),
-                          Text(item.model).h3(),
-                          Text(item.year.toString()).h3(),
+                          Text(item.title).h1(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            item.content,
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                          ).h2(),
+                          SizedBox(
+                            height: 70,
+                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(item.make).h3(),
+                                Text(item.model).h3(),
+                                Text(item.year.toString()).h3(),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    )
+                    ),
+                    Container(
+                      width: Get.width * .2,
+                      clipBehavior: Clip.none,
+                      child: ImageForCategory(
+                        item: item,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Container(
-                width: Get.width * .2,
-                clipBehavior: Clip.none,
-                child: ImageForCategory(
-                  item: item,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 import 'package:wrg2/backend/enums/enum.tags.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
@@ -119,7 +120,7 @@ class CreatePost extends StatelessWidget {
                                               },
                                             ),
                                           ),
-                                        ).background(),
+                                        ),
                                         barrierColor:
                                             Colors.black.withOpacity(.4),
                                         useRootNavigator: false);
@@ -185,18 +186,38 @@ class CreatePost extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.only(top: 10),
-                    child: FlatButton(
-                            onPressed: () {
-                              cps.onSubmit();
-                            },
-                            color: ts.fg.value,
-                            child: Text("submit"))
-                        .primary(),
+                    child: ProgressButton(
+                      maxWidth: Get.width / 2,
+                      radius: 5.0,
+                      stateWidgets: {
+                        ButtonState.idle: Text(
+                          "submit",
+                          textScaleFactor: 1,
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w700),
+                        ),
+                        ButtonState.loading: Container(),
+                        ButtonState.success: Text("success"),
+                        ButtonState.fail: Text("Oops"),
+                      },
+                      stateColors: cps.submitButton.stateColors,
+                      onPressed: () {
+                        cps.onSubmit();
+                      },
+                      state: cps.submitButton.buttonState,
+                    ),
+                    // child: FlatButton(
+                    //         onPressed: () {
+                    //           cps.onSubmit();
+                    //         },
+                    //         color: ts.fg.value,
+                    //         child: Text("submit"))
+                    //     .primary(),
                   )
                 ],
               ),
             ),
           ),
-        )).background();
+        ));
   }
 }

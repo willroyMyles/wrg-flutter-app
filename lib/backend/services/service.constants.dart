@@ -83,7 +83,7 @@ Widget loadingSvg({withText = true}) => Container(
               child: LinearProgressIndicator(
                 backgroundColor: Colors.transparent,
                 valueColor: AlwaysStoppedAnimation(
-                  ts.bg.value,
+                  Colors.white,
                 ),
               ),
             )

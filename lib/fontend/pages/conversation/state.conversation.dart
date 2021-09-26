@@ -32,13 +32,21 @@ class ConversationState extends GetxController with StateMixin {
     });
   }
 
-  void sendMessage(ConversationModel model) {
+  void updateConversation(String id) async {
+    var res = await service.getMessages(id);
+  }
+
+  void sendMessage(ConversationModel model) async {
     if (textControler.text != "") {
       var msg = MessagesModel();
       msg.content = textControler.text;
       msg.sender = service.userInfo.value.id;
-      model.messages.add(msg);
-      service.addMessageToConversation(model);
+      var ans = await service.addMessageToConversation(model, msg);
+      if (ans) {
+        model.messages.add(msg);
+        infoServcie.conversations.update(model.id, (value) => model);
+        refresh();
+      } else {}
       textControler.text = "";
       dialog.closeDialog();
     }

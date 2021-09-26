@@ -19,18 +19,21 @@ class ConversationSection extends StatelessWidget {
           padding: EdgeInsets.all(30),
           margin: EdgeInsets.symmetric(vertical: 30, horizontal: 15),
           decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(7)),
+              color: ts.white, borderRadius: BorderRadius.circular(7)),
           child: Text("No Conversations As Yet...").hunch(),
         );
       if (controller.status.isSuccess)
         return Container(
-            width: Get.width,
+            width: Get.width / 2,
             height: 150,
             padding: EdgeInsets.all(12),
-            margin: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
+            margin: EdgeInsets.only(left: 22, right: 22, top: 20, bottom: 20),
             decoration: BoxDecoration(
-              color: ts.fg.value,
+              color: ts.white,
+              border: Border.all(width: 1, color: ts.grey.withOpacity(0)),
+              boxShadow: [
+                BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.1))
+              ],
               borderRadius: BorderRadius.circular(4),
             ),
             child: Container(
@@ -45,13 +48,13 @@ class ConversationSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(controller.map.values
-                                      .takeWhile(
-                                          (value) => value.hasNewMessageForMe())
-                                      .length
-                                      .toString() +
-                                  " New Messages")
-                              .h2(),
+                          // Text(controller.map.values
+                          //             .takeWhile(
+                          //                 (value) => value.hasNewMessageForMe())
+                          //             .length
+                          //             .toString() +
+                          //         " New Messages")
+                          //     .h2(),
                           SizedBox(
                             height: 3,
                           ),
@@ -61,7 +64,7 @@ class ConversationSection extends StatelessWidget {
                                     Get.to(() => ConversationList());
                                   },
                                   child: Text("view conversations"))
-                              .primary()
+                              .secondary()
                         ],
                       ),
                     ),

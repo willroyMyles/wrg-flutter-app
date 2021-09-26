@@ -9,7 +9,7 @@ extension BTN on FlatButton {
     return RaisedButton(
         onPressed: this.onPressed,
         child: this.child,
-        color: ts.fg.value,
+        // color: ts.fg.value,
         elevation: 2,
         splashColor: Colors.red,
         shape: RoundedRectangleBorder(
@@ -23,10 +23,10 @@ extension BTN on FlatButton {
     return RaisedButton(
         onPressed: this.onPressed,
         child: this.child,
-        textColor: ts.fgbtnt.value,
-        color: ts.fgbtn.value,
+        // textColor: ts.fgbtnt.value,
+        // color: ts.fgbtn.value,
         elevation: 5,
-        splashColor: ts.pc,
+        // splashColor: ts.pc,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
           // side: BorderSide(color: ts.pc, width: 10)
@@ -38,13 +38,12 @@ extension BTN on FlatButton {
     return RaisedButton(
         onPressed: this.onPressed,
         child: this.child,
-        textColor: ts.fgt.value,
-        color: ts.bg.value.darker(),
+        // textColor: ts.fgt.value,
+        color: Colors.transparent,
         elevation: 0,
-        splashColor: ts.pc,
+        // splashColor: ts.pc,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(3),
-            side:
-                BorderSide(color: ts.fgbtn.value.withOpacity(.9), width: 1.5)));
+            side: BorderSide(width: 1.5)));
   }
 }

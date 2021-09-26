@@ -6,6 +6,7 @@ import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.carData.dart';
 import 'package:wrg2/fontend/components/cat-sub.dart';
+import 'package:wrg2/fontend/components/helper%20widgets/progressButton.dart';
 import 'package:wrg2/fontend/components/make-model.dart';
 
 class CreatePostState extends GetxController with StateMixin {
@@ -15,6 +16,7 @@ class CreatePostState extends GetxController with StateMixin {
   // ignore: non_constant_identifier_names
   List<dynamic> sub_catList = [];
   int make = 0;
+  var submitButton = PBM();
 
   final service = Get.find<APIService>();
 
@@ -32,6 +34,9 @@ class CreatePostState extends GetxController with StateMixin {
     var val = formKey.currentState.validate();
     if (!val) return;
 
+    submitButton.setButtonStateLoading();
+    refresh();
+
     var input = PostModel(
       title: crtls["title"].text,
       content: crtls["content"].text,
@@ -46,9 +51,11 @@ class CreatePostState extends GetxController with StateMixin {
     var ans = await service.createPost(input);
     if (ans) {
       Get.snackbar("success", "post created");
+      submitButton.setButtonStateSuccess(callback: refresh);
       clearInputs();
     } else {
       Get.snackbar("Opps", "Post wasnt created");
+      submitButton.setButtonStateFailed(callback: refresh);
     }
   }
 
@@ -58,10 +65,12 @@ class CreatePostState extends GetxController with StateMixin {
       context: Get.context,
       isDismissible: true,
       isScrollControlled: true,
-      barrierColor: ts.fgt.value,
+      // barrierColor: ts.fgt.value,
       builder: (context) {
-        return MakeList(
-          callback: (value) => setMake,
+        return AlertDialog(
+          content: MakeList(
+            callback: (value) => setMake,
+          ),
         );
       },
     );
@@ -70,11 +79,13 @@ class CreatePostState extends GetxController with StateMixin {
       context: Get.context,
       isDismissible: true,
       isScrollControlled: true,
-      barrierColor: ts.fgt.value,
+      // barrierColor: ts.fgt.value,
       builder: (context) {
-        return ModelList(
-          callback: (value) => setModel,
-          idx: make,
+        return AlertDialog(
+          content: ModelList(
+            callback: (value) => setModel,
+            idx: make,
+          ),
         );
       },
     );
@@ -86,7 +97,7 @@ class CreatePostState extends GetxController with StateMixin {
       context: Get.context,
       isDismissible: true,
       isScrollControlled: true,
-      barrierColor: ts.fgt.value,
+      // barrierColor: ts.fgt.value,
       builder: (context) {
         return CatSubView();
       },

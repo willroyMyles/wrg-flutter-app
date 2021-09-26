@@ -96,56 +96,59 @@ class DiscoverDetails extends StatelessWidget {
       ),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ts.fg.value,
+        backgroundColor: ts.white,
         centerTitle: true,
         title: Text(
           item.title,
           maxLines: 1,
           overflow: TextOverflow.fade,
-          style: TextStyle(color: ts.fgt.value),
+          style: TextStyle(color: ts.grey2),
         ),
       ),
       body: Container(
         child: Column(
           children: [
-            Container(
-              // margin: EdgeInsets.only(top: 100),
-              padding: EdgeInsets.all(18),
-              color: ts.fg.value,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 0,
-                  ),
-                  Divider(),
-                  Text(item.content).h1(),
-                  Divider(),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(item.make).h3(),
-                        Text(item.model).h3(),
-                        Text(item.year.toString()).h3(),
-                      ],
+            Hero(
+              tag: tag,
+              child: Container(
+                // margin: EdgeInsets.only(top: 100),
+                padding: EdgeInsets.all(18),
+                color: ts.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 0,
                     ),
-                  ),
-                  Text(item.category).h3(),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      children: [
-                        WRGAvatar(
-                          size: 25,
-                          imgSrc: item.userInfo.userImageUrl,
-                        ),
-                        Text(item.userInfo.username).h2(),
-                      ],
+                    Divider(),
+                    Text(item.content).h1(),
+                    Divider(),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(item.make).h3(),
+                          Text(item.model).h3(),
+                          Text(item.year.toString()).h3(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Text(item.category).h3(),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Row(
+                        children: [
+                          WRGAvatar(
+                            size: 25,
+                            imgSrc: item.userInfo.userImageUrl,
+                          ),
+                          Text(item.userInfo.username).h2(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             GetBuilder(
@@ -161,7 +164,7 @@ class DiscoverDetails extends StatelessWidget {
                       },
                       child:
                           Text(item.isWatching() ? "stop watching" : "watch"),
-                      color: ts.fg.value,
+                      // color: ts.fg.value,
                     ).secondary(),
                     // FlatButton(
                     //   onPressed: () {},

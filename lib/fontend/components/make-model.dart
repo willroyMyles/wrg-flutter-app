@@ -45,14 +45,14 @@ class MakeList extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                     decoration: BoxDecoration(
-                        color: ts.fg.value,
+                        // color: ts.fg.value,
                         borderRadius: BorderRadius.circular(4),
-                        border:
-                            Border.all(width: 1, color: ts.bg.value.darker()),
+                        // border:
+                        // Border.all(width: 1, color: ts.bg.value.darker()),
                         boxShadow: [
                           BoxShadow(
                               blurRadius: 3,
-                              color: ts.fgt.value.withOpacity(.05),
+                              // color: ts.fgt.value.withOpacity(.05),
                               offset: Offset(1, 3))
                         ]),
                     child: Hero(
@@ -98,13 +98,16 @@ class ModelList extends StatelessWidget {
             height: Get.height / 2,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-                color: ts.bg.value,
+                // color: ts.bg.value,
                 borderRadius: BorderRadius.circular(3),
-                border: Border.all(width: 1, color: ts.bg.value.darker()),
+                border: Border.all(
+                  width: 1,
+                  //  color: ts.bg.value.darker()
+                ),
                 boxShadow: [
                   BoxShadow(
                       blurRadius: 14,
-                      color: ts.fgt.value.withOpacity(.3),
+                      // color: ts.fgt.value.withOpacity(.3),
                       offset: Offset(1, 3))
                 ]),
             child: Column(
@@ -133,14 +136,15 @@ class ModelList extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 12),
                               decoration: BoxDecoration(
-                                  color: ts.fg.value,
+                                  // color: ts.fg.value,
                                   borderRadius: BorderRadius.circular(4),
                                   border: Border.all(
-                                      width: 1, color: ts.bg.value.darker()),
+                                      // width: 1, color: ts.bg.value.darker()
+                                      ),
                                   boxShadow: [
                                     BoxShadow(
                                         blurRadius: 3,
-                                        color: ts.fgt.value.withOpacity(.05),
+                                        // color: ts.fgt.value.withOpacity(.05),
                                         offset: Offset(1, 3))
                                   ]),
                               child: Text(list.elementAt(index).toString())

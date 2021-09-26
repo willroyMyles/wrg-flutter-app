@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_anywhere_menus/flutter_anywhere_menus.dart';
 import 'package:get/get.dart';
-import 'package:group_button/group_button.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/avatar.dart';
-import 'package:wrg2/fontend/pages/comment/state.comment.dart';
 import 'package:wrg2/fontend/pages/discover_details/state.details.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 
@@ -30,11 +27,12 @@ class CommentItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(Constants.br),
         boxShadow: [
           BoxShadow(
-              blurRadius: 5,
-              offset: Offset(0, 5),
-              color: ts.bg.value.withOpacity(1))
+            blurRadius: 5,
+            offset: Offset(0, 5),
+            // color: ts.bg.value.withOpacity(1)
+          )
         ],
-        border: Border.all(color: ts.bg.value, width: 0),
+        // border: Border.all(color: ts.bg.value, width: 0),
       ),
       child: Column(
         children: [

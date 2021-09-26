@@ -11,4 +11,9 @@ class ProfileState extends GetxController with StateMixin {
   void sendMessage() {
     api.sendSlackMessage(textEditingController.text);
   }
+
+  dynamic cal() {
+    print("cal");
+    return 5;
+  }
 }

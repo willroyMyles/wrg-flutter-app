@@ -14,135 +14,148 @@ class ProfileView extends StatelessWidget {
   final service = Get.find<APIService>();
   final ts = Get.find<ServiceTheme>();
   final controller = Get.put(ProfileState());
+
+  var navKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-        stream: infoService.isSignedIn.stream,
-        builder: (context, snapshot) {
-          return Scaffold(
-            body: CustomScrollView(
-              slivers: [
-                if (infoService.isSignedIn.value)
-                  SliverAppBar(
-                    title: Row(
-                      children: [
-                        Text("hello ").h3(),
-                        Text(service.userInfo.value.username).h2(),
-                      ],
-                    ),
-                  ),
-                SliverPadding(padding: EdgeInsets.all(100)),
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: FlatButton(
-                            onPressed: () {
-                              if (infoService.isSignedIn.value)
-                                service.logout();
-                              else
-                                Get.to(() => LoginView());
-                            },
-                            child: Text(infoService.isSignedIn.value
-                                ? "already logged in\n tap to log out "
-                                : "tap to login"))
-                        .primary(),
-                  ),
+    return Container(
+      margin: EdgeInsets.only(
+          top: Get.mediaQuery.viewPadding.top + 10, left: 8, bottom: 120),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: Colors.white),
+      child: StreamBuilder<Object>(
+          stream: infoService.isSignedIn.stream,
+          builder: (context, snapshot) {
+            var child =
+                infoService.isSignedIn.value ? buildTrue() : buildFalse();
+
+            return MaterialApp(
+              navigatorKey: navKey,
+              theme: ts.currentTheme,
+              home: Material(
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 350),
+                  child: child,
                 ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: FlatButton(
-                            onPressed: () {
-                              Get.dialog(
-                                  Dialog(
-                                    child: SingleChildScrollView(
-                                        child: FeedbackView()),
-                                    backgroundColor:
-                                        Colors.white.withOpacity(.2),
-                                    insetPadding: EdgeInsets.all(15),
-                                  ),
-
-                                  // KeyboardVisibilityBuilder(
-                                  //   builder: (context, v) => AnimatedContainer(
-                                  //     duration: Duration(milliseconds: 350),
-                                  //     padding: EdgeInsets.only(top: 10),
-                                  //     alignment: v
-                                  //         ? Alignment.topCenter
-                                  //         : Alignment.center,
-                                  //     child: FeedbackView(),
-                                  //   ),
-                                  // ),
-                                  // barrierColor: Colors.red,
-                                  barrierDismissible: true,
-                                  useSafeArea: true);
-                            },
-                            child: Text("leave feedback"))
-                        .secondary(),
-                  ),
-                )
-              ],
-            ),
-          );
-
-          return Scaffold(
-            body: infoService.isSignedIn.value ? buildTrue() : buildFalse(),
-          ).background();
-        });
+              ),
+            );
+          }),
+    );
   }
 
   Widget buildTrue() {
     return Container(
-        padding: EdgeInsets.all(12),
-        margin: EdgeInsets.only(top: 45),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
+      // color: Colors.red,
+      child: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Text(
-                      service.userInfo.value.username
-                          .split(" ")
-                          .first
-                          .toString(),
-                    ).humungous(),
+                    height: 190,
+                    width: double.infinity,
+                    decoration: BoxDecoration(color: ts.grey1, boxShadow: [
+                      BoxShadow(
+                          blurRadius: 20,
+                          color: ts.grey.withOpacity(.3),
+                          offset: Offset(-140, 3)),
+                      BoxShadow(
+                          blurRadius: 30,
+                          spreadRadius: 10,
+                          color: ts.grey.withOpacity(.3),
+                          offset: Offset(150, 13)),
+                    ]),
+                  ),
+                  SizedBox(
+                    height: 100,
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 1),
-                    child: Text(service.userInfo.value.username
-                            .split(" ")
-                            .last
-                            .toString())
-                        .humungousThin(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FlatButton(
+                                onPressed: () {
+                                  service.logout();
+                                },
+                                child: Text("log out "))
+                            .secondary(),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        FlatButton(
+                                onPressed: () {
+                                  Navigator.of(navKey.currentContext)
+                                      .push(MaterialPageRoute(
+                                    builder: (context) {
+                                      return FeedbackView();
+                                    },
+                                  ));
+                                },
+                                child: Text("feedback"))
+                            .secondary(),
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
-            FlatButton(
-                    onPressed: () {
-                      service.logout();
-                    },
-                    child: Text("already logged in\n tap to log out "))
-                .primary(),
-            SizedBox()
-          ],
-        ));
+          ),
+          Container(),
+        ],
+      ),
+    );
   }
 
   Widget buildFalse() {
     return Container(
+      key: ValueKey("false"),
       alignment: Alignment.center,
-      child: FlatButton(
-        child: Text("tap to login"),
-        onPressed: () {
-          Get.to(() => LoginView());
-        },
-      ).primary(),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FlatButton(
+                    onPressed: () {
+                      Navigator.of(navKey.currentContext)
+                          .push(MaterialPageRoute(
+                        builder: (context) {
+                          return LoginView();
+                        },
+                      ));
+                    },
+                    child: Text("log in"))
+                .secondary(),
+            SizedBox(
+              width: 20,
+            ),
+            FlatButton(
+                    onPressed: () {
+                      Navigator.of(navKey.currentContext)
+                          .push(MaterialPageRoute(
+                        builder: (context) {
+                          return FeedbackView();
+                        },
+                      ));
+
+                      return;
+                      Get.dialog(
+                          Dialog(
+                            child: SingleChildScrollView(child: FeedbackView()),
+                            backgroundColor: Colors.white.withOpacity(.2),
+                            insetPadding: EdgeInsets.all(15),
+                          ),
+                          barrierDismissible: true,
+                          useSafeArea: true);
+                    },
+                    child: Text("feedback"))
+                .secondary(),
+          ],
+        ),
+      ),
     );
   }
 }
