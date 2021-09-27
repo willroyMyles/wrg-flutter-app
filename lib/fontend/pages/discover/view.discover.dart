@@ -29,6 +29,7 @@ class _DiscoverState extends State<Discover>
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         // mini: true,
+        heroTag: "detail view fab",
         onPressed: () {
           Get.to(() => CreatePost());
         },
