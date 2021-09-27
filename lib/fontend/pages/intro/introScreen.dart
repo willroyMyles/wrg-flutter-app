@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/text.extension.dart';
+import 'package:wrg2/backend/services/service.preferences.dart';
 import 'package:wrg2/fontend/pages/intro/state.infoScreen.dart';
 
 class IntroScreen extends StatelessWidget {

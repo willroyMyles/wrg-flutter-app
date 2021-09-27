@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
+import 'package:wrg2/backend/services/service.preferences.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/intro/introScreen.dart';
 import 'package:wrg2/fontend/pages/view.homepage.dart';
@@ -21,9 +22,12 @@ class _MyAppState extends State<MyApp> {
   ServiceTheme ts;
   Widget home;
   bool building = true;
+  PreferenceService pref;
 
   Future<bool> configure() async {
     await Firebase.initializeApp();
+    pref = Get.put(PreferenceService());
+    await pref.configure();
     Get.put(DialogService());
     ts = Get.put(ServiceTheme());
     Get.put(APIService());
@@ -59,14 +63,18 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         else
-          return GetMaterialApp(
-              title: 'Flutter Demo',
-              theme: ts.currentTheme,
-              home: Container(
-                // child: HomePageView(),
-                child: IntroScreen(),
-                decoration: BoxDecoration(gradient: ts.gradient),
-              ));
+          return Builder(builder: (context) {
+            bool firstStart = pref.getPref(pref.preferences.firstStart);
+
+            return GetMaterialApp(
+                title: 'Flutter Demo',
+                theme: ts.currentTheme,
+                home: Container(
+                  // child: HomePageView(),
+                  child: !firstStart ? IntroScreen() : HomePageView(),
+                  decoration: BoxDecoration(gradient: ts.gradient),
+                ));
+          });
       },
     );
   }

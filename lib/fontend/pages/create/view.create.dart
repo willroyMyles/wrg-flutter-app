@@ -107,10 +107,11 @@ class CreatePost extends StatelessWidget {
                                           width: Get.width,
                                           alignment: Alignment.center,
                                           child: Material(
+                                            color: ts.grey1,
                                             child: YearPicker(
                                               firstDate: DateTime.now()
-                                                  .subtract(Duration(
-                                                      days: 365 * 100)),
+                                                  .subtract(
+                                                      Duration(days: 365 * 50)),
                                               lastDate: DateTime.now()
                                                   .add(Duration(days: 365 * 2)),
                                               selectedDate: DateTime.now(),
@@ -118,6 +119,8 @@ class CreatePost extends StatelessWidget {
                                                 cps.setYear(value);
                                                 Get.close(1);
                                               },
+                                              currentDate: DateTime.now(),
+                                              initialDate: DateTime.now(),
                                             ),
                                           ),
                                         ),

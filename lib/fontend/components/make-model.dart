@@ -15,13 +15,75 @@ class MakeModelView extends StatelessWidget {
 
 class MakeList extends StatelessWidget {
   final ValueSetter callback;
-  MakeList({Key key, this.callback}) : super(key: key);
+  MakeList({Key key, this.callback, this.scroll}) : super(key: key);
 
   final cs = Get.find<CreatePostState>();
   final ts = Get.find<ServiceTheme>();
+  final scroll;
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      color: ts.white,
+      child: CustomScrollView(
+        controller: scroll,
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            title: Text("select make"),
+            centerTitle: false,
+            backgroundColor: ts.grey1,
+            pinned: true,
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ...cs.carsList.map((e) {
+                    return InkWell(
+                      onTap: () {
+                        var idx = cs.carsList.indexOf(e);
+                        cs.setMake(idx);
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 60,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: ts.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(width: 2, color: ts.grey),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 10,
+                                  color: ts.grey.withOpacity(.13))
+                            ]),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 33, vertical: 10),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              e.elementAt(0),
+                              style: TextStyle(
+                                  color: ts.grey1,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  })
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
     return DraggableScrollableSheet(
       initialChildSize: .8,
       minChildSize: .4,
@@ -83,11 +145,80 @@ class ModelList extends StatelessWidget {
 
   final String tag;
   final int idx;
+  final scroll;
 
-  ModelList({Key key, this.tag, this.idx, this.callback}) : super(key: key);
+  ModelList({Key key, this.tag, this.idx, this.callback, this.scroll})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      color: ts.white,
+      child: CustomScrollView(
+        controller: scroll,
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            title: Text("select model"),
+            centerTitle: false,
+            backgroundColor: ts.grey1,
+            pinned: true,
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              child: Builder(builder: (
+                context,
+              ) {
+                var list = cs.carsList.elementAt(idx);
+
+                return Wrap(
+                  children: [
+                    ...list.map((e) {
+                      return InkWell(
+                        onTap: () {
+                          var index = list.indexOf(e);
+                          cs.setMakeAndModel(idx, index);
+                          Get.close(1);
+                        },
+                        child: Container(
+                          height: 60,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: ts.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(width: 2, color: ts.grey),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 10,
+                                    color: ts.grey.withOpacity(.13))
+                              ]),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 33, vertical: 10),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                e.toString(),
+                                style: TextStyle(
+                                    color: ts.grey1,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    })
+                  ],
+                );
+              }),
+            ),
+          )
+        ],
+      ),
+    );
     return Container(
       alignment: Alignment.center,
       child: Scaffold(

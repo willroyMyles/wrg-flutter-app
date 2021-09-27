@@ -15,7 +15,7 @@ class CreatePostState extends GetxController with StateMixin {
   List<List<dynamic>> carsList = [];
   // ignore: non_constant_identifier_names
   List<dynamic> sub_catList = [];
-  int make = 0;
+  int make;
   var submitButton = PBM();
 
   final service = Get.find<APIService>();
@@ -61,47 +61,78 @@ class CreatePostState extends GetxController with StateMixin {
 
   void showMake() async {
     carsList = processCars();
-    await showModalBottomSheet(
-      context: Get.context,
-      isDismissible: true,
-      isScrollControlled: true,
-      // barrierColor: ts.fgt.value,
-      builder: (context) {
-        return AlertDialog(
-          content: MakeList(
-            callback: (value) => setMake,
-          ),
-        );
-      },
+    var ans = await Get.bottomSheet(
+      BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: .9,
+            minChildSize: .4,
+            maxChildSize: .9,
+            builder: (context, scrollController) {
+              return MakeList(
+                  callback: (value) => setMake, scroll: scrollController);
+            },
+          );
+        },
+      ),
+      isScrollControlled: false,
     );
 
-    await showModalBottomSheet(
-      context: Get.context,
-      isDismissible: true,
-      isScrollControlled: true,
-      // barrierColor: ts.fgt.value,
-      builder: (context) {
-        return AlertDialog(
-          content: ModelList(
-            callback: (value) => setModel,
-            idx: make,
-          ),
-        );
-      },
+    if (make == null) return;
+
+    await Get.bottomSheet(
+      BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: .9,
+            minChildSize: .4,
+            maxChildSize: .9,
+            builder: (context, scrollController) {
+              return ModelList(
+                callback: (value) => setModel,
+                scroll: scrollController,
+                idx: make,
+              );
+            },
+          );
+        },
+      ),
+      isScrollControlled: false,
     );
   }
 
   void showCat() async {
     sub_catList = processList();
-    await showModalBottomSheet(
-      context: Get.context,
-      isDismissible: true,
-      isScrollControlled: true,
-      // barrierColor: ts.fgt.value,
-      builder: (context) {
-        return CatSubView();
-      },
+    await Get.bottomSheet(
+      BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: .9,
+            minChildSize: .4,
+            maxChildSize: .9,
+            builder: (context, scrollController) {
+              return CatSubView(scroll: scrollController);
+            },
+          );
+        },
+      ),
+      isScrollControlled: false,
     );
+    // await showModalBottomSheet(
+    //   context: Get.context,
+    //   isDismissible: true,
+    //   isScrollControlled: true,
+    //   // barrierColor: ts.fgt.value,
+    //   builder: (context) {
+    //     return CatSubView();
+    //   },
+    // );
   }
 
   void setMake(dynamic make) {
