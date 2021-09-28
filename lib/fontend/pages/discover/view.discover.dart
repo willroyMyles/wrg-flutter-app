@@ -47,39 +47,63 @@ class _DiscoverState extends State<Discover>
             infoService.updateFab(val);
           },
           child: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                if (controller.status.isSuccess)
-                  SliverPadding(
-                    padding: EdgeInsets.only(bottom: 100, top: 10),
-                    sliver: SliverList(
-                      delegate: SliverChildListDelegate([
-                        ...controller.map.values
-                            .map(
-                              (e) => PostItem(item: e),
-                            )
-                            .toList()
-                      ]),
-                    ),
-                  ),
-                if (controller.status.isEmpty)
-                  SliverFillRemaining(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () {
-                          controller.getMorePosts();
-                        },
-                        child: Container(
-                            padding: EdgeInsets.all(20),
-                            color: Colors.white,
-                            child: Text("Nothing to see here")),
+            child: RefreshIndicator(
+              backgroundColor: ts.grey1,
+              color: ts.red,
+              onRefresh: () async {
+                return controller.getMorePosts();
+              },
+              triggerMode: RefreshIndicatorTriggerMode.onEdge,
+              child: CustomScrollView(
+                slivers: [
+                  if (controller.status.isLoadingMore)
+                    SliverPadding(
+                      padding: EdgeInsets.only(bottom: 100, top: 10),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate([
+                          ...controller.map.values
+                              .map(
+                                (e) => PostItem(
+                                  item: e,
+                                  isLoading: true,
+                                ),
+                              )
+                              .toList()
+                        ]),
                       ),
                     ),
-                  ),
-                if (controller.status.isLoading)
-                  SliverFillRemaining(child: LoadingView())
-              ],
+                  if (controller.status.isSuccess)
+                    SliverPadding(
+                      padding: EdgeInsets.only(bottom: 100, top: 10),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate([
+                          ...controller.map.values
+                              .map(
+                                (e) => PostItem(item: e),
+                              )
+                              .toList()
+                        ]),
+                      ),
+                    ),
+                  if (controller.status.isEmpty)
+                    SliverFillRemaining(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          onTap: () {
+                            controller.getMorePosts();
+                          },
+                          child: Container(
+                              padding: EdgeInsets.all(20),
+                              color: Colors.white,
+                              child: Text("Nothing to see here")),
+                        ),
+                      ),
+                    ),
+                  if (controller.status.isLoading)
+                    SliverFillRemaining(child: LoadingView())
+                ],
+              ),
             ),
           ),
         ),

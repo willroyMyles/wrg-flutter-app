@@ -16,6 +16,7 @@ background with ambigious blob shapes blurred light and faded
 ### load on auto scroll - pagination
 loading for sending 
 loading for retieving
+chets?
 fliter above list with
     - MAKE
     - MODEL 

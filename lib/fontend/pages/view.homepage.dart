@@ -128,27 +128,30 @@ class HomePageView extends StatelessWidget {
                 children: [
                   Container(
                     clipBehavior: Clip.antiAlias,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    // padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: ts.grey1,
-                      borderRadius: BorderRadius.circular(50),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //       blurRadius: 0,
-                      //       color: Colors.green,
-                      //       offset: Offset(4, 6))
-                      // ]
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        buildTab(CupertinoIcons.house, 0),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        buildTab(CupertinoIcons.tray_full, 1),
-                      ],
+                        color: ts.grey1,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: -5,
+                              blurRadius: 10,
+                              color: ts.red.withOpacity(.3),
+                              offset: Offset(0, 4)),
+                          BoxShadow(
+                              blurRadius: 10,
+                              color: ts.grey1.withOpacity(.3),
+                              offset: Offset(0, 4))
+                        ]),
+                    child: Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          buildTab(CupertinoIcons.house, 0),
+                          buildTab(CupertinoIcons.tray_full, 1),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -173,7 +176,8 @@ class HomePageView extends StatelessWidget {
             duration: Duration(milliseconds: 350),
             width: selected ? 50 : 50,
             height: selected ? 50 : 50,
-            // margin: EdgeInsets.symmetric(horizontal: 10),
+            margin:
+                EdgeInsets.only(left: i == 0 ? 10 : 5, right: i == 1 ? 10 : 5),
             // padding: EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Icon(

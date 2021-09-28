@@ -1,3 +1,4 @@
+import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
@@ -10,15 +11,100 @@ import 'package:wrg2/fontend/pages/discover_details/view.details.dart';
 
 class PostItem extends StatelessWidget {
   final PostModel item;
+  final isLoading;
 
-  PostItem({Key key, this.item}) : super(key: key);
+  PostItem({Key key, this.item, this.isLoading = false}) : super(key: key);
 
   final ts = Get.find<ServiceTheme>();
   final tag = getTag();
   final infoService = Get.find<InformationService>();
+  final baseCol = Colors.grey;
+  final highCol = Colors.white;
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading)
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
+        ], color: ts.white, borderRadius: BorderRadius.circular(4)),
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.all(12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: Get.width * .6,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FadeShimmer(
+                          // fadeTheme: FadeTheme.dark,
+                          baseColor: baseCol,
+                          highlightColor: highCol,
+                          millisecondsDelay: 0,
+                          height: 15,
+                          width: 150,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FadeShimmer(
+                          // fadeTheme: FadeTheme.dark,
+                          baseColor: baseCol,
+                          highlightColor: highCol,
+                          millisecondsDelay: 100,
+                          height: 15,
+                          width: 150,
+                        ),
+                        SizedBox(
+                          height: 70,
+                        ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              FadeShimmer(
+                                // fadeTheme: FadeTheme.dark,
+                                baseColor: baseCol,
+                                highlightColor: highCol,
+                                millisecondsDelay: 170,
+                                height: 15,
+                                width: 50,
+                              ),
+                              FadeShimmer(
+                                // fadeTheme: FadeTheme.dark,
+                                baseColor: baseCol,
+                                highlightColor: highCol,
+                                millisecondsDelay: 280,
+                                height: 15,
+                                width: 50,
+                              ),
+                              FadeShimmer(
+                                // fadeTheme: FadeTheme.dark,
+                                baseColor: baseCol,
+                                highlightColor: highCol,
+                                millisecondsDelay: 390,
+                                height: 15,
+                                width: 50,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+
     return GestureDetector(
       onTapDown: (details) {
         print(details);

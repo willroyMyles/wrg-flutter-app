@@ -97,8 +97,17 @@ class ProfileView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(service.userInfo.value.username),
-                                  Text("LVL1"),
+                                  Text(
+                                    service.userInfo.value.username,
+                                    textScaleFactor: 1,
+                                    style: TextStyle(
+                                        color: ts.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text("LVL1",
+                                      textScaleFactor: .8,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.7))),
                                 ],
                               ),
                             )

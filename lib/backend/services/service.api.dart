@@ -39,7 +39,7 @@ class APIService extends GetxController with SlackExecutor {
     // return _apiInterface.getCategories();
   }
 
-  getPosts() {
+  Future<bool> getPosts() {
     return _apiInterface.getPosts();
   }
 

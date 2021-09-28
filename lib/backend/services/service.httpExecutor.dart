@@ -53,6 +53,7 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       }
       return Future.value(false);
     } catch (e) {
+      print(e);
       return Future.value(false);
     }
   }

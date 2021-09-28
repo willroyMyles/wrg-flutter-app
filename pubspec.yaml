@@ -39,6 +39,7 @@ dependencies:
   dio:
   progress_state_button: ^1.0.3
   shared_preferences:
+  fade_shimmer: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
