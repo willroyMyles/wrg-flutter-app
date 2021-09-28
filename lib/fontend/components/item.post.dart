@@ -1,8 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.helper.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
@@ -24,105 +26,18 @@ class PostItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading)
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
-        ], color: ts.white, borderRadius: BorderRadius.circular(4)),
-        child: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: Get.width * .6,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FadeShimmer(
-                          // fadeTheme: FadeTheme.dark,
-                          baseColor: baseCol,
-                          highlightColor: highCol,
-                          millisecondsDelay: 0,
-                          height: 15,
-                          width: 150,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FadeShimmer(
-                          // fadeTheme: FadeTheme.dark,
-                          baseColor: baseCol,
-                          highlightColor: highCol,
-                          millisecondsDelay: 100,
-                          height: 15,
-                          width: 150,
-                        ),
-                        SizedBox(
-                          height: 70,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FadeShimmer(
-                                // fadeTheme: FadeTheme.dark,
-                                baseColor: baseCol,
-                                highlightColor: highCol,
-                                millisecondsDelay: 170,
-                                height: 15,
-                                width: 50,
-                              ),
-                              FadeShimmer(
-                                // fadeTheme: FadeTheme.dark,
-                                baseColor: baseCol,
-                                highlightColor: highCol,
-                                millisecondsDelay: 280,
-                                height: 15,
-                                width: 50,
-                              ),
-                              FadeShimmer(
-                                // fadeTheme: FadeTheme.dark,
-                                baseColor: baseCol,
-                                highlightColor: highCol,
-                                millisecondsDelay: 390,
-                                height: 15,
-                                width: 50,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-
-    return GestureDetector(
-      onTapDown: (details) {
-        print(details);
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
-        ], color: ts.white, borderRadius: BorderRadius.circular(4)),
-        child: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              child: InkWell(
-                onTap: () {
-                  Get.to(() => DiscoverDetails(item: item, tag: tag));
-                },
+      return FadeIn(
+        duration: Constants.durationLong,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
+          ], color: ts.white, borderRadius: BorderRadius.circular(4)),
+          child: Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -131,15 +46,25 @@ class PostItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.title).h1(),
+                          FadeShimmer(
+                            // fadeTheme: FadeTheme.dark,
+                            baseColor: baseCol,
+                            highlightColor: highCol,
+                            millisecondsDelay: 0,
+                            height: 15,
+                            width: 150,
+                          ),
                           SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            item.content,
-                            overflow: TextOverflow.fade,
-                            maxLines: 2,
-                          ).h2(),
+                          FadeShimmer(
+                            // fadeTheme: FadeTheme.dark,
+                            baseColor: baseCol,
+                            highlightColor: highCol,
+                            millisecondsDelay: 100,
+                            height: 15,
+                            width: 150,
+                          ),
                           SizedBox(
                             height: 70,
                           ),
@@ -147,27 +72,111 @@ class PostItem extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(item.make).h3(),
-                                Text(item.model).h3(),
-                                Text(item.year.toString()).h3(),
+                                FadeShimmer(
+                                  // fadeTheme: FadeTheme.dark,
+                                  baseColor: baseCol,
+                                  highlightColor: highCol,
+                                  millisecondsDelay: 170,
+                                  height: 15,
+                                  width: 50,
+                                ),
+                                FadeShimmer(
+                                  // fadeTheme: FadeTheme.dark,
+                                  baseColor: baseCol,
+                                  highlightColor: highCol,
+                                  millisecondsDelay: 280,
+                                  height: 15,
+                                  width: 50,
+                                ),
+                                FadeShimmer(
+                                  // fadeTheme: FadeTheme.dark,
+                                  baseColor: baseCol,
+                                  highlightColor: highCol,
+                                  millisecondsDelay: 390,
+                                  height: 15,
+                                  width: 50,
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Container(
-                      width: Get.width * .2,
-                      clipBehavior: Clip.none,
-                      child: ImageForCategory(
-                        item: item,
-                      ),
-                    ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+      );
+
+    return FadeIn(
+      duration: Constants.durationLong,
+      child: GestureDetector(
+        onTapDown: (details) {
+          print(details);
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
+          ], color: ts.white, borderRadius: BorderRadius.circular(4)),
+          child: Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                child: InkWell(
+                  onTap: () {
+                    Get.to(() => DiscoverDetails(item: item, tag: tag));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: Get.width * .6,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.title).h1(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              item.content,
+                              overflow: TextOverflow.fade,
+                              maxLines: 2,
+                            ).h2(),
+                            SizedBox(
+                              height: 70,
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(item.make).h3(),
+                                  Text(item.model).h3(),
+                                  Text(item.year.toString()).h3(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: Get.width * .2,
+                        clipBehavior: Clip.none,
+                        child: ImageForCategory(
+                          item: item,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

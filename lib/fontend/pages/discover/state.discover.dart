@@ -42,7 +42,7 @@ class DiscoverState extends GetxController with StateMixin {
   }
 
   Future<bool> getMorePosts() async {
-    change("", status: RxStatus.loadingMore());
+    change("", status: RxStatus.loading());
     await Future.delayed(Duration(milliseconds: 6000));
     var res = await api.getPosts();
     change("", status: RxStatus.success());

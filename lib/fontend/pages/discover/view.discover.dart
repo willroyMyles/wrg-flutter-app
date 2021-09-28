@@ -56,19 +56,17 @@ class _DiscoverState extends State<Discover>
               triggerMode: RefreshIndicatorTriggerMode.onEdge,
               child: CustomScrollView(
                 slivers: [
-                  if (controller.status.isLoadingMore)
+                  if (controller.status.isLoading)
                     SliverPadding(
                       padding: EdgeInsets.only(bottom: 100, top: 10),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate([
-                          ...controller.map.values
-                              .map(
-                                (e) => PostItem(
-                                  item: e,
-                                  isLoading: true,
-                                ),
-                              )
-                              .toList()
+                          ...[1, 2, 3, 4, 5, 6].map(
+                            (e) => PostItem(
+                              item: null,
+                              isLoading: true,
+                            ).fadeInDown(multiplier: e * .5),
+                          )
                         ]),
                       ),
                     ),
@@ -100,8 +98,6 @@ class _DiscoverState extends State<Discover>
                         ),
                       ),
                     ),
-                  if (controller.status.isLoading)
-                    SliverFillRemaining(child: LoadingView())
                 ],
               ),
             ),

@@ -14,7 +14,7 @@ class DiscoverDetails extends StatelessWidget {
   final PostModel item;
   final String tag;
 
-  DiscoverDetails({Key key, this.item, this.tag}) : super(key: key);
+  DiscoverDetails({Key key, this.item, this.tag = "tag"}) : super(key: key);
 
   final ts = Get.find<ServiceTheme>();
   final controller = Get.put(FeedDetailsState());
@@ -37,77 +37,61 @@ class DiscoverDetails extends StatelessWidget {
             builder: (controller) => Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FadeInDown(
-                  from: Constants.from,
-                  duration: Constants.duration,
-                  delay: Constants.durationShort * 2,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 0),
-                    width: 50,
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("${item.watching}"),
-                        Icon(CupertinoIcons.eyeglasses),
-                      ],
-                    ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 0),
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${item.watching}"),
+                      Icon(CupertinoIcons.eyeglasses),
+                    ],
                   ),
-                ),
-                FadeInDown(
-                  from: Constants.from,
-                  duration: Constants.duration,
-                  delay: Constants.durationShort * 3,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15),
-                    width: 50,
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("${item.views}"),
-                        Icon(CupertinoIcons.eye),
-                      ],
-                    ),
+                ).fadeInDown(multiplier: 2),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${item.views}"),
+                      Icon(CupertinoIcons.eye),
+                    ],
                   ),
-                ),
-                FadeInDown(
-                  from: Constants.from,
-                  duration: Constants.duration,
-                  delay: Constants.durationShort * 4,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 0),
-                    width: 50,
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(.0),
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 1,
-                              color: Colors.black.withOpacity(.0))
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("${item.commentss}"),
-                        Icon(CupertinoIcons.chat_bubble),
-                      ],
-                    ),
+                ).fadeInDown(multiplier: 3),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 0),
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.0),
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 1, color: Colors.black.withOpacity(.0))
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${item.commentss}"),
+                      Icon(CupertinoIcons.chat_bubble),
+                    ],
                   ),
-                ),
+                ).fadeInDown(multiplier: 4),
               ],
             ),
           ),
@@ -158,11 +142,13 @@ class DiscoverDetails extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Row(
                         children: [
-                          WRGAvatar(
-                            size: 25,
-                            imgSrc: item.userInfo.userImageUrl,
-                          ),
-                          Text(item.userInfo.username).h2(),
+                          if (item.userInfo?.userImageUrl != null)
+                            WRGAvatar(
+                              size: 25,
+                              imgSrc: item.userInfo.userImageUrl,
+                            ),
+                          if (item.userInfo?.username != null)
+                            Text(item.userInfo.username).h2(),
                         ],
                       ),
                     ),

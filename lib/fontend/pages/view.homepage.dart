@@ -126,37 +126,40 @@ class HomePageView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    clipBehavior: Clip.antiAlias,
-                    // padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: ts.grey1,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: -5,
-                              blurRadius: 10,
-                              color: ts.red.withOpacity(.3),
-                              offset: Offset(0, 4)),
-                          BoxShadow(
-                              blurRadius: 10,
-                              color: ts.grey1.withOpacity(.3),
-                              offset: Offset(0, 4))
-                        ]),
+                  Hero(
+                    tag: "fab",
                     child: Container(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          buildTab(CupertinoIcons.house, 0),
-                          buildTab(CupertinoIcons.tray_full, 1),
-                        ],
+                      clipBehavior: Clip.antiAlias,
+                      // padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: ts.grey1,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: -5,
+                                blurRadius: 10,
+                                color: ts.red.withOpacity(.3),
+                                offset: Offset(0, 4)),
+                            BoxShadow(
+                                blurRadius: 10,
+                                color: ts.grey1.withOpacity(.3),
+                                offset: Offset(0, 4))
+                          ]),
+                      child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildTab(CupertinoIcons.house, 0),
+                            buildTab(CupertinoIcons.tray_full, 1),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-            );
+            ).fadeInUp(multiplier: 2);
           }),
         )
       ],
