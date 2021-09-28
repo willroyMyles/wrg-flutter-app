@@ -5,7 +5,10 @@ import 'package:wrg2/backend/services/service.theme.dart';
 
 class Constants {
   static final duration = Duration(milliseconds: 350);
+  static final durationShort = Duration(milliseconds: 150);
+  static final durationLong = Duration(milliseconds: 650);
   static final br = 6.5;
+  static final from = 50.0;
 }
 
 var ts = Get.find<ServiceTheme>();

@@ -185,7 +185,6 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       _informationService.setWatching(userInfo.value.watching);
       _informationService.setConversation(
           [...userInfo.value.incomings, ...userInfo.value.outgoings]);
-      print(userInfo.value.email);
     } on DioError catch (e) {
       print(e);
       if (e.response.statusCode == HttpStatus.notFound) {

@@ -59,7 +59,6 @@ extension TextModifier on Text {
   }
 
   Widget hdate(DateTime t) {
-    print(this.data);
     var tago = timeago.format(t);
     return Text(
       tago,
