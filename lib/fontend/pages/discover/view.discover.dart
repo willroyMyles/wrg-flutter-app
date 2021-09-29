@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
+import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/item.post.dart';
@@ -22,16 +25,24 @@ class _DiscoverState extends State<Discover>
   final ts = Get.find<ServiceTheme>();
   final DiscoverState controller = Get.put(DiscoverState());
   final infoService = Get.find<InformationService>();
+  final dialogService = Get.find<DialogService>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: Platform.isAndroid
+          ? FloatingActionButtonLocation.endFloat
+          : FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         // mini: true,
         heroTag: "detail view fab",
         onPressed: () {
-          Get.to(() => CreatePost());
+          if (infoService.isSignedIn.value)
+            Get.to(() => CreatePost());
+          else
+            dialogService.showInfo(
+                msg: "you need to be signed in to create a post",
+                tag: "detail view fab");
         },
         child: Icon(
           CupertinoIcons.add_circled,

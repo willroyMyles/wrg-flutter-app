@@ -43,10 +43,3 @@ extension ColorExtemsion on Color {
     return v.abs();
   }
 }
-
-extension Crazy on Function() {
-  crazy() {
-    print("object oh?");
-    return this();
-  }
-}

@@ -19,4 +19,14 @@ extension AnimExt on Widget {
       delay: Constants.durationShort * multiplier,
     );
   }
+
+  Widget elasticIn({multiplier = .1}) {
+    return ElasticIn(
+      // from: 100,
+
+      child: this,
+      duration: Constants.durationLong * .8,
+      delay: Constants.durationShort * multiplier,
+    );
+  }
 }

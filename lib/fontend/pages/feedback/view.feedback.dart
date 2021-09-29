@@ -37,7 +37,7 @@ class FeedbackView extends StatelessWidget {
             ),
             FlatButton(
                 onPressed: () {
-                  controller.cal.crazy();
+                  // controller.cal.crazy();
                   var p = controller.sendMessage.runtimeType;
                   print(p);
                 },

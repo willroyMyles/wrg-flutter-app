@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/text.extension.dart';
@@ -51,20 +52,17 @@ extension WD on Widget {
   }
 
   Widget glass() {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-          border: Border.all(width: 2, color: ts.white.withOpacity(1)),
-          // gradient: ts.fin,
-          borderRadius: BorderRadius.circular(100),
-          // boxShadow: [BoxShadow(color: ts.blue.withOpacity(.4))],
-          color: ts.grey1.withOpacity(0)),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: 5,
-          sigmaY: 5,
+    return FadeInUp(
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(color: ts.grey1.withOpacity(0)),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 3,
+            sigmaY: 3,
+          ),
+          child: this,
         ),
-        child: this,
       ),
     );
   }

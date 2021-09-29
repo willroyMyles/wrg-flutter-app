@@ -77,7 +77,9 @@ class FeedDetailsState extends GetxController with StateMixin {
                         ).input(label: "start conversation")),
                     InkWell(
                       onTap: () {
-                        sendConversation(item);
+                        crazy.loginguard("make a comment or Offer", () {
+                          sendConversation(item);
+                        });
                       },
                       child: Container(
                           padding: EdgeInsets.all(10),
@@ -202,7 +204,9 @@ class FeedDetailsState extends GetxController with StateMixin {
                 right: 30,
                 child: InkWell(
                   onTap: () {
-                    showInputBottomSheet();
+                    crazy.loginguard("Make a comment or offer", () {
+                      showInputBottomSheet();
+                    });
                   },
                   child: Container(
                     width: 60,

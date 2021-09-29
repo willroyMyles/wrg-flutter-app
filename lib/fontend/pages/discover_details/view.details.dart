@@ -165,7 +165,9 @@ class DiscoverDetails extends StatelessWidget {
                   children: [
                     FlatButton(
                       onPressed: () {
-                        controller.onWatchPressed(item);
+                        crazy.loginguard("watch this item", () {
+                          controller.onWatchPressed(item);
+                        });
                       },
                       child:
                           Text(item.isWatching() ? "stop watching" : "watch"),

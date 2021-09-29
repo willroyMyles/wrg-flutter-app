@@ -26,33 +26,56 @@ class _PersonalState extends State<Personal> {
             child: CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
-                SliverAppBar(
-                  toolbarHeight: 50,
-                  title: Obx(() => infoService.isSignedIn.value
-                      ? Text(
-                          "Hello ${service.userInfo.value.username}",
-                          style: TextStyle(color: ts.grey),
-                        )
-                      : Text("personal")),
-                  leading: InkWell(
-                    onTap: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Obx(
-                        () => infoService.isSignedIn.value
-                            ? CircleAvatar(
-                                backgroundImage: Image.network(
-                                        service.userInfo.value.userImageUrl)
-                                    .image,
-                                radius: 10,
+                SliverToBoxAdapter(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: Obx(
+                            () => infoService.isSignedIn.value
+                                ? CircleAvatar(
+                                    backgroundImage: Image.network(
+                                            service.userInfo.value.userImageUrl)
+                                        .image,
+                                    radius: 10,
+                                  )
+                                : Container(
+                                    height: 40,
+                                    width: 40,
+                                    margin: EdgeInsets.only(left: 20),
+                                    padding: EdgeInsets.all(0),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                        color: ts.grey1),
+                                    child: Icon(
+                                      CupertinoIcons.person_alt_circle,
+                                      color: ts.white,
+                                      size: 40,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        Obx(() => infoService.isSignedIn.value
+                            ? Text(
+                                "Hello ${service.userInfo.value.username}",
+                                style: TextStyle(color: ts.grey),
                               )
-                            : Icon(
-                                CupertinoIcons.person,
-                              ),
-                      ),
+                            : Text(
+                                "personal",
+                              ).huge()),
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            width: 50,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
