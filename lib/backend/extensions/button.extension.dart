@@ -40,7 +40,7 @@ extension BTN on FlatButton {
             side: BorderSide(color: ts.white, width: 1)));
   }
 
-  primary() {
+  Widget primary() {
     ServiceTheme ts = Get.find<ServiceTheme>();
     return RaisedButton(
         onPressed: this.onPressed,
@@ -55,7 +55,7 @@ extension BTN on FlatButton {
         ));
   }
 
-  secondary() {
+  Widget secondary() {
     ServiceTheme ts = Get.find<ServiceTheme>();
     return RaisedButton(
         onPressed: this.onPressed,

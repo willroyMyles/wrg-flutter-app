@@ -34,13 +34,16 @@ class WatchingSection extends StatelessWidget {
         sliver: SliverToBoxAdapter(
           child: GestureDetector(
             onTap: () {
-              Navigator.of(Get.context).push(PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) {
-                  return WatchingListView(tags: tags, anim: animation);
-                },
-                transitionDuration: Duration(milliseconds: 650),
-                reverseTransitionDuration: Duration(milliseconds: 650),
-              ));
+              // Navigator.of(Get.context).push(PageRouteBuilder(
+              //   pageBuilder: (context, animation, secondaryAnimation) {
+              //     return WatchingListView(tags: tags, anim: animation);
+              //   },
+              //   transitionDuration: Duration(milliseconds: 650),
+              //   reverseTransitionDuration: Duration(milliseconds: 650),
+              // ));
+              Get.to(() => WatchingListView(
+                    tags: tags,
+                  ));
             },
             child: Container(
                 height: 300,

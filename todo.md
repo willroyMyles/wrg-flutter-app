@@ -17,6 +17,7 @@ background with ambigious blob shapes blurred light and faded
 loading for sending 
 loading for retieving
 chets?
+status for an item
 fliter above list with
     - MAKE
     - MODEL 

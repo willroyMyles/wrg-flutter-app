@@ -38,11 +38,18 @@ class _PersonalState extends State<Personal> {
                           },
                           child: Obx(
                             () => infoService.isSignedIn.value
-                                ? CircleAvatar(
-                                    backgroundImage: Image.network(
-                                            service.userInfo.value.userImageUrl)
-                                        .image,
-                                    radius: 10,
+                                ? Container(
+                                    margin: EdgeInsets.only(left: 25),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(200),
+                                        color: ts.grey1),
+                                    child: CircleAvatar(
+                                      backgroundImage: Image.network(service
+                                              .userInfo.value.userImageUrl)
+                                          .image,
+                                      radius: 20,
+                                    ),
                                   )
                                 : Container(
                                     height: 40,
@@ -64,6 +71,7 @@ class _PersonalState extends State<Personal> {
                         Obx(() => infoService.isSignedIn.value
                             ? Text(
                                 "Hello ${service.userInfo.value.username}",
+                                textScaleFactor: 1,
                                 style: TextStyle(color: ts.grey),
                               )
                             : Text(

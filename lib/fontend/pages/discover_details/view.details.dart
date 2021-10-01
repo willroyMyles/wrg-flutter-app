@@ -6,6 +6,7 @@ import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/avatar.dart';
+import 'package:wrg2/fontend/components/loadingButton.dart';
 import 'package:wrg2/fontend/pages/comment/state.comment.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/fontend/pages/discover_details/state.details.dart';
@@ -156,7 +157,7 @@ class DiscoverDetails extends StatelessWidget {
                 ),
               ),
             ),
-            GetBuilder(
+            GetBuilder<FeedDetailsState>(
               init: controller,
               builder: (controller) => Container(
                 margin: EdgeInsets.symmetric(vertical: 15),

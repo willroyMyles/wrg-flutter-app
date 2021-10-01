@@ -6,10 +6,12 @@ import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/fontend/components/item.comment.dart';
 import 'package:wrg2/fontend/components/loading.dart';
-import 'package:wrg2/backend/extensions/ext.dart';
+import 'package:wrg2/backend/extensions/ext.dart' hide ts;
+import 'package:wrg2/fontend/components/loadingButton.dart';
 import 'package:wrg2/fontend/pages/conversation/view.conversation.dart';
 
 class FeedDetailsState extends GetxController with StateMixin {
@@ -22,6 +24,10 @@ class FeedDetailsState extends GetxController with StateMixin {
   bool isOffer = false;
   bool showAll = true;
   bool isShowing = false;
+
+  RxStatus sendMessageStatus = RxStatus.success();
+  RxBool send = false.obs;
+
   String id = "";
   @override
   void onInit() {
@@ -45,6 +51,10 @@ class FeedDetailsState extends GetxController with StateMixin {
 
   void configure() {
     infoService.watching.listen((watching) {
+      refresh();
+    });
+    send.listen((data) {
+      print(data);
       refresh();
     });
   }
@@ -77,8 +87,10 @@ class FeedDetailsState extends GetxController with StateMixin {
                         ).input(label: "start conversation")),
                     InkWell(
                       onTap: () {
-                        crazy.loginguard("make a comment or Offer", () {
-                          sendConversation(item);
+                        crazy.loginguard("make a comment or Offer", () async {
+                          sendMessageStatus = RxStatus.loading();
+                          await sendConversation(item);
+                          sendMessageStatus = RxStatus.success();
                         });
                       },
                       child: Container(
@@ -118,6 +130,7 @@ class FeedDetailsState extends GetxController with StateMixin {
     Get.bottomSheet(
         BottomSheet(
           onClosing: () {},
+          backgroundColor: Colors.transparent,
           builder: (context) => Stack(
             children: [
               DraggableScrollableSheet(
@@ -140,6 +153,7 @@ class FeedDetailsState extends GetxController with StateMixin {
                             backgroundColor: ts.grey1,
                             automaticallyImplyLeading: false,
                             toolbarHeight: 50,
+                            pinned: true,
                             title: Container(
                               alignment: Alignment.center,
                               child: Text(
@@ -177,9 +191,25 @@ class FeedDetailsState extends GetxController with StateMixin {
                               ),
                             ),
                           ),
+                          if (this.status.isEmpty)
+                            SliverPadding(
+                              padding: EdgeInsets.all(20),
+                              sliver: SliverFillRemaining(
+                                  child:
+                                      empty(msg: "No Comments for this post")),
+                            ),
                           if (this.status.isLoading)
-                            SliverFillRemaining(
-                              child: LoadingView(),
+                            SliverPadding(
+                              padding: EdgeInsets.only(bottom: 100),
+                              sliver: SliverList(
+                                  delegate: SliverChildListDelegate([
+                                ...[0, 1, 2, 3, 4, 5].map((e) {
+                                  return CommentItem(
+                                    item: null,
+                                    loading: true,
+                                  );
+                                })
+                              ])),
                             ),
                           if (this.status.isSuccess)
                             SliverPadding(
@@ -233,105 +263,138 @@ class FeedDetailsState extends GetxController with StateMixin {
         backgroundColor: Colors.white);
   }
 
-  void sendComment() async {
+  Future sendComment() async {
     CommentModel model = CommentModel.empty();
     model.isOffer = isOffer;
     model.postId = currentPostModel.id;
     model.content = input.text;
     var ans = await service.createComment(model);
     input.clear();
+
     if (Get.isDialogOpen) {
       Get.close(1);
     }
+
+    return Future.value(true);
   }
 
   void getComments() async {
+    change("", status: RxStatus.loading());
     try {
       var ans = await service.getComments(currentPostModel.id);
       listOfComments = ans;
       change("", status: RxStatus.success());
+      if (listOfComments.length == 0) change("", status: RxStatus.empty());
     } catch (e) {
       change("", status: RxStatus.error(e));
+      change("", status: RxStatus.empty());
     }
   }
 
   void showInputBottomSheet() {
     Get.close(1);
-    Get.bottomSheet(this.obx(
-      (state) => AnimatedContainer(
-          duration: Duration(milliseconds: 350),
-          margin: EdgeInsets.only(bottom: 0),
-          padding: EdgeInsets.all(10),
-          height: 170,
-          width: Get.width,
-          decoration: BoxDecoration(color: Colors.white),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                        width: Get.width - 100,
-                        child: TextFormField(
-                          controller: input,
-                        ).input()),
-                    InkWell(
-                      onTap: () {
-                        sendComment();
-                      },
-                      child: Container(
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.only(top: 20),
-                          decoration: BoxDecoration(
-                              color: ts.grey1,
-                              borderRadius: BorderRadius.circular(100),
-                              boxShadow: [
-                                BoxShadow(
-                                    offset: Offset(5, 5),
-                                    blurRadius: 10,
-                                    color: ts.grey.withOpacity(.9))
-                              ]),
-                          child: Icon(
-                            isOffer
-                                ? CupertinoIcons.paperplane_fill
-                                : CupertinoIcons.paperplane,
-                            color: ts.lightTheme.primaryColor,
-                          )),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: isOffer,
-                  subtitle: Text("when selected, you can make an offer").h4(),
-                  onChanged: (value) {
-                    isOffer = value;
-                    refresh();
-                  },
-                  title: Text(
-                    "is offer?",
-                    style: TextStyle(color: ts.grey1),
+    change("", status: RxStatus.success());
+
+    Get.bottomSheet(BottomSheet(
+      onClosing: () {},
+      builder: (context) {
+        return this.obx(
+          (state) => AnimatedContainer(
+              duration: Duration(milliseconds: 350),
+              margin: EdgeInsets.only(bottom: 0),
+              padding: EdgeInsets.all(10),
+              height: 190,
+              width: Get.width,
+              decoration: BoxDecoration(color: Colors.white),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                            width: Get.width - 100,
+                            child: TextFormField(
+                              controller: input,
+                            ).input()),
+                        LoadingButton(
+                            icon: CupertinoIcons.paperplane,
+                            loading: send.value,
+                            callback: () {
+                              crazy.loginguard("make a comment or Offer",
+                                  () async {
+                                send.value = true;
+                                await sendComment();
+                                send.value = false;
+                              });
+                            }),
+                        // InkWell(
+                        //   onTap: () {
+                        //     sendComment();
+                        //   },
+                        //   child: Container(
+                        //       padding: EdgeInsets.all(10),
+                        //       margin: EdgeInsets.only(top: 20),
+                        //       decoration: BoxDecoration(
+                        //           color: ts.grey1,
+                        //           borderRadius: BorderRadius.circular(100),
+                        //           boxShadow: [
+                        //             BoxShadow(
+                        //                 offset: Offset(5, 5),
+                        //                 blurRadius: 10,
+                        //                 color: ts.grey.withOpacity(.9))
+                        //           ]),
+                        //       child: Icon(
+                        //         isOffer
+                        //             ? CupertinoIcons.paperplane_fill
+                        //             : CupertinoIcons.paperplane,
+                        //         color: ts.lightTheme.primaryColor,
+                        //       )),
+                        // )
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          )),
+                  Container(
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: isOffer,
+                      activeColor: ts.grey1,
+                      checkColor: ts.grey1,
+                      selected: true,
+                      isThreeLine: true,
+                      shape: CircleBorder(
+                          side: BorderSide(color: ts.grey1, width: 5)),
+                      subtitle:
+                          Text("when selected, you can make an offer").h4(),
+                      onChanged: (value) {
+                        isOffer = value;
+                        refresh();
+                      },
+                      title: Text(
+                        "is offer?",
+                        style: TextStyle(color: ts.grey1),
+                      ),
+                    ),
+                  )
+                ],
+              )),
+        );
+      },
     ));
   }
 
-  void sendConversation(CommentModel item) async {
+  Future<bool> sendConversation(CommentModel item) async {
     try {
       ConversationModel model = ConversationModel.empty();
       model.commentId = item.id;
       MessagesModel mm = MessagesModel(content: convo.text, id: "", sender: "");
       model.messages.add(mm);
       var res = await service.createConversation(model, currentPostModel);
+      return Future.value(true);
     } catch (e) {
       print(e);
+      return Future.value(false);
     }
   }
 }

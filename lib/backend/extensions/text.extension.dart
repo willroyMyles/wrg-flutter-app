@@ -46,7 +46,8 @@ extension TextModifier on Text {
     return Text(
       this.data,
       textScaleFactor: .8,
-      style: TextStyle(fontWeight: FontWeight.w500),
+      style: TextStyle(
+          fontWeight: FontWeight.w400, color: ts.grey.withOpacity(.8)),
     );
   }
 
@@ -58,7 +59,7 @@ extension TextModifier on Text {
     );
   }
 
-  Widget hdate(DateTime t) {
+  Text hdate(DateTime t) {
     var tago = timeago.format(t);
     return Text(
       tago,
@@ -67,7 +68,7 @@ extension TextModifier on Text {
       overflow: TextOverflow.fade,
       softWrap: true,
       textAlign: TextAlign.end,
-      style: TextStyle(fontWeight: FontWeight.w700),
+      style: TextStyle(fontWeight: FontWeight.w500, color: ts.grey),
     );
   }
 

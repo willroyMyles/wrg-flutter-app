@@ -34,6 +34,10 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       building = false;
     });
+
+    // Get.config(defaultTransition: Transition.fadeIn);
+    // Get.changeThemeMode(ThemeMode.dark);
+
     return Future.value(true);
   }
 
