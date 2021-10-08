@@ -1,21 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/status/http_status.dart';
+
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/modifyWatching.dart';
+import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
+import 'package:wrg2/backend/services/offer%20service/offer.service.dart';
 import 'package:wrg2/backend/services/service.auth.dart';
 import 'package:wrg2/backend/services/service.baseExecutor.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 
 import 'service.toast.dart';
 
-class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
+class HttpExecutor extends GetxController
+    with ApiAuth, BaseExecutor, OfferService {
   var _informationService = Get.put(InformationService());
   var _toastService = Get.put(ToastService());
   bool updated = false;
@@ -38,10 +41,13 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
 
   var userInfo = UserInfoModel.empty().obs;
 
-  Future<bool> getPosts() async {
+  Future<bool> getPosts({String lastId, int amount}) async {
     try {
-      var info = await findAll(post);
-      if (info.statusCode == 200) {
+      var info = await dio.post("$baseUrl$post/posts",
+          data: {"amount": amount, "lastId": lastId});
+      if (acceptable(info.statusCode)) {
+        if (info.data.length == 0) return Future.value(false);
+
         List<PostModel> list = [];
         for (var item in info.data) {
           var p = PostModel.fromMap(item);
@@ -68,6 +74,7 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       // input.userId = userInfo.value.userId;
       // input.userImage = userInfo.value.userImageUrl;
       input.userInfoId = userInfo.value.userId;
+      input.offers = [];
       var info = await create(post, input.toMap());
       if (acceptable(info.statusCode)) {
         input.userInfo = userInfo.value;
@@ -88,10 +95,10 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
 
       var res = await create(commentUrl, input.toMap());
       if (acceptable(res.statusCode)) {
-        PostModel p = _informationService.feed.values
+        PostModel p = _informationService.feed.value.values
             .firstWhere((element) => element.id == input.postId);
         p.commentss += 1;
-        _informationService.feed.update(p.id, (value) => p);
+        _informationService.feed.value.update(p.id, (value) => p);
         return Future.value(true);
       }
       return Future.value(false);
@@ -130,7 +137,7 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       if (acceptable(res.statusCode)) {
         _informationService.modifyWatching(post, add: add);
         post.watching += add ? 1 : -1;
-        _informationService.feed.update(post.id, (value) => post);
+        _informationService.feed.value.update(post.id, (value) => post);
         return Future.value(true);
       }
       return Future.value(false);
@@ -185,12 +192,23 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
       _informationService.setWatching(userInfo.value.watching);
       _informationService.setConversation(
           [...userInfo.value.incomings, ...userInfo.value.outgoings]);
+      var res = await getOffers(userInfo.value.userId);
+      if (acceptable(res.statusCode)) {
+        List<OfferModel> list = [];
+        for (var data in res.data) {
+          OfferModel model = OfferModel.fromMap(data);
+          list.add(model);
+        }
+
+        _informationService.setOffer(list);
+      }
     } on DioError catch (e) {
       print(e);
-      if (e.response.statusCode == HttpStatus.notFound) {
+      if (e.response.statusCode == 404) {
         await createUserInfo(user);
       }
     } on Exception catch (e) {
+      print(e);
       print("Could not get user");
     }
   }
@@ -227,16 +245,21 @@ class HttpExecutor extends GetxController with ApiAuth, BaseExecutor {
     try {
       var res = await dio.get("$baseUrl$convoUrl/$id");
       if (acceptable(res.statusCode)) {
-        ConversationModel model = _informationService.conversations[id];
-        List<MessagesModel> list = [];
-        for (var msg in res.data["messages"]) {
-          var message = MessagesModel.fromMap(msg);
-          list.add(message);
-        }
-        model.messages = list;
-        _informationService.updateConversation(model);
+        // ConversationModel model = _informationService.conversations[id];
+        // List<MessagesModel> list = [];
+        // for (var msg in res.data["messages"]) {
+        //   var message = MessagesModel.fromMap(msg);
+        //   list.add(message);
+        // }
+        // model.messages = list;
+
+        ConversationModel model = ConversationModel.fromMap(res.data);
+        _informationService.setMessages(model.messages, model.id);
+        // _informationService.updateConversation(model);
+        return Future.value(model.messages);
       }
     } catch (e) {
+      print(e);
       return Future.value(false);
     }
   }

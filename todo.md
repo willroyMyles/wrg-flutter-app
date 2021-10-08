@@ -18,8 +18,15 @@ loading for sending
 loading for retieving
 chets?
 status for an item
+google fonts
+flutter splash screen
+flutter launcher icon
 fliter above list with
     - MAKE
     - MODEL 
     - CATEGORY
     - YEAR RANGE?
+
+average completion time
+satifaction guage
+certified

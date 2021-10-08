@@ -3,13 +3,14 @@ import 'package:dio/dio.dart';
 mixin BaseExecutor {
   final dio = Dio();
 
-  // String baseUrl = "http://192.168.100.194:3000";
-  String baseUrl = "https://wrg-nest.herokuapp.com";
+  String baseUrl = "http://192.168.100.194:3000";
+  // String baseUrl = "https://wrg-nest.herokuapp.com";
   String userinfo = "/user-info";
   String post = "/post";
   String commentUrl = "/comment";
   String messageUrl = "/message";
   String convoUrl = "/conversation";
+  String offer = "/offer";
 
   initialize() {}
 

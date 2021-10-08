@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
+import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
 import 'package:wrg2/backend/services/service.information.dart';
@@ -20,6 +22,7 @@ class PostModel {
   DateTime createdAt;
   String userInfoId;
   UserInfoModel userInfo;
+  List<OfferModel> offers = [];
 
   PostModel({
     this.title = '',
@@ -35,6 +38,7 @@ class PostModel {
     this.createdAt,
     this.userInfoId = '',
     this.userInfo,
+    this.offers,
   });
 
   Map<String, dynamic> toMap() {
@@ -48,17 +52,14 @@ class PostModel {
       'year': year,
       'views': views,
       'userInfoId': userInfoId,
-      'watching': watching,
-      'commentss': commentss
-      // 'createdAt': createdAt.millisecondsSinceEpoch,
       // 'userInfo': userInfo.toMap(),
+      'offers': offers?.map((x) => x.toMap())?.toList(),
     };
   }
 
   bool contains(Map<String, dynamic> map, String key) => map.containsKey(key);
 
-  factory PostModel.fromMap(Map<dynamic, dynamic> map) {
-    print(map);
+  factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
       title: map['title'],
       id: map['id'],
@@ -72,7 +73,11 @@ class PostModel {
       watching: map['watching'],
       createdAt: DateTime.tryParse(map['createdAt']),
       userInfoId: map['userInfoId'],
-      userInfo: UserInfoModel.fromMap(map['UserInfo']),
+      userInfo: UserInfoModel.fromMap(map['userInfo']),
+      offers: map["offers"] != null
+          ? List<OfferModel>.from(
+              map['offers']?.map((x) => OfferModel.fromMap(x)))
+          : [],
     );
   }
 
@@ -102,7 +107,7 @@ class PostModel {
 
   @override
   String toString() {
-    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, year: $year, views: $views, createdAt: $createdAt, userInfoId: $userInfoId, userInfo: $userInfo)';
+    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, year: $year, views: $views, watching: $watching, commentss: $commentss, createdAt: $createdAt, userInfoId: $userInfoId, userInfo: $userInfo, offers: $offers)';
   }
 
   @override
@@ -118,9 +123,12 @@ class PostModel {
         other.model == model &&
         other.year == year &&
         other.views == views &&
+        other.watching == watching &&
+        other.commentss == commentss &&
         other.createdAt == createdAt &&
         other.userInfoId == userInfoId &&
-        other.userInfo == userInfo;
+        other.userInfo == userInfo &&
+        listEquals(other.offers, offers);
   }
 
   @override
@@ -133,9 +141,12 @@ class PostModel {
         model.hashCode ^
         year.hashCode ^
         views.hashCode ^
+        watching.hashCode ^
+        commentss.hashCode ^
         createdAt.hashCode ^
         userInfoId.hashCode ^
-        userInfo.hashCode;
+        userInfo.hashCode ^
+        offers.hashCode;
   }
 
   bool isWatching() {
@@ -146,37 +157,5 @@ class PostModel {
   amIOwner() {
     var service = Get.find<ApiExecutor>();
     return this.userInfo.id == service.userInfo.value.userId;
-  }
-
-  PostModel copyWith({
-    String title,
-    String id,
-    String content,
-    String category,
-    String make,
-    String model,
-    int year,
-    int views,
-    int commentss,
-    int watching,
-    DateTime createdAt,
-    String userInfoId,
-    UserInfoModel userInfo,
-  }) {
-    return PostModel(
-      title: title ?? this.title,
-      id: id ?? this.id,
-      content: content ?? this.content,
-      category: category ?? this.category,
-      make: make ?? this.make,
-      model: model ?? this.model,
-      year: year ?? this.year,
-      views: views ?? this.views,
-      createdAt: createdAt ?? this.createdAt,
-      userInfoId: userInfoId ?? this.userInfoId,
-      userInfo: userInfo ?? this.userInfo,
-      commentss: commentss ?? this.commentss,
-      watching: watching ?? this.watching,
-    );
   }
 }

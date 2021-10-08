@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wrg2/backend/extensions/ext.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({Key key}) : super(key: key);
@@ -8,7 +9,9 @@ class LoadingView extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: Container(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: ts.red,
+        ),
       ),
     );
   }

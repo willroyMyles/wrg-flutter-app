@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
+import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
@@ -41,7 +43,7 @@ class FeedDetailsState extends GetxController with StateMixin {
       var res = await service.incrimentView(currentPostModel.id);
       if (res) {
         model.views += 1;
-        infoService.feed.update(model.id, (value) => model);
+        infoService.feed.value.update(model.id, (value) => model);
         refresh();
       }
     } catch (e) {
@@ -264,15 +266,23 @@ class FeedDetailsState extends GetxController with StateMixin {
   }
 
   Future sendComment() async {
-    CommentModel model = CommentModel.empty();
-    model.isOffer = isOffer;
-    model.postId = currentPostModel.id;
-    model.content = input.text;
-    var ans = await service.createComment(model);
-    input.clear();
+    if (isOffer) {
+      OfferModel model = OfferModel.empty();
+      model.message = input.text;
+      model.postId = currentPostModel.id;
+      var res = await service.createOffer(model);
+      input.clear();
+    } else {
+      CommentModel model = CommentModel.empty();
+      model.isOffer = isOffer;
+      model.postId = currentPostModel.id;
+      model.content = input.text;
+      var ans = await service.createComment(model);
+      input.clear();
 
-    if (Get.isDialogOpen) {
-      Get.close(1);
+      if (Get.isDialogOpen) {
+        Get.close(1);
+      }
     }
 
     return Future.value(true);

@@ -31,9 +31,7 @@ class PostItem extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
-          ], color: ts.white, borderRadius: BorderRadius.circular(4)),
+          decoration: Constants.decoration,
           child: Stack(
             children: [
               Container(
@@ -110,73 +108,69 @@ class PostItem extends StatelessWidget {
         ),
       );
 
-    return FadeIn(
-      duration: Constants.durationLong,
-      child: GestureDetector(
-        onTapDown: (details) {
-          print(details);
-        },
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
-          ], color: ts.white, borderRadius: BorderRadius.circular(4)),
-          child: Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                child: InkWell(
-                  onTap: () {
-                    Get.to(() => DiscoverDetails(item: item, tag: tag));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: Get.width * .6,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(item.title).h1(),
-                            SizedBox(
-                              height: 10,
+    return GestureDetector(
+      onTapDown: (details) {
+        print(details);
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(blurRadius: 15, color: ts.grey.withOpacity(.2))
+        ], color: ts.white, borderRadius: BorderRadius.circular(4)),
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.all(12),
+              child: InkWell(
+                onTap: () {
+                  Get.to(() => DiscoverDetails(item: item, tag: tag));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: Get.width * .6,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(item.title).h1(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            item.content,
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                          ).h2(),
+                          SizedBox(
+                            height: 70,
+                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(item.make).h3(),
+                                Text(item.model).h3(),
+                                Text(item.year.toString()).h3(),
+                              ],
                             ),
-                            Text(
-                              item.content,
-                              overflow: TextOverflow.fade,
-                              maxLines: 2,
-                            ).h2(),
-                            SizedBox(
-                              height: 70,
-                            ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(item.make).h3(),
-                                  Text(item.model).h3(),
-                                  Text(item.year.toString()).h3(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width: Get.width * .2,
-                        clipBehavior: Clip.none,
-                        child: ImageForCategory(
-                          item: item,
-                        ),
+                    ),
+                    Container(
+                      width: Get.width * .2,
+                      clipBehavior: Clip.none,
+                      child: ImageForCategory(
+                        item: item,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

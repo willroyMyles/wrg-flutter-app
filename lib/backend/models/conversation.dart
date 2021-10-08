@@ -84,6 +84,7 @@ class ConversationModel {
   }
 
   factory ConversationModel.fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
     return ConversationModel(
       reciever: UserInfoModel.fromMap(map['reciever']),
       sender: UserInfoModel.fromMap(map['sender']),

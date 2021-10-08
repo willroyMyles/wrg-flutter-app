@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wrg2/backend/enums/enum.post.dart';
+import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
@@ -51,39 +52,132 @@ class _DiscoverState extends State<Discover>
       ),
       body: GetBuilder<DiscoverState>(
         init: controller,
-        builder: (state) => VisibilityDetector(
-          key: ValueKey("fab vis"),
-          onVisibilityChanged: (info) {
-            var val = info.visibleFraction > .5;
-            infoService.updateFab(val);
-          },
-          child: SafeArea(
-            child: RefreshIndicator(
-              backgroundColor: ts.grey1,
-              color: ts.red,
-              onRefresh: () async {
-                return controller.getMorePosts();
+        builder: (state) => SafeArea(
+          child: RefreshIndicator(
+            backgroundColor: ts.grey1,
+            color: ts.red,
+            onRefresh: () async {
+              return controller.getPosts();
+            },
+            triggerMode: RefreshIndicatorTriggerMode.onEdge,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollEndNotification &&
+                    notification.metrics.pixels >=
+                        notification.metrics.maxScrollExtent - 30) {
+                  controller.loadMorePosts();
+                  return true;
+                }
+
+                return false;
               },
-              triggerMode: RefreshIndicatorTriggerMode.onEdge,
               child: CustomScrollView(
+                controller: controller.controller,
                 slivers: [
-                  if (controller.status.isLoading)
+                  SliverPadding(
+                    padding: EdgeInsets.only(top: 30),
+                    sliver: SliverAppBar(
+                      floating: true,
+                      title: Container(
+                          height: 50,
+                          width: Get.width,
+                          margin: EdgeInsets.only(top: 0),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ...controller.states.map(
+                                (e) {
+                                  var index = controller.states.indexOf(e);
+                                  var isSelected =
+                                      index == controller.currentStateIndex;
+                                  return InkWell(
+                                    onTap: () {
+                                      controller.onStateTapped(index);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        e.capitalize,
+                                        textScaleFactor: 1,
+                                        style: TextStyle(
+                                            color:
+                                                isSelected ? ts.red : ts.grey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                          )),
+                    ),
+                  ),
+                  if (false)
+                    SliverAppBar(
+                      floating: true,
+                      title: Container(
+                          // color: ts.grey.withOpacity(1),
+                          height: 50,
+                          width: Get.width,
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                  decoration: Constants.decoration,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("sort",
+                                      style: TextStyle(
+                                          color: ts.grey,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16))),
+                              Container(
+                                  decoration: Constants.decoration,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("filter",
+                                      style: TextStyle(
+                                          color: ts.grey,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16))),
+                            ],
+                          )),
+                    ),
+                  if (controller.status.isLoadingMore ||
+                      controller.status.isLoading)
                     SliverPadding(
                       padding: EdgeInsets.only(bottom: 100, top: 10),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate([
-                          ...[1, 2, 3, 4, 5, 6].map(
-                            (e) => PostItem(
-                              item: null,
-                              isLoading: true,
-                            ).fadeInDown(multiplier: e * .5),
+                          ...[...controller.map.values, 1, 2, 3].map(
+                            (e) {
+                              bool shouldLoad = e.runtimeType == int || false;
+                              if (controller.status.isLoading)
+                                shouldLoad = true;
+                              print("${e.runtimeType}, $shouldLoad");
+                              if (shouldLoad)
+                                return PostItem(
+                                  item: null,
+                                  isLoading: shouldLoad,
+                                ).fadeInDown(
+                                    multiplier: e is int ? e * .5 : .5);
+                              else
+                                return PostItem(
+                                  item: e,
+                                  isLoading: false,
+                                );
+                            },
                           )
                         ]),
                       ),
                     ),
                   if (controller.status.isSuccess)
                     SliverPadding(
-                      padding: EdgeInsets.only(bottom: 100, top: 10),
+                      padding: EdgeInsets.only(
+                          bottom: controller.noMorePosts ? 20 : 100, top: 10),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate([
                           ...controller.map.values
@@ -94,13 +188,26 @@ class _DiscoverState extends State<Discover>
                         ]),
                       ),
                     ),
+                  if (controller.status.isSuccess && controller.noMorePosts)
+                    SliverToBoxAdapter(
+                      child: AnimatedContainer(
+                        duration: Constants.durationLong,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.only(top: 30, bottom: 130),
+                        child: Text("no more posts",
+                            style: TextStyle(
+                              color: ts.grey,
+                              fontSize: 25,
+                            )),
+                      ).fadeInUp(),
+                    ),
                   if (controller.status.isEmpty)
                     SliverFillRemaining(
                       child: Container(
                         alignment: Alignment.center,
                         child: InkWell(
                           onTap: () {
-                            controller.getMorePosts();
+                            controller.getPosts();
                           },
                           child: Container(
                               padding: EdgeInsets.all(20),
@@ -114,73 +221,6 @@ class _DiscoverState extends State<Discover>
             ),
           ),
         ),
-      ),
-    );
-
-    print("building discover");
-    return Scaffold(
-      body: InkWell(
-        onTap: controller.onTap(),
-        child: Container(
-            // margin: EdgeInsets.only(top: 25),
-            width: Get.width,
-            alignment: Alignment.center,
-            child: controller.obx(
-              (state) {
-                return Container(
-                  color: Colors.yellow,
-                  child: Column(
-                    children: [
-                      // Container(
-                      //   width: Get.width,
-                      //   padding: EdgeInsets.only(bottom: 8),
-                      //   child: Row(
-                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       FlatButton.icon(
-                      //           onPressed: () {},
-                      //           icon: Opacity(
-                      //               opacity: .5,
-                      //               child: Icon(
-                      //                 Icons.keyboard_arrow_down,
-                      //               )),
-                      //           label: Text(controller.filter
-                      //                   .elementAt(controller.filterIndex))
-                      //               .h1())
-                      //     ],
-                      //   ),
-                      // ),
-                      Expanded(
-                        child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.only(bottom: 30),
-                            itemBuilder: (context, index) {
-                              return PostItem(
-                                  item: controller.info.feed.values
-                                      .elementAt(index));
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: 20,
-                              );
-                            },
-                            itemCount: controller.info.feed.values.length),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onEmpty: InkWell(
-                  onTap: () => controller.getMorePosts(), child: emptySvg()),
-              onError: (err) => Container(
-                color: Colors.green,
-                child: Text("error"),
-              ),
-              onLoading: Container(
-                child: Text("loading"),
-              ),
-            )),
       ),
     );
   }

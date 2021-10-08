@@ -1,151 +1,92 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/conversation.dart';
+import 'package:wrg2/backend/models/userinfo.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/components/item.message.dart';
+import 'package:wrg2/fontend/components/loading.dart';
+import 'package:wrg2/fontend/components/loadingButton.dart';
 import 'package:wrg2/fontend/pages/conversation/state.conversation.dart';
+import 'package:wrg2/backend/extensions/ext.dart';
 
 class ConversationView extends StatelessWidget {
   final ConversationModel item;
+  final UserInfoModel other;
   final ts = Get.find<ServiceTheme>();
-  final ConversationState controller = Get.find<ConversationState>();
+  final ConversationState controller = Get.put(ConversationState());
   final dialog = Get.find<DialogService>();
 
-  ConversationView({Key key, this.item}) : super(key: key);
+  ConversationView({Key key, this.item, this.other}) : super(key: key);
   Widget build(BuildContext context) {
+    controller.setId(item.id);
     dialog.closeDialog();
-    controller.updateConversation(item.id);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        centerTitle: false,
-        title: Text(item.getOthersName()).h1(),
-        elevation: 10,
-        shadowColor: Colors.green.withOpacity(.1),
-        actions: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.more_vert_sharp),
-          )
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.only(top: 20),
-        // color: ts.fg.value,
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(Get.context).unfocus();
-          },
-          child: GetBuilder(
+        resizeToAvoidBottomInset: true,
+        extendBodyBehindAppBar: true,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(CupertinoIcons.chat_bubble_2_fill),
+          onPressed: () {},
+          backgroundColor: ts.grey1,
+        ),
+        body: GetBuilder<ConversationState>(
             init: controller,
-            builder: (controller) => Container(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                        itemBuilder: (context, index) {
-                          return buildMessage(index);
-                        },
-                        separatorBuilder: (context, index) => SizedBox(
-                              height: 19,
-                            ),
-                        itemCount: item.messages.length),
+            builder: (_) {
+              return CustomScrollView(
+                // dragStartBehavior: DragStartBehavior.,
+                controller: controller.listViewController,
+                slivers: [
+                  SliverAppBar(
+                    title: Text.rich(TextSpan(children: [
+                      TextSpan(
+                          text: "messages with",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: ts.white.withOpacity(.3))),
+                      TextSpan(text: "\n ${other.username}"),
+                    ])),
+                    automaticallyImplyLeading: true,
+                    backgroundColor: ts.grey1,
+                    pinned: true,
                   ),
-                  Container(
-                    height: 100,
-                    width: Get.width,
-                    padding: EdgeInsets.all(5),
-                    // color: Colors.red,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            height: 100,
-                            width: Get.width - 60,
-                            child: TextFormField(
-                              controller: controller.textControler,
-                            ).input(label: "send message")),
-                        InkWell(
-                          onTap: () {
-                            controller.sendMessage(item);
-                          },
-                          child: Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.only(top: 15),
-                              decoration: BoxDecoration(
-                                  // color: Colors.red,
-                                  borderRadius: BorderRadius.circular(100),
-                                  boxShadow: [
-                                    // BoxShadow(
-                                    //     blurRadius: 0,
-                                    //     color: Colors.black.withOpacity(.2))
-                                  ]),
-                              child: Icon(CupertinoIcons.paperplane)),
-                        )
-                      ],
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    primary: false,
+                    toolbarHeight: 70,
+                    titleSpacing: 0,
+                    title: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          FlatButton(onPressed: () {}, child: Text("Accept"))
+                              .primary(),
+                          FlatButton(onPressed: () {}, child: Text("Decline"))
+                              .primary(),
+                        ],
+                      ),
                     ),
-                  )
+                    floating: true,
+                  ),
+                  if (controller.status.isSuccess)
+                    SliverList(
+                        delegate: SliverChildListDelegate([
+                      ...controller.list.map((e) => MessageItem(
+                          model: e,
+                          other: other,
+                          amISender: item.amISender(e),
+                          index: controller.list.indexOf(e))),
+                      SizedBox(
+                        height: 120,
+                      )
+                    ]))
                 ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildMessage(int index) {
-    var iam = item.amISender(item.messages.elementAt(index));
-    var children = [
-      Container(
-          height: 30,
-          width: 30,
-          clipBehavior: Clip.antiAlias,
-          margin: EdgeInsets.only(right: iam ? 0 : 10, left: iam ? 10 : 0),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              boxShadow: [
-                BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(.2))
-              ]),
-          child: Image.network(iam
-              ? controller.service.userInfo.value.userImageUrl
-              : item.getOthersUserInfo().userImageUrl)),
-      Container(
-        width: Get.width / 1.9,
-        alignment: iam ? Alignment.topRight : Alignment.topLeft,
-        child: Text(
-          item.messages.elementAt(index).content.toString(),
-          textAlign: iam ? TextAlign.right : TextAlign.left,
-          overflow: TextOverflow.fade,
-          softWrap: true,
-          maxLines: 100,
-        ),
-      ),
-    ];
-    return Container(
-      alignment: iam ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-        decoration: BoxDecoration(
-          // color: ts.fg.value,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            // BoxShadow(
-            //     blurRadius: 1,
-            //     offset: Offset(3, 5),
-            //     color: ts.fgt.value.withOpacity(.1))
-          ],
-          // border: Border.all(width: 3, color: ts.bg.value.darker())
-        ),
-        child: Row(
-            mainAxisAlignment:
-                iam ? MainAxisAlignment.end : MainAxisAlignment.start,
-            children: iam ? children.reversed.toList() : children),
-      ),
-    );
+              );
+            }));
   }
 }

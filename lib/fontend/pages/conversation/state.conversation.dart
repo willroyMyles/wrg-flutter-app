@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/services/service.api.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 
@@ -13,42 +14,71 @@ class ConversationState extends GetxController with StateMixin {
   var map = Map<String, ConversationModel>();
   var textControler = TextEditingController();
   final dialog = Get.find<DialogService>();
+  final listViewController = ScrollController();
+  bool loading = false;
+  String id;
+
+  List<MessagesModel> list = [];
 
   FocusNode fn = FocusNode();
 
   @override
   void onInit() {
     super.onInit();
-    change("", status: RxStatus.empty());
-    configure();
+    getMessages();
   }
 
-  void configure() {
-    this.infoServcie.conversations.listen((convos) {
-      map = Map<String, ConversationModel>.from(convos);
-      if (map.isEmpty) return change("", status: RxStatus.empty());
-      change("", status: RxStatus.success());
-      refresh();
-    });
-  }
-
-  void updateConversation(String id) async {
-    var res = await service.getMessages(id);
+  void getMessages() async {
+    try {
+      infoServcie.setMessages([], id);
+      await Future.delayed(Constants.duration);
+      change(null, status: RxStatus.loading());
+      var res = await service.getMessages(id);
+      if (res != null) {
+        list.addAll(res);
+        change(null, status: RxStatus.success());
+        await Future.delayed(Constants.durationShort);
+        infoServcie.setMessages(list, id);
+        scrolltobottom();
+      }
+    } catch (e) {
+      print(e);
+      change(null, status: RxStatus.error(e.toString()));
+    }
   }
 
   void sendMessage(ConversationModel model) async {
     if (textControler.text != "") {
+      loading = true;
+      refresh();
       var msg = MessagesModel();
       msg.content = textControler.text;
       msg.sender = service.userInfo.value.id;
       var ans = await service.addMessageToConversation(model, msg);
       if (ans) {
         model.messages.add(msg);
-        infoServcie.conversations.update(model.id, (value) => model);
+        list.add(msg);
+
+        loading = false;
+        infoServcie.updateConversation(model);
+        infoServcie.updateMessages(msg, model.id);
+        scrolltobottom();
         refresh();
-      } else {}
+      } else {
+        loading = false;
+        refresh();
+      }
       textControler.text = "";
       dialog.closeDialog();
     }
+  }
+
+  scrolltobottom() {
+    listViewController.animateTo(listViewController.position.maxScrollExtent,
+        duration: Constants.durationShort, curve: Curves.decelerate);
+  }
+
+  void setId(String id) {
+    this.id = id;
   }
 }

@@ -4,11 +4,13 @@ class MessagesModel {
   String sender;
   String content;
   String id;
+  DateTime createdAt;
 
   MessagesModel({
     this.sender = '',
     this.content = '',
     this.id = '',
+    this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -16,14 +18,16 @@ class MessagesModel {
       'sender': sender,
       'content': content,
       // 'id': id,
+      // 'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
 
   factory MessagesModel.fromMap(Map<String, dynamic> map) {
     return MessagesModel(
-      sender: map['sender'] ?? '',
-      content: map['content'] ?? '',
-      id: map['id'] ?? '',
+      sender: map['sender'],
+      content: map['content'],
+      id: map['id'],
+      createdAt: DateTime.tryParse(map['createdAt']),
     );
   }
 
@@ -33,8 +37,9 @@ class MessagesModel {
       MessagesModel.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'MessagesModel(sender: $sender, content: $content, id: $id)';
+  String toString() {
+    return 'MessagesModel(sender: $sender, content: $content, id: $id, createdAt: $createdAt)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -43,9 +48,29 @@ class MessagesModel {
     return other is MessagesModel &&
         other.sender == sender &&
         other.content == content &&
-        other.id == id;
+        other.id == id &&
+        other.createdAt == createdAt;
   }
 
   @override
-  int get hashCode => super.hashCode;
+  int get hashCode {
+    return sender.hashCode ^
+        content.hashCode ^
+        id.hashCode ^
+        createdAt.hashCode;
+  }
+
+  MessagesModel copyWith({
+    String sender,
+    String content,
+    String id,
+    DateTime createdAt,
+  }) {
+    return MessagesModel(
+      sender: sender ?? this.sender,
+      content: content ?? this.content,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

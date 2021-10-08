@@ -60,6 +60,7 @@ extension TextModifier on Text {
   }
 
   Text hdate(DateTime t) {
+    if (t == null) t = DateTime.now();
     var tago = timeago.format(t);
     return Text(
       tago,
@@ -116,4 +117,14 @@ extension TextModifier on Text {
                   offset: Offset(2, 5)),
             ]));
   }
+}
+
+extension StringCasingExtension on String {
+  String capitalized() =>
+      this.length > 0 ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
+  String get toTitleCase => this
+      .replaceAll(RegExp(' +'), ' ')
+      .split(" ")
+      .map((str) => str.capitalized())
+      .join(" ");
 }

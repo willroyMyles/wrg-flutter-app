@@ -1,19 +1,25 @@
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:wrg2/backend/models/conversation.dart';
+import 'package:wrg2/backend/models/messages.dart';
+import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 
 class InformationService extends GetxController {
   RxMap<dynamic, dynamic> conversations = {}.obs;
+  RxMap<dynamic, dynamic> offers = {}.obs;
   RxMap<dynamic, dynamic> watching = {}.obs;
-  RxMap<dynamic, dynamic> feed = {}.obs;
+  Rx<Map<dynamic, dynamic>> feed = Rx({});
+  RxMap<dynamic, dynamic> messages = {}.obs;
   RxBool isSignedIn = false.obs;
   RxBool isFabVisible = false.obs;
 
   clearAll() {
     conversations.clear();
     watching.clear();
-    feed.clear();
+    feed.value.clear();
+    messages.clear();
+    offers.clear();
     announceAll();
   }
 
@@ -21,6 +27,8 @@ class InformationService extends GetxController {
     conversations.refresh();
     watching.refresh();
     feed.refresh();
+    offers.refresh();
+    messages.refresh();
     refresh();
   }
 
@@ -47,8 +55,50 @@ class InformationService extends GetxController {
     conversations.update(
       model.id,
       (value) => model,
+      ifAbsent: () {
+        Map<String, ConversationModel> map = {};
+        map.putIfAbsent(model.id, () => model);
+        return map;
+      },
     );
     conversations.refresh();
+  }
+
+  setOffer(List<dynamic> list) {
+    for (var item in list) {
+      offers.putIfAbsent(item.id, () => item);
+    }
+    offers.refresh();
+  }
+
+  updateOffer(OfferModel model) {
+    offers.update(
+      model.id,
+      (value) => model,
+    );
+    offers.refresh();
+  }
+
+  setMessages(List<dynamic> list, String id) {
+    messages.update(
+      id,
+      (value) => [...value, ...list].obs,
+      ifAbsent: () {
+        RxList<dynamic> list1 = list.obs;
+        return list1;
+      },
+    );
+    if (list.length != 0) messages.refresh();
+  }
+
+  updateMessages(MessagesModel model, String id) {
+    if (messages.containsKey(id)) {
+      messages[id].add(model);
+      messages.refresh();
+    } else {
+      messages.putIfAbsent(id, () => [model].obs);
+      messages.refresh();
+    }
   }
 
   setWatching(List<dynamic> list) {
@@ -68,14 +118,14 @@ class InformationService extends GetxController {
 
   setFeed(List<dynamic> list) {
     for (var item in list) {
-      feed.putIfAbsent(item.id, () => item);
+      feed.value.putIfAbsent(item.id, () => item);
     }
     feed.refresh();
   }
 
   addToFeed(PostModel p) {
-    if (!feed.containsKey(p.id)) {
-      feed.putIfAbsent(p.id, () => p);
+    if (!feed.value.containsKey(p.id)) {
+      feed.value.putIfAbsent(p.id, () => p);
     }
     feed.refresh();
   }

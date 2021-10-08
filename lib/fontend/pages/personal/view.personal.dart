@@ -5,6 +5,7 @@ import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/fontend/pages/conversation/section/view.conversationSection.dart';
+import 'package:wrg2/fontend/pages/offers/view.offers.dart';
 import 'package:wrg2/fontend/pages/watching/section/view.watchingSection.dart';
 
 class Personal extends StatefulWidget {
@@ -87,8 +88,12 @@ class _PersonalState extends State<Personal> {
                     ),
                   ),
                 ),
+                // SliverToBoxAdapter(
+                //   child: ConversationSection(),
+                // ),
+
                 SliverToBoxAdapter(
-                  child: ConversationSection(),
+                  child: OfferView(),
                 ),
                 // SliverToBoxAdapter(
                 //     child: Container(

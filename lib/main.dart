@@ -35,6 +35,8 @@ class _MyAppState extends State<MyApp> {
       building = false;
     });
 
+    Get.config(enableLog: false, defaultTransition: Transition.fadeIn);
+
     // Get.config(defaultTransition: Transition.fadeIn);
     // Get.changeThemeMode(ThemeMode.dark);
 
@@ -73,6 +75,7 @@ class _MyAppState extends State<MyApp> {
             return GetMaterialApp(
                 title: 'Flutter Demo',
                 theme: ts.currentTheme,
+                // defaultTransition: Transition.,
                 home: Container(
                   // child: HomePageView(),
                   child: !firstStart ? IntroScreen() : HomePageView(),

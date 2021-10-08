@@ -83,6 +83,7 @@ class UserInfoModel {
   }
 
   factory UserInfoModel.fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
     return UserInfoModel(
       username: map['username'] ?? '',
       userImageUrl: map['userImageUrl'] ?? '',

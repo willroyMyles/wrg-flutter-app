@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
+import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
@@ -39,8 +40,8 @@ class APIService extends GetxController with SlackExecutor {
     // return _apiInterface.getCategories();
   }
 
-  Future<bool> getPosts() {
-    return _apiInterface.getPosts();
+  Future<bool> getPosts({String lastId, int amount}) {
+    return _apiInterface.getPosts(amount: amount, lastId: lastId);
   }
 
   createPost(PostModel input) {
@@ -93,5 +94,27 @@ class APIService extends GetxController with SlackExecutor {
 
   getMessages(String id) {
     return _apiInterface.getMessages(id);
+  }
+
+  createOffer(OfferModel model) {
+    model.senderId = userInfo.value.userId;
+    return _apiInterface.createOffer(model);
+  }
+
+  Future<List<PostModel>> getOffers() async {
+    var res = await _apiInterface.getOffers(userInfo.value.userId);
+
+    List<PostModel> list = [];
+
+    try {
+      for (var data in res) {
+        PostModel model = PostModel.fromMap(data.data());
+        list.add(model);
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return Future.value(list);
   }
 }
