@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/models/post.model.dart';
+import 'package:wrg2/backend/services/service.assts.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
@@ -45,6 +46,7 @@ class _DiscoverState extends State<Discover>
                 msg: "you need to be signed in to create a post",
                 tag: "detail view fab");
         },
+
         child: Icon(
           CupertinoIcons.add_circled,
           color: ts.white,
@@ -146,45 +148,33 @@ class _DiscoverState extends State<Discover>
                             ],
                           )),
                     ),
-                  if (controller.status.isLoadingMore ||
-                      controller.status.isLoading)
+                  if (controller.status.isSuccess)
                     SliverPadding(
-                      padding: EdgeInsets.only(bottom: 100, top: 10),
+                      padding: EdgeInsets.only(top: 10),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate([
-                          ...[...controller.map.values, 1, 2, 3].map(
-                            (e) {
-                              bool shouldLoad = e.runtimeType == int || false;
-                              if (controller.status.isLoading)
-                                shouldLoad = true;
-                              print("${e.runtimeType}, $shouldLoad");
-                              if (shouldLoad)
-                                return PostItem(
-                                  item: null,
-                                  isLoading: shouldLoad,
-                                ).fadeInDown(
-                                    multiplier: e is int ? e * .5 : .5);
-                              else
-                                return PostItem(
-                                  item: e,
-                                  isLoading: false,
-                                );
-                            },
-                          )
+                          ...controller.front.values
+                              .map(
+                                (e) => PostItem(item: e).fadeInDown(),
+                              )
+                              .toList()
                         ]),
                       ),
                     ),
-                  if (controller.status.isSuccess)
+                  if (controller.status.isLoadingMore ||
+                      controller.status.isLoading)
                     SliverPadding(
-                      padding: EdgeInsets.only(
-                          bottom: controller.noMorePosts ? 20 : 100, top: 10),
+                      padding: EdgeInsets.only(),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate([
-                          ...controller.map.values
-                              .map(
-                                (e) => PostItem(item: e),
-                              )
-                              .toList()
+                          ...[1, 2, 3].map(
+                            (e) {
+                              return PostItem(
+                                item: null,
+                                isLoading: true,
+                              ).fadeInDown(multiplier: e is int ? e * .5 : .5);
+                            },
+                          )
                         ]),
                       ),
                     ),
@@ -193,7 +183,7 @@ class _DiscoverState extends State<Discover>
                       child: AnimatedContainer(
                         duration: Constants.durationLong,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(top: 30, bottom: 130),
+                        padding: EdgeInsets.only(top: 50, bottom: 60),
                         child: Text("no more posts",
                             style: TextStyle(
                               color: ts.grey,

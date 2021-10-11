@@ -1,3 +1,4 @@
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:wrg2/backend/models/conversation.dart';
@@ -5,11 +6,36 @@ import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 
+class RxObject<T> extends Rx<Map<dynamic, dynamic>> {
+  RxObject(Map initial) : super(initial);
+
+  set(List<dynamic> list) {
+    for (var item in list) {
+      this.value.update(
+            item.id,
+            (value) => item,
+            ifAbsent: () => item,
+          );
+    }
+    this.refresh();
+  }
+
+  void updateMap(dynamic model) {
+    if (!this.value.containsKey(model.id)) {
+      this.value.putIfAbsent(model.id, () => model);
+    }
+    this.refresh();
+  }
+
+  announce() => this.refresh();
+}
+
 class InformationService extends GetxController {
   RxMap<dynamic, dynamic> conversations = {}.obs;
   RxMap<dynamic, dynamic> offers = {}.obs;
   RxMap<dynamic, dynamic> watching = {}.obs;
   Rx<Map<dynamic, dynamic>> feed = Rx({});
+  RxObject<PostModel> processed = RxObject({});
   RxMap<dynamic, dynamic> messages = {}.obs;
   RxBool isSignedIn = false.obs;
   RxBool isFabVisible = false.obs;
@@ -18,6 +44,7 @@ class InformationService extends GetxController {
     conversations.clear();
     watching.clear();
     feed.value.clear();
+    processed.value.clear();
     messages.clear();
     offers.clear();
     announceAll();
@@ -29,6 +56,7 @@ class InformationService extends GetxController {
     feed.refresh();
     offers.refresh();
     messages.refresh();
+    processed.announce();
     refresh();
   }
 
@@ -118,7 +146,11 @@ class InformationService extends GetxController {
 
   setFeed(List<dynamic> list) {
     for (var item in list) {
-      feed.value.putIfAbsent(item.id, () => item);
+      feed.value.update(
+        item.id,
+        (value) => item,
+        ifAbsent: () => item,
+      );
     }
     feed.refresh();
   }

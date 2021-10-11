@@ -2,6 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
@@ -123,11 +125,12 @@ class PostItem extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   Get.to(() => DiscoverDetails(item: item, tag: tag));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
                       width: Get.width * .6,
@@ -170,9 +173,14 @@ class PostItem extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(
+              right: 0,
+              top: 5,
+              child: item.status.textName,
+            )
           ],
         ),
       ),
-    );
+    ).touchy();
   }
 }

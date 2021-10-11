@@ -12,53 +12,101 @@ import 'package:wrg2/fontend/pages/state.homepage.dart';
 class DiscoverState extends GetxController with StateMixin {
   final api = Get.find<APIService>();
   final info = Get.find<InformationService>();
-  final homeState = Get.find<HomePageState>();
   final controller = ScrollController();
+
   Map<String, PostModel> map = {};
-  List<String> filter = [];
+  Map<String, PostModel> processed = {};
+  Map<String, PostModel> front = {};
   List<String> states = ["All", "open", "processing"];
-  List<int> index = [0, 1, 1];
   int currentStateIndex = 0;
-  int filterIndex = 0;
+  Status filteredStatus = Status.OPEN;
 
   bool noMorePosts = false;
   @override
   void onInit() {
     super.onInit();
     configure();
-    getPosts();
   }
 
   void configure() {
     info.feed.listen((posts) {
       map.addAll(Map<String, PostModel>.from(posts));
       if (map.length == 0) return change("", status: RxStatus.empty());
-      return change("", status: RxStatus.success());
+      front = map;
+      change(null, status: RxStatus.success());
     });
-    // filter = ["all", ...Status.values.map((e) => e.toString())];
+
+    info.processed.listen((posts) {
+      processed.addAll(Map<String, PostModel>.from(posts));
+      if (processed.length == 0) return change("", status: RxStatus.empty());
+      front = processed;
+
+      change(null, status: RxStatus.success());
+    });
+
+    getPosts();
+  }
+
+  void doFilter() async {
+    void setNormal() {
+      map.addAll(Map<String, PostModel>.from(info.feed.value));
+      front = map;
+    }
+
+    noMorePosts = false;
+
+    switch (currentStateIndex) {
+      case 0:
+        setNormal();
+        filteredStatus = null;
+        break;
+      case 1:
+        filteredStatus = Status.OPEN;
+        await getPosts();
+        var tempMap = Map<String, PostModel>.from(info.processed.value);
+
+        processed = Map<String, PostModel>.fromIterable(
+          tempMap.values.where((element) => element.status == Status.OPEN),
+          key: (element) => element.id,
+          value: (element) => element,
+        );
+        front = processed;
+
+        break;
+      case 2:
+        filteredStatus = Status.PROCESSING;
+        await getPosts();
+
+        var tempMap = Map<String, PostModel>.from(info.processed.value);
+
+        processed = Map<String, PostModel>.fromIterable(
+          tempMap.values
+              .where((element) => element.status == Status.PROCESSING),
+          key: (element) => element.id,
+          value: (element) => element,
+        );
+        front = processed;
+
+        break;
+      default:
+        filteredStatus = null;
+        setNormal();
+
+        break;
+    }
+
+    return change("", status: RxStatus.success());
   }
 
   onStateTapped(int index) async {
     currentStateIndex = index;
-    change(null, status: RxStatus.loading());
-    await Future.delayed(Constants.durationLong * 5, () {
-      change(null, status: RxStatus.success());
-    });
-  }
-
-  onTap() {
-    // change(null, status: RxStatus.empty());
-  }
-
-  onFAB() {
-    homeState.setPanelWidget(CreatePost());
-    homeState.showPanel();
+    doFilter();
   }
 
   Future<bool> getPosts() async {
     if (noMorePosts) noMorePosts = false;
     change("", status: RxStatus.loading());
-    var res = await api.getPosts();
+    var res = await api.getPosts(status: filteredStatus);
     if (!res) {
       setNoMorePosts();
     }
@@ -70,8 +118,8 @@ class DiscoverState extends GetxController with StateMixin {
     if (status.isLoadingMore || status.isLoading) return;
     if (noMorePosts) return;
     change("", status: RxStatus.loadingMore());
-    await Future.delayed(Duration(milliseconds: 3000));
-    var res = await api.getPosts(lastId: map.values.last.id);
+    var res =
+        await api.getPosts(lastId: map.values.last.id, status: filteredStatus);
     if (!res) {
       setNoMorePosts();
     }

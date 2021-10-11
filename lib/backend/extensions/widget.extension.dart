@@ -4,7 +4,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/text.extension.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/components/helper%20widgets/touchUp.dart';
 
 extension WD on Widget {
   gradient() {
@@ -47,6 +49,12 @@ extension WD on Widget {
         colors: colors,
         tileMode: TileMode.mirror,
       ).createShader(bounds),
+      child: this,
+    );
+  }
+
+  Widget touchy() {
+    return TouchUp(
       child: this,
     );
   }

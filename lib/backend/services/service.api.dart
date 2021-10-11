@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
@@ -40,8 +43,17 @@ class APIService extends GetxController with SlackExecutor {
     // return _apiInterface.getCategories();
   }
 
-  Future<bool> getPosts({String lastId, int amount}) {
-    return _apiInterface.getPosts(amount: amount, lastId: lastId);
+  Future<bool> getPosts({String lastId, int amount, Status status}) {
+    if (status != null)
+      return _apiInterface.getfilteredPosts(
+          amount: amount, lastId: lastId, status: status);
+    else
+      return _apiInterface.getPosts(amount: amount, lastId: lastId);
+  }
+
+  Future<bool> getfilteredPosts({String lastId, int amount, Status status}) {
+    return _apiInterface.getfilteredPosts(
+        amount: amount, lastId: lastId, status: status);
   }
 
   createPost(PostModel input) {

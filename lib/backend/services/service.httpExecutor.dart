@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:wrg2/backend/enums/enum.post.dart';
 import 'package:wrg2/backend/models/comment.model.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
@@ -64,6 +65,30 @@ class HttpExecutor extends GetxController
     }
   }
 
+  Future<bool> getfilteredPosts(
+      {int amount, String lastId, Status status}) async {
+    try {
+      var info = await dio.post("$baseUrl$post/filter/$status",
+          data: {"amount": amount, "lastId": lastId});
+      if (acceptable(info.statusCode)) {
+        if (info.data.length == 0) return Future.value(false);
+
+        List<PostModel> list = [];
+        for (var item in info.data) {
+          var p = PostModel.fromMap(item);
+          list.add(p);
+        }
+
+        _informationService.processed.set(list);
+        return Future.value(true);
+      }
+      return Future.value(false);
+    } catch (e) {
+      print(e);
+      return Future.value(false);
+    }
+  }
+
   bool acceptable(status) {
     return status >= 200 && status <= 299;
   }
@@ -75,7 +100,8 @@ class HttpExecutor extends GetxController
       // input.userImage = userInfo.value.userImageUrl;
       input.userInfoId = userInfo.value.userId;
       input.offers = [];
-      var info = await create(post, input.toMap());
+      var map = input.toMap();
+      var info = await create(post, map);
       if (acceptable(info.statusCode)) {
         input.userInfo = userInfo.value;
         _informationService.addToFeed(input);

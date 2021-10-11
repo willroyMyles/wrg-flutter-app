@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:wrg2/backend/enums/enum.post.dart';
 
 import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
@@ -22,6 +23,7 @@ class PostModel {
   DateTime createdAt;
   String userInfoId;
   UserInfoModel userInfo;
+  Status status = Status.OPEN;
   List<OfferModel> offers = [];
 
   PostModel({
@@ -39,6 +41,7 @@ class PostModel {
     this.userInfoId = '',
     this.userInfo,
     this.offers,
+    this.status = Status.OPEN,
   });
 
   Map<String, dynamic> toMap() {
@@ -52,6 +55,7 @@ class PostModel {
       'year': year,
       'views': views,
       'userInfoId': userInfoId,
+      'status': status.index,
       // 'userInfo': userInfo.toMap(),
       'offers': offers?.map((x) => x.toMap())?.toList(),
     };
@@ -60,6 +64,11 @@ class PostModel {
   bool contains(Map<String, dynamic> map, String key) => map.containsKey(key);
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
+    var st = Status.values.firstWhere((element) {
+      var name = element.name.toUpperCase();
+      return name == map["status"];
+    });
+    if (st == null) st = Status.OPEN;
     return PostModel(
       title: map['title'],
       id: map['id'],
@@ -71,6 +80,7 @@ class PostModel {
       views: map['views'],
       commentss: map['commentss'],
       watching: map['watching'],
+      status: st,
       createdAt: DateTime.tryParse(map['createdAt']),
       userInfoId: map['userInfoId'],
       userInfo: UserInfoModel.fromMap(map['userInfo']),
@@ -84,6 +94,11 @@ class PostModel {
   factory PostModel.fromMapWithoutUserinfo(Map<String, dynamic> map) {
     if (map == null) return PostModel();
     var cat = DateTime.parse(map["createdAt"]);
+    var st = Status.values.firstWhere((element) {
+      var name = element.name.toUpperCase();
+      return name == map["status"];
+    });
+    if (st == null) st = Status.OPEN;
     var p = PostModel(
       title: map['title'],
       id: map['id'],
@@ -95,6 +110,7 @@ class PostModel {
       views: map['views'],
       commentss: map['commentss'],
       watching: map['watching'],
+      status: st,
       createdAt: cat,
     );
 
@@ -107,7 +123,7 @@ class PostModel {
 
   @override
   String toString() {
-    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, year: $year, views: $views, watching: $watching, commentss: $commentss, createdAt: $createdAt, userInfoId: $userInfoId, userInfo: $userInfo, offers: $offers)';
+    return 'PostModel(title: $title, id: $id, content: $content, category: $category, make: $make, model: $model, year: $year, views: $views, watching: $watching, commentss: $commentss, createdAt: $createdAt, staus: $status, userInfoId: $userInfoId, userInfo: $userInfo, offers: $offers)';
   }
 
   @override
