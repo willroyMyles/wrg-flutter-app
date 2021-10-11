@@ -7,7 +7,7 @@ import 'package:wrg2/backend/extensions/ext.dart';
 class BottomLine extends StatelessWidget {
   const BottomLine({
     Key key,
-    this.height = 2,
+    this.height = 10,
   }) : super(key: key);
 
   final double height;
@@ -17,22 +17,22 @@ class BottomLine extends StatelessWidget {
     return Container(
       height: height,
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(.3))
-          ],
-          borderRadius: BorderRadius.circular(10),
+          // boxShadow: [
+          //   BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(0))
+          // ],
+          // borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               // colors: [Colors.green.shade100, Colors.green.shade800],
               colors: [
-                ts.lightTheme.primaryColor.lighter().lighter(),
-                ts.lightTheme.primaryColor.darker().darker()
-              ],
+            ts.lightTheme.primaryColor.lighter().lighter(),
+            ts.lightTheme.primaryColor.darker().darker()
+          ],
               stops: [
-                Random().nextDouble(),
-                Random().nextDouble()
-              ])),
+            Random().nextDouble(),
+            Random().nextDouble()
+          ])),
     );
   }
 }

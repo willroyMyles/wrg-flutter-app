@@ -16,10 +16,6 @@ class CreatePost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Container(
-              alignment: Alignment.centerLeft,
-              child: Text("create post").huge()),
-          centerTitle: true,
           backgroundColor: Colors.transparent,
           flexibleSpace: FlexibleSpaceBar(),
           elevation: 0,
@@ -31,6 +27,22 @@ class CreatePost extends StatelessWidget {
               key: cps.formKey,
               child: Column(
                 children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 9),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Seek your parts".capitalize,
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 9),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "post what your looking for".capitalize,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                   Container(
                     padding: EdgeInsets.all(9),
                     margin: EdgeInsets.all(2),
