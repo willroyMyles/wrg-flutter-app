@@ -66,7 +66,7 @@ class _DiscoverState extends State<Discover>
               onNotification: (notification) {
                 if (notification is ScrollEndNotification &&
                     notification.metrics.pixels >=
-                        notification.metrics.maxScrollExtent - 30) {
+                        notification.metrics.maxScrollExtent - 10) {
                   controller.loadMorePosts();
                   return true;
                 }

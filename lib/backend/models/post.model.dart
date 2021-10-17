@@ -6,6 +6,7 @@ import 'package:wrg2/backend/enums/enum.post.dart';
 
 import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/userinfo.dart';
+import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.executor.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 
@@ -171,7 +172,8 @@ class PostModel {
   }
 
   amIOwner() {
-    var service = Get.find<ApiExecutor>();
-    return this.userInfo.id == service.userInfo.value.userId;
+    var service = Get.find<APIService>();
+    var ans = this.userInfoId == service.userInfo.value.userId;
+    return ans;
   }
 }

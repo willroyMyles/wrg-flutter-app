@@ -26,6 +26,114 @@ class ConversationView extends StatelessWidget {
     controller.setId(item.id);
     dialog.closeDialog();
     return Scaffold(
+        appBar: AppBar(
+          title: Text.rich(TextSpan(children: [
+            TextSpan(
+                text: "messages with",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: ts.white.withOpacity(.3))),
+            TextSpan(text: "\n ${other.username}"),
+          ])),
+          automaticallyImplyLeading: true,
+          backgroundColor: ts.grey1,
+          toolbarHeight: 100,
+          bottom: PreferredSize(
+            preferredSize: Size(Get.width, 80),
+            child: Container(
+              color: ts.grey1,
+              child: Column(
+                children: [
+                  if (controller.list.isNotEmpty &&
+                          !item.amISender(controller.list?.elementAt(0)) ??
+                      false)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        FlatButton(
+                          onPressed: () {},
+                          child: Text(
+                            "accept".capitalize,
+                            textScaleFactor: 1,
+                            style: TextStyle(color: Colors.green, fontSize: 18),
+                          ),
+                          color: Colors.transparent,
+                        ),
+                        FlatButton(
+                          onPressed: () {},
+                          child: Text(
+                            "decline".capitalize,
+                            textScaleFactor: 1,
+                            style: TextStyle(color: ts.red, fontSize: 18),
+                          ),
+                          color: Colors.transparent,
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        body: GetBuilder<ConversationState>(
+          init: controller,
+          builder: (controller) {
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Container(
+                child: Column(
+                  children: [
+                    if (controller.status.isSuccess)
+                      Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.only(top: 25),
+                          controller: controller.listViewController,
+                          itemCount: controller.list.length,
+                          itemBuilder: (context, index) {
+                            var e = controller.list.elementAt(index);
+                            return MessageItem(
+                                model: e,
+                                other: other,
+                                amISender: item.amISender(e),
+                                index: index);
+                          },
+                        ),
+                      ),
+                    if (controller.status.isLoading)
+                      Expanded(
+                        child: LoadingView(),
+                      ),
+                    if (controller.status.isEmpty) Constants.empty(),
+                    Container(
+                        padding:
+                            EdgeInsets.only(bottom: 20, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                width: Get.width - 100,
+                                child: TextFormField(
+                                  controller: controller.textControler,
+                                ).input(label: "send a message...")),
+                            LoadingButton(
+                              icon: CupertinoIcons.paperplane,
+                              loading: controller.loading,
+                              callback: () {
+                                controller.sendMessage(item);
+                              },
+                            )
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            );
+          },
+        ));
+    return Scaffold(
         resizeToAvoidBottomInset: true,
         extendBodyBehindAppBar: true,
         floatingActionButton: FloatingActionButton(
@@ -65,9 +173,9 @@ class ConversationView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           FlatButton(onPressed: () {}, child: Text("Accept"))
-                              .primary(),
+                              .secondary(),
                           FlatButton(onPressed: () {}, child: Text("Decline"))
-                              .primary(),
+                              .secondary(),
                         ],
                       ),
                     ),
@@ -81,10 +189,12 @@ class ConversationView extends StatelessWidget {
                           other: other,
                           amISender: item.amISender(e),
                           index: controller.list.indexOf(e))),
-                      SizedBox(
-                        height: 120,
-                      )
-                    ]))
+                    ])),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      child: TextFormField(),
+                    ),
+                  )
                 ],
               );
             }));

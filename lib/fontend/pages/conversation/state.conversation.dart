@@ -41,6 +41,7 @@ class ConversationState extends GetxController with StateMixin {
         infoServcie.setMessages(list, id);
         scrolltobottom();
       }
+      // change(null, status: RxStatus.empty());
     } catch (e) {
       print(e);
       change(null, status: RxStatus.error(e.toString()));
@@ -53,7 +54,7 @@ class ConversationState extends GetxController with StateMixin {
       refresh();
       var msg = MessagesModel();
       msg.content = textControler.text;
-      msg.sender = service.userInfo.value.id;
+      msg.sender = service.userInfo.value.userId;
       var ans = await service.addMessageToConversation(model, msg);
       if (ans) {
         model.messages.add(msg);

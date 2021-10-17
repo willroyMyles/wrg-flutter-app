@@ -11,16 +11,15 @@ class PostModelList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ts.grey1,
+      appBar: AppBar(
+        title: Text("Offers"),
+        backgroundColor: ts.grey1,
+      ),
+      // backgroundColor: ts.grey1,
       body: SafeArea(
         child: Container(
-          color: ts.white,
           child: CustomScrollView(
             slivers: [
-              SliverAppBar(
-                title: Text("Offers"),
-                backgroundColor: ts.grey1,
-              ),
               SliverList(
                 delegate: SliverChildListDelegate([
                   ...models.entries.map((e) => PostOfferItem(

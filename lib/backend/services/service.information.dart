@@ -10,6 +10,7 @@ class RxObject<T> extends Rx<Map<dynamic, dynamic>> {
   RxObject(Map initial) : super(initial);
 
   set(List<dynamic> list) {
+    this.value.clear();
     for (var item in list) {
       this.value.update(
             item.id,
@@ -17,7 +18,7 @@ class RxObject<T> extends Rx<Map<dynamic, dynamic>> {
             ifAbsent: () => item,
           );
     }
-    this.refresh();
+    this.announce();
   }
 
   void updateMap(dynamic model) {
@@ -27,12 +28,17 @@ class RxObject<T> extends Rx<Map<dynamic, dynamic>> {
     this.refresh();
   }
 
+  clear() {
+    this.value.clear();
+    this.announce();
+  }
+
   announce() => this.refresh();
 }
 
 class InformationService extends GetxController {
   RxMap<dynamic, dynamic> conversations = {}.obs;
-  RxMap<dynamic, dynamic> offers = {}.obs;
+  RxObject<OfferModel> offers = RxObject({});
   RxMap<dynamic, dynamic> watching = {}.obs;
   Rx<Map<dynamic, dynamic>> feed = Rx({});
   RxObject<PostModel> processed = RxObject({});
@@ -54,7 +60,7 @@ class InformationService extends GetxController {
     conversations.refresh();
     watching.refresh();
     feed.refresh();
-    offers.refresh();
+    offers.announce();
     messages.refresh();
     processed.announce();
     refresh();
@@ -93,18 +99,11 @@ class InformationService extends GetxController {
   }
 
   setOffer(List<dynamic> list) {
-    for (var item in list) {
-      offers.putIfAbsent(item.id, () => item);
-    }
-    offers.refresh();
+    offers.set(list);
   }
 
   updateOffer(OfferModel model) {
-    offers.update(
-      model.id,
-      (value) => model,
-    );
-    offers.refresh();
+    offers.updateMap(model);
   }
 
   setMessages(List<dynamic> list, String id) {

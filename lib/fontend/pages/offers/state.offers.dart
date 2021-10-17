@@ -20,11 +20,15 @@ class OfferState extends GetxController with StateMixin {
     initialize();
   }
 
+  void getOffers() async {
+    change(null, status: RxStatus.loading());
+    await service.getUserOffers();
+  }
+
   void initialize() async {
     infoService.offers.listen((offers) {
-      map = Map<String, OfferModel>.from(offers);
-
-      for (var offer in map.values) {
+      superMap.clear();
+      for (var offer in offers.values) {
         superMap.update(
           offer.postId,
           (value) {
@@ -39,10 +43,11 @@ class OfferState extends GetxController with StateMixin {
           },
         );
       }
-
-      if (map.isEmpty) return change("", status: RxStatus.empty());
-      change("", status: RxStatus.success());
-      refresh();
+      var isEmpty = superMap.length == 0;
+      if (isEmpty)
+        change("", status: RxStatus.empty());
+      else
+        change(null, status: RxStatus.success());
     });
   }
 }

@@ -7,6 +7,7 @@ import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
+import 'package:wrg2/backend/models/userinfo.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.information.dart';
@@ -270,6 +271,7 @@ class FeedDetailsState extends GetxController with StateMixin {
       OfferModel model = OfferModel.empty();
       model.message = input.text;
       model.postId = currentPostModel.id;
+      model.recieverId = currentPostModel.userInfoId;
       var res = await service.createOffer(model);
       input.clear();
     } else {
@@ -365,28 +367,29 @@ class FeedDetailsState extends GetxController with StateMixin {
                       ],
                     ),
                   ),
-                  Container(
-                    child: CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      value: isOffer,
-                      activeColor: ts.grey1,
-                      checkColor: ts.grey1,
-                      selected: true,
-                      isThreeLine: true,
-                      shape: CircleBorder(
-                          side: BorderSide(color: ts.grey1, width: 5)),
-                      subtitle:
-                          Text("when selected, you can make an offer").h4(),
-                      onChanged: (value) {
-                        isOffer = value;
-                        refresh();
-                      },
-                      title: Text(
-                        "is offer?",
-                        style: TextStyle(color: ts.grey1),
+                  if (!currentPostModel.amIOwner())
+                    Container(
+                      child: CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: isOffer,
+                        activeColor: ts.grey1,
+                        checkColor: ts.grey1,
+                        selected: true,
+                        isThreeLine: true,
+                        shape: CircleBorder(
+                            side: BorderSide(color: ts.grey1, width: 5)),
+                        subtitle:
+                            Text("when selected, you can make an offer").h4(),
+                        onChanged: (value) {
+                          isOffer = value;
+                          refresh();
+                        },
+                        title: Text(
+                          "is offer?",
+                          style: TextStyle(color: ts.grey1),
+                        ),
                       ),
-                    ),
-                  )
+                    )
                 ],
               )),
         );

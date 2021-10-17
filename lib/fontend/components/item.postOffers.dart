@@ -16,7 +16,7 @@ class PostOfferItem extends StatelessWidget {
   final offerTag = getTag();
   final infoService = Get.find<InformationService>();
 
-  getModel() {
+  PostModel getModel() {
     return list.where((element) => element.postId == postModelId).first.post;
   }
 
@@ -48,6 +48,14 @@ class PostOfferItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            Text("").hdate(getModel().createdAt),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Text(
                           getModel().title,
                           textScaleFactor: 1,
@@ -56,9 +64,6 @@ class PostOfferItem extends StatelessWidget {
                           style: TextStyle(
                               color: ts.grey1, fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(
-                          height: 10,
-                        )
                       ],
                     ),
                   ),

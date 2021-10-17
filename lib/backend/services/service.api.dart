@@ -129,4 +129,6 @@ class APIService extends GetxController with SlackExecutor {
 
     return Future.value(list);
   }
+
+  Future<bool> getUserOffers() => _apiInterface.getUserOffers();
 }

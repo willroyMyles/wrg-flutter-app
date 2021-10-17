@@ -51,6 +51,7 @@ class DiscoverState extends GetxController with StateMixin {
     void setNormal() {
       map.addAll(Map<String, PostModel>.from(info.feed.value));
       front = map;
+      if (map.length == 0) getPosts();
     }
 
     noMorePosts = false;
@@ -58,6 +59,7 @@ class DiscoverState extends GetxController with StateMixin {
     switch (currentStateIndex) {
       case 0:
         setNormal();
+
         filteredStatus = null;
         break;
       case 1:

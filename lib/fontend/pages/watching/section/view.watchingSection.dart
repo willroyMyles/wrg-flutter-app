@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
+import 'package:wrg2/backend/services/service.carData.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.helper.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
@@ -19,10 +21,43 @@ class WatchingSection extends StatelessWidget {
       stream: informationService.watching.stream,
       builder: (context, snapshot) {
         return informationService.watching.length > 0
-            ? buildList()
+            ? buildFull()
             : buildEmpty();
       },
     );
+  }
+
+  Widget buildFull() {
+    var length = informationService.watching.length;
+
+    return SliverToBoxAdapter(
+        child: Container(
+            height: 100,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+            decoration: BoxDecoration(
+                color: ts.white,
+                borderRadius: BorderRadius.circular(Constants.br)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text("your watching $length posts"),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  child: FlatButton(
+                    onPressed: () {
+                      Get.to(() => WatchingListView());
+                    },
+                    child: Text("view watching list"),
+                  ).secondary(),
+                )
+              ],
+            )));
   }
 
   Widget buildList() {
@@ -34,20 +69,11 @@ class WatchingSection extends StatelessWidget {
         sliver: SliverToBoxAdapter(
           child: GestureDetector(
             onTap: () {
-              // Navigator.of(Get.context).push(PageRouteBuilder(
-              //   pageBuilder: (context, animation, secondaryAnimation) {
-              //     return WatchingListView(tags: tags, anim: animation);
-              //   },
-              //   transitionDuration: Duration(milliseconds: 650),
-              //   reverseTransitionDuration: Duration(milliseconds: 650),
-              // ));
-              Get.to(() => WatchingListView(
-                    tags: tags,
-                  ));
+              Get.to(() => WatchingListView());
             },
             child: Container(
                 height: 300,
-                child: Column(
+                child: Row(
                   children: [
                     Container(
                       padding: EdgeInsets.all(15),
@@ -101,14 +127,24 @@ class WatchingSection extends StatelessWidget {
   Widget buildEmpty() {
     return SliverToBoxAdapter(
       child: Container(
-        width: Get.width,
-        alignment: Alignment.center,
         height: 100,
-        padding: EdgeInsets.all(30),
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(7)),
-        child: Text("Not watching any posts as yet...").hunch(),
+            color: ts.white, borderRadius: BorderRadius.circular(Constants.br)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    "${informationService.watching.length} posts watching")),
+            SizedBox(
+              height: 10,
+            ),
+            Text("Not watching any posts"),
+          ],
+        ),
       ),
     );
   }

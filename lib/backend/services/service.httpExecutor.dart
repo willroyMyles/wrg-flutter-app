@@ -218,6 +218,20 @@ class HttpExecutor extends GetxController
       _informationService.setWatching(userInfo.value.watching);
       _informationService.setConversation(
           [...userInfo.value.incomings, ...userInfo.value.outgoings]);
+      getUserOffers();
+    } on DioError catch (e) {
+      print(e);
+      if (e.response.statusCode == 404) {
+        await createUserInfo(user);
+      }
+    } on Exception catch (e) {
+      print(e);
+      print("Could not get user");
+    }
+  }
+
+  Future<bool> getUserOffers() async {
+    try {
       var res = await getOffers(userInfo.value.userId);
       if (acceptable(res.statusCode)) {
         List<OfferModel> list = [];
@@ -228,14 +242,14 @@ class HttpExecutor extends GetxController
 
         _informationService.setOffer(list);
       }
+      return Future.value(true);
     } on DioError catch (e) {
       print(e);
-      if (e.response.statusCode == 404) {
-        await createUserInfo(user);
-      }
+      return Future.value(false);
     } on Exception catch (e) {
       print(e);
-      print("Could not get user");
+      print("Could not get offers");
+      return Future.value(false);
     }
   }
 
@@ -271,14 +285,6 @@ class HttpExecutor extends GetxController
     try {
       var res = await dio.get("$baseUrl$convoUrl/$id");
       if (acceptable(res.statusCode)) {
-        // ConversationModel model = _informationService.conversations[id];
-        // List<MessagesModel> list = [];
-        // for (var msg in res.data["messages"]) {
-        //   var message = MessagesModel.fromMap(msg);
-        //   list.add(message);
-        // }
-        // model.messages = list;
-
         ConversationModel model = ConversationModel.fromMap(res.data);
         _informationService.setMessages(model.messages, model.id);
         // _informationService.updateConversation(model);

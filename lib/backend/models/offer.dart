@@ -16,6 +16,7 @@ class OfferModel {
   UserInfoModel sender;
   UserInfoModel reciever;
   String senderId;
+  String recieverId;
 
   OfferModel({
     this.id,
@@ -64,6 +65,7 @@ class OfferModel {
       'message': message,
       'postId': postId,
       'senderId': senderId,
+      'recieverId': recieverId,
     };
   }
 

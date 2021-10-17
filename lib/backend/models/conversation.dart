@@ -30,7 +30,7 @@ class ConversationModel {
 
   bool amISender(MessagesModel model) {
     final APIService ser = Get.find();
-    var isSender = model.sender == ser.userInfo.value.id;
+    var isSender = model.sender == ser.userInfo.value.userId;
     return isSender;
   }
 
