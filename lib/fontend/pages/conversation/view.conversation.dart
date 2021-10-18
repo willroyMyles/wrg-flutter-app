@@ -26,6 +26,11 @@ class ConversationView extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.setId(item.id);
     dialog.closeDialog();
+    var appbarHeight = Get.mediaQuery.viewPadding.top + 100;
+    var inputHeight = 100;
+    var remaining = Get.height - appbarHeight - inputHeight;
+    var bottom = MediaQuery.of(context).viewInsets.bottom;
+
     return Scaffold(
         appBar: AppBar(
           title: Text.rich(TextSpan(children: [
@@ -77,6 +82,8 @@ class ConversationView extends StatelessWidget {
           ),
         ),
         resizeToAvoidBottomInset: true,
+        extendBody: false,
+        extendBodyBehindAppBar: false,
         body: GetBuilder<ConversationState>(
           init: controller,
           builder: (controller) {
@@ -84,61 +91,93 @@ class ConversationView extends StatelessWidget {
               onTap: () {
                 FocusScope.of(context).unfocus();
               },
-              child: Container(
-                child: Column(
-                  children: [
-                    if (controller.status.isSuccess)
-                      Expanded(
-                        child: KeyboardVisibilityBuilder(
-                          builder: (_, isKeyboardVisible) {
-                            if (isKeyboardVisible) controller.scrolltobottom();
-                            return Container(
-                              child: ListView.builder(
-                                // physics: ClampingScrollPhysics(),
-                                padding: EdgeInsets.only(top: 25),
-                                controller: controller.listViewController,
-                                itemCount: controller.list.length,
-                                itemBuilder: (context, index) {
-                                  var e = controller.list.elementAt(index);
-                                  return MessageItem(
-                                      model: e,
-                                      other: other,
-                                      amISender: item.amISender(e),
-                                      index: index);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    if (controller.status.isLoading)
-                      Expanded(
-                        child: LoadingView(),
-                      ),
-                    if (controller.status.isEmpty) Constants.empty(),
-                    Container(
-                        padding:
-                            EdgeInsets.only(bottom: 20, left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                                width: Get.width - 100,
-                                child: TextFormField(
-                                  controller: controller.textControler,
-                                ).input(label: "send a message...")),
-                            LoadingButton(
-                              icon: CupertinoIcons.paperplane,
-                              loading: controller.loading,
-                              callback: () {
-                                controller.sendMessage(item);
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: bottom > 10
+                        ? MediaQuery.of(context).viewInsets.bottom - 336 + 110
+                        : 110,
+                    child: Column(
+                      children: [
+                        if (controller.status.isSuccess)
+                          Container(
+                            height: remaining,
+                            width: Get.width,
+                            child: ListView.builder(
+                              // physics: ClampingScrollPhysics(),
+                              padding: EdgeInsets.only(top: 25),
+                              controller: controller.listViewController,
+                              itemCount: controller.list.length,
+                              itemBuilder: (context, index) {
+                                var e = controller.list.elementAt(index);
+                                return MessageItem(
+                                    model: e,
+                                    other: other,
+                                    amISender: item.amISender(e),
+                                    index: index);
                               },
-                            )
-                          ],
-                        ))
-                  ],
-                ),
+                            ),
+                          ),
+                        if (controller.status.isLoading)
+                          Container(
+                            height: remaining,
+                            width: Get.width,
+                            child: LoadingView(),
+                          ),
+                        if (controller.status.isEmpty) Constants.empty(),
+                        // Container(
+                        //     height: 100,
+                        //     width: Get.width,
+                        //     padding: EdgeInsets.only(
+                        //         bottom: 20, left: 10, right: 10),
+                        //     child: Row(
+                        //       mainAxisAlignment:
+                        //           MainAxisAlignment.spaceAround,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: [
+                        //         Container(
+                        //             width: Get.width - 100,
+                        //             child: TextFormField(
+                        //               controller: controller.textControler,
+                        //             ).input(label: "send a message...")),
+                        //         LoadingButton(
+                        //           icon: CupertinoIcons.paperplane,
+                        //           loading: controller.loading,
+                        //           callback: () {
+                        //             controller.sendMessage(item);
+                        //           },
+                        //         )
+                        //       ],
+                        //     ))
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      child: Container(
+                          height: 100,
+                          width: Get.width,
+                          padding:
+                              EdgeInsets.only(bottom: 20, left: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  width: Get.width - 100,
+                                  child: TextFormField(
+                                    controller: controller.textControler,
+                                  ).input(label: "send a message...")),
+                              LoadingButton(
+                                icon: CupertinoIcons.paperplane,
+                                loading: controller.loading,
+                                callback: () {
+                                  controller.sendMessage(item);
+                                },
+                              )
+                            ],
+                          ))),
+                ],
               ),
             );
           },
