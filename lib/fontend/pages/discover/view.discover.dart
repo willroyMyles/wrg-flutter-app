@@ -75,48 +75,50 @@ class _DiscoverState extends State<Discover>
               },
               child: CustomScrollView(
                 controller: controller.controller,
+                physics: AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverPadding(
-                    padding: EdgeInsets.only(top: 30),
-                    sliver: SliverAppBar(
-                      floating: true,
-                      title: Container(
-                          height: 50,
-                          width: Get.width,
-                          margin: EdgeInsets.only(top: 0),
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ...controller.states.map(
-                                (e) {
-                                  var index = controller.states.indexOf(e);
-                                  var isSelected =
-                                      index == controller.currentStateIndex;
-                                  return InkWell(
-                                    onTap: () {
-                                      controller.onStateTapped(index);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Text(
-                                        e.capitalize,
-                                        textScaleFactor: 1,
-                                        style: TextStyle(
-                                            color:
-                                                isSelected ? ts.red : ts.grey,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          )),
-                    ),
-                  ),
-                  if (false)
+                  // if (false)
+                  // SliverPadding(
+                  //   padding: EdgeInsets.only(top: 30),
+                  //   sliver: SliverAppBar(
+                  //     floating: true,
+                  //     title: Container(
+                  //         height: 50,
+                  //         width: Get.width,
+                  //         margin: EdgeInsets.only(top: 0),
+                  //         alignment: Alignment.center,
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //           children: [
+                  //             ...controller.states.map(
+                  //               (e) {
+                  //                 var index = controller.states.indexOf(e);
+                  //                 var isSelected =
+                  //                     index == controller.currentStateIndex;
+                  //                 return InkWell(
+                  //                   onTap: () {
+                  //                     controller.onStateTapped(index);
+                  //                   },
+                  //                   child: Container(
+                  //                     padding: EdgeInsets.all(5),
+                  //                     child: Text(
+                  //                       e.capitalize,
+                  //                       textScaleFactor: 1,
+                  //                       style: TextStyle(
+                  //                           color:
+                  //                               isSelected ? ts.red : ts.grey,
+                  //                           fontWeight: FontWeight.w600,
+                  //                           fontSize: 16),
+                  //                     ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //             )
+                  //           ],
+                  //         )),
+                  //   ),
+                  // ),
+                  if (true)
                     SliverAppBar(
                       floating: true,
                       title: Container(
@@ -125,26 +127,35 @@ class _DiscoverState extends State<Discover>
                           width: Get.width,
                           alignment: Alignment.center,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                  decoration: Constants.decoration,
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.all(10),
-                                  child: Text("sort",
+                                  child: Text("options",
                                       style: TextStyle(
                                           color: ts.grey,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16))),
+                              Spacer(),
                               Container(
-                                  decoration: Constants.decoration,
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.all(10),
-                                  child: Text("filter",
-                                      style: TextStyle(
-                                          color: ts.grey,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16))),
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 10),
+                                      child: Icon(CupertinoIcons.sort_down))
+                                  .glass(),
+                              InkWell(
+                                onTap: () {
+                                  controller.showBottomFilter();
+                                },
+                                child: Container(
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 10),
+                                        child: Icon(CupertinoIcons
+                                            .square_stack_3d_down_right_fill))
+                                    .glass(),
+                              ),
                             ],
                           )),
                     ),

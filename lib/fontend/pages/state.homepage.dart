@@ -70,7 +70,6 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     tabController = TabController(length: views.length, vsync: this);
     animationController = AnimationController(vsync: this);

@@ -54,7 +54,6 @@ class ConversationState extends GetxController with StateMixin {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
     service.websocketOps.leaveRoom(id);
   }

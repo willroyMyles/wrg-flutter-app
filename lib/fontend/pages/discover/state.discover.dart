@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:wrg2/backend/enums/enum.post.dart';
+import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
@@ -17,9 +20,7 @@ class DiscoverState extends GetxController with StateMixin {
   Map<String, PostModel> map = {};
   Map<String, PostModel> processed = {};
   Map<String, PostModel> front = {};
-  List<String> states = ["All", "open", "processing"];
-  int currentStateIndex = 0;
-  Status filteredStatus = Status.OPEN;
+  Status filteredStatus;
 
   bool noMorePosts = false;
   @override
@@ -47,6 +48,15 @@ class DiscoverState extends GetxController with StateMixin {
     getPosts();
   }
 
+  onFilterPressed(int index) {
+    if (index < 0)
+      filteredStatus = null;
+    else
+      filteredStatus = Status.values.elementAt(index);
+
+    refresh();
+  }
+
   void doFilter() async {
     void setNormal() {
       map.addAll(Map<String, PostModel>.from(info.feed.value));
@@ -56,52 +66,26 @@ class DiscoverState extends GetxController with StateMixin {
 
     noMorePosts = false;
 
-    switch (currentStateIndex) {
-      case 0:
-        setNormal();
+    await getPosts();
 
-        filteredStatus = null;
-        break;
-      case 1:
-        filteredStatus = Status.OPEN;
-        await getPosts();
-        var tempMap = Map<String, PostModel>.from(info.processed.value);
-
-        processed = Map<String, PostModel>.fromIterable(
-          tempMap.values.where((element) => element.status == Status.OPEN),
-          key: (element) => element.id,
-          value: (element) => element,
-        );
-        front = processed;
-
-        break;
-      case 2:
-        filteredStatus = Status.PROCESSING;
-        await getPosts();
-
-        var tempMap = Map<String, PostModel>.from(info.processed.value);
-
-        processed = Map<String, PostModel>.fromIterable(
-          tempMap.values
-              .where((element) => element.status == Status.PROCESSING),
-          key: (element) => element.id,
-          value: (element) => element,
-        );
-        front = processed;
-
-        break;
-      default:
-        filteredStatus = null;
-        setNormal();
-
-        break;
+    if (filteredStatus == null) {
+      setNormal();
+      front = map;
+    } else {
+      var tempMap = Map<String, PostModel>.from(info.processed.value);
+      processed = Map<String, PostModel>.fromIterable(
+        tempMap.values.where((element) => element.status == filteredStatus),
+        key: (element) => element.id,
+        value: (element) => element,
+      );
+      front = processed;
     }
 
     return change("", status: RxStatus.success());
   }
 
   onStateTapped(int index) async {
-    currentStateIndex = index;
+    // currentStateIndex = index;
     doFilter();
   }
 
@@ -135,5 +119,89 @@ class DiscoverState extends GetxController with StateMixin {
     change("", status: RxStatus.success());
     controller.animateTo(controller.position.pixels + 80,
         duration: Constants.durationLong, curve: Curves.decelerate);
+  }
+
+  showBottomFilter() async {
+    await Get.bottomSheet(
+      DraggableScrollableSheet(
+        initialChildSize: .9,
+        maxChildSize: .9,
+        minChildSize: .2,
+        expand: true,
+        builder: (context, scrollController) {
+          return GetBuilder<DiscoverState>(
+            init: this,
+            builder: (_) {
+              return Container(
+                color: ts.grey1,
+                padding: EdgeInsets.only(top: 10),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          this.onFilterPressed(-10);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "All",
+                                style: TextStyle(
+                                    color: ts.white,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              if (filteredStatus == null)
+                                Icon(CupertinoIcons.check_mark_circled_solid,
+                                    color: Colors.green)
+                            ],
+                          ),
+                        ).fadeInUp(),
+                      ),
+                      ...Status.values.map((e) => InkWell(
+                            onTap: () {
+                              this.onFilterPressed(e.index);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 10),
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    e.name.capitalize,
+                                    style: TextStyle(color: ts.white),
+                                  ),
+                                  if (filteredStatus == e)
+                                    Icon(
+                                        CupertinoIcons.check_mark_circled_solid,
+                                        color: Colors.green)
+                                ],
+                              ),
+                            ).fadeInUp(),
+                          ))
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+      isDismissible: true,
+    );
+
+    doFilter();
   }
 }
