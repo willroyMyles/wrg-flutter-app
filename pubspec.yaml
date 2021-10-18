@@ -24,8 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
   get: 
-  firebase_core: ^0.7.0
-  firebase_auth: ^0.20.1
+  firebase_core: ^1.7.0
+  firebase_auth: ^3.1.0
+  firebase_messaging: "^10.0.8"
   google_sign_in: ^4.5.1
   uuid:
   timeago: ^3.0.2
@@ -39,6 +40,7 @@ dependencies:
   dio:
   progress_state_button: ^1.0.3
   shared_preferences:
+  socket_io_client: ^2.0.0-beta.4-nullsafety.0
   ### visual
   fade_shimmer: ^2.0.1
   animate_do: ^2.0.0

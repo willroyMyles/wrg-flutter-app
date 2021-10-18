@@ -15,6 +15,7 @@ import 'package:wrg2/backend/services/offer%20service/offer.service.dart';
 import 'package:wrg2/backend/services/service.auth.dart';
 import 'package:wrg2/backend/services/service.baseExecutor.dart';
 import 'package:wrg2/backend/services/service.information.dart';
+import 'package:wrg2/backend/services/service.websocket.dart';
 
 import 'service.toast.dart';
 
@@ -290,6 +291,8 @@ class HttpExecutor extends GetxController
         // _informationService.updateConversation(model);
         return Future.value(model.messages);
       }
+    } on DioError catch (e) {
+      print("dio error");
     } catch (e) {
       print(e);
       return Future.value(false);

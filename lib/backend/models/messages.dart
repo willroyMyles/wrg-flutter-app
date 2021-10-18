@@ -17,7 +17,7 @@ class MessagesModel {
     return {
       'sender': sender,
       'content': content,
-      // 'id': id,
+      'id': id,
       // 'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
@@ -30,6 +30,8 @@ class MessagesModel {
       createdAt: DateTime.tryParse(map['createdAt']),
     );
   }
+
+  factory MessagesModel.empty() => MessagesModel();
 
   String toJson() => json.encode(toMap());
 

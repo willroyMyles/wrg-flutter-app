@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wrg2/backend/models/conversation.dart';
 import 'package:wrg2/backend/models/messages.dart';
 import 'package:wrg2/backend/services/service.api.dart';
@@ -15,9 +18,10 @@ class ConversationState extends GetxController with StateMixin {
   var textControler = TextEditingController();
   final dialog = Get.find<DialogService>();
   final listViewController = ScrollController();
+  final stream = StreamController<Map<String, dynamic>>();
   bool loading = false;
   String id;
-
+  ConversationModel cm;
   List<MessagesModel> list = [];
 
   FocusNode fn = FocusNode();
@@ -26,6 +30,33 @@ class ConversationState extends GetxController with StateMixin {
   void onInit() {
     super.onInit();
     getMessages();
+    initWebSockets();
+  }
+
+  void initWebSockets() async {
+    await Future.delayed(Constants.duration);
+    service.websocketOps.connect();
+    stream.stream.listen((event) {
+      print(event);
+      updateListWithMessage(event);
+    });
+    service.websocketOps.createRoom(id, stream);
+  }
+
+  void updateListWithMessage(dynamic msg) {
+    MessagesModel model = MessagesModel.fromMap(msg);
+
+    list.add(model);
+    loading = false;
+    refresh();
+    scrolltobottom();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    service.websocketOps.leaveRoom(id);
   }
 
   void getMessages() async {
@@ -55,28 +86,39 @@ class ConversationState extends GetxController with StateMixin {
       var msg = MessagesModel();
       msg.content = textControler.text;
       msg.sender = service.userInfo.value.userId;
-      var ans = await service.addMessageToConversation(model, msg);
-      if (ans) {
-        model.messages.add(msg);
-        list.add(msg);
+      msg.createdAt = DateTime.now();
+      msg.id = model.id;
 
-        loading = false;
-        infoServcie.updateConversation(model);
-        infoServcie.updateMessages(msg, model.id);
-        scrolltobottom();
-        refresh();
-      } else {
-        loading = false;
-        refresh();
-      }
+      service.websocketOps.sendMessage(msg, id);
+      // list.add(msg);
+      refresh();
+      // var ans = await service.addMessageToConversation(model, msg);
+      // if (ans) {
+      //   model.messages.add(msg);
+      //   list.add(msg);
+
+      //   loading = false;
+      //   infoServcie.updateConversation(model);
+      //   infoServcie.updateMessages(msg, model.id);
+      //   scrolltobottom();
+      //   refresh();
+      // } else {
+      //   loading = false;
+      //   refresh();
+      // }
       textControler.text = "";
       dialog.closeDialog();
     }
   }
 
   scrolltobottom() {
-    listViewController.animateTo(listViewController.position.maxScrollExtent,
-        duration: Constants.durationShort, curve: Curves.decelerate);
+    // listViewController.animateTo(
+    //     listViewController.position.maxScrollExtent + 100,
+    //     duration: Constants.durationShort,
+    //     curve: Curves.decelerate);
+
+    listViewController
+        .jumpTo(listViewController.position.maxScrollExtent + 130);
   }
 
   void setId(String id) {

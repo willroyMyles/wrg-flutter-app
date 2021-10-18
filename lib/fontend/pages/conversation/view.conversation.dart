@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/models/conversation.dart';
@@ -75,6 +76,7 @@ class ConversationView extends StatelessWidget {
             ),
           ),
         ),
+        resizeToAvoidBottomInset: true,
         body: GetBuilder<ConversationState>(
           init: controller,
           builder: (controller) {
@@ -87,17 +89,25 @@ class ConversationView extends StatelessWidget {
                   children: [
                     if (controller.status.isSuccess)
                       Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.only(top: 25),
-                          controller: controller.listViewController,
-                          itemCount: controller.list.length,
-                          itemBuilder: (context, index) {
-                            var e = controller.list.elementAt(index);
-                            return MessageItem(
-                                model: e,
-                                other: other,
-                                amISender: item.amISender(e),
-                                index: index);
+                        child: KeyboardVisibilityBuilder(
+                          builder: (_, isKeyboardVisible) {
+                            if (isKeyboardVisible) controller.scrolltobottom();
+                            return Container(
+                              child: ListView.builder(
+                                // physics: ClampingScrollPhysics(),
+                                padding: EdgeInsets.only(top: 25),
+                                controller: controller.listViewController,
+                                itemCount: controller.list.length,
+                                itemBuilder: (context, index) {
+                                  var e = controller.list.elementAt(index);
+                                  return MessageItem(
+                                      model: e,
+                                      other: other,
+                                      amISender: item.amISender(e),
+                                      index: index);
+                                },
+                              ),
+                            );
                           },
                         ),
                       ),
