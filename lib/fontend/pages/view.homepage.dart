@@ -26,6 +26,51 @@ class HomePageView extends StatelessWidget {
       children: [
         Scaffold(
           key: controller.scaffoldKey,
+          // extendBody: true,
+          bottomNavigationBar: Container(
+            height: 80,
+            width: Get.width,
+            color: Colors.transparent,
+            alignment: Alignment.topCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Hero(
+                  tag: "fab",
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    height: 60,
+                    width: Get.width / 2,
+                    // padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        color: ts.grey1,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: -5,
+                              blurRadius: 10,
+                              color: ts.red.withOpacity(.3),
+                              offset: Offset(0, 4)),
+                          BoxShadow(
+                              blurRadius: 10,
+                              color: ts.grey1.withOpacity(.3),
+                              offset: Offset(0, 4))
+                        ]),
+                    child: Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          buildTab(CupertinoIcons.house, 0),
+                          buildTab(CupertinoIcons.tray_full, 1),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ).fadeInUp(multiplier: 2),
           drawer: Drawer(
             child: ProfileView(),
             elevation: 0,
@@ -39,53 +84,6 @@ class HomePageView extends StatelessWidget {
             children: [...controller.views],
           ),
         ),
-        Positioned(
-          bottom: 40,
-          // right: 20,
-          child: Builder(builder: (context) {
-            return Container(
-              height: 70,
-              width: Get.width,
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: "fab",
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      // padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          color: ts.grey1,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: -5,
-                                blurRadius: 10,
-                                color: ts.red.withOpacity(.3),
-                                offset: Offset(0, 4)),
-                            BoxShadow(
-                                blurRadius: 10,
-                                color: ts.grey1.withOpacity(.3),
-                                offset: Offset(0, 4))
-                          ]),
-                      child: Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            buildTab(CupertinoIcons.house, 0),
-                            buildTab(CupertinoIcons.tray_full, 1),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ).fadeInUp(multiplier: 2);
-          }),
-        )
       ],
     );
   }
@@ -100,11 +98,11 @@ class HomePageView extends StatelessWidget {
             controller.onIndexTapped(i);
           },
           child: AnimatedContainer(
-            duration: Duration(milliseconds: 350),
-            width: selected ? 50 : 50,
-            height: selected ? 50 : 50,
-            margin:
-                EdgeInsets.only(left: i == 0 ? 10 : 5, right: i == 1 ? 10 : 5),
+            duration: Duration(milliseconds: 1650),
+            width: selected ? 70 : 70,
+            height: selected ? 70 : 70,
+            // margin:
+            //     EdgeInsets.only(left: i == 0 ? 10 : 5, right: i == 1 ? 10 : 5),
             // padding: EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Icon(

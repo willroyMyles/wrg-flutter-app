@@ -32,9 +32,9 @@ class _DiscoverState extends State<Discover>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: Platform.isAndroid
-          ? FloatingActionButtonLocation.endFloat
-          : FloatingActionButtonLocation.endDocked,
+      // floatingActionButtonLocation: Platform.isAndroid
+      //     ? FloatingActionButtonLocation.endFloat
+      //     : FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         // mini: true,
         heroTag: "detail view fab",
