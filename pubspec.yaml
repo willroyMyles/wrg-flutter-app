@@ -44,7 +44,7 @@ dependencies:
   ### visual
   fade_shimmer: ^2.0.1
   animate_do: ^2.0.0
-  
+  eventify: ^1.0.0
 
   ### hepler ui
   settings_ui: ^1.0.0

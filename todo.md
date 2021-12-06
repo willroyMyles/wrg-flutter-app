@@ -28,3 +28,8 @@
 [ ]satifaction guage
 [ ]certified
 [ ]view conversation
+
+
+push to social media on post created - or on status change to open.
+
+info with aria on share - https://youtu.be/-B58GgsehKQ?t=419
