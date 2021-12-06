@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:wrg2/backend/models/messages.dart';
 
-String baseUrl2 = 'http://192.168.100.194:4000/msg';
+String baseUrl2 = 'http://192.168.100.194:3000/msg';
 
 class WebSocketOperations {
   IO.Socket socket = IO.io(

@@ -51,6 +51,15 @@ extension TextModifier on Text {
     );
   }
 
+  Widget h5() {
+    return Text(
+      this.data,
+      textScaleFactor: .8,
+      style: TextStyle(
+          fontWeight: FontWeight.w400, color: ts.grey.withOpacity(.5)),
+    );
+  }
+
   Widget hint() {
     return Text(
       this.data,

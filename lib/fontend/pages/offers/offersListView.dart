@@ -47,46 +47,81 @@ class OffersListView extends StatelessWidget {
                                 ));
                           },
                           child: Container(
+                            width: Get.width / 2,
+                            // color: Colors.green,
                             padding: EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage:
-                                            Image.network(e.sender.userImageUrl)
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: Image.network(
+                                                    e.sender.userImageUrl)
                                                 .image,
-                                        radius: 12,
+                                            radius: 12,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(e.sender.username),
+                                                Text("").hdate(e.post.createdAt)
+                                              ],
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(e.sender.username),
-                                            Text("").hdate(e.post.createdAt)
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                    Container(
+                                        width: Get.width / 2,
+                                        child: Text(
+                                          e.message,
+                                          textScaleFactor: 1,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.fade,
+                                        )),
+                                    Container(
+                                        child: Text(
+                                      "tap to view conversation",
+                                      textScaleFactor: 1,
+                                    ).h5()),
+                                  ],
                                 ),
-                                Container(
-                                    child: Text(
-                                  e.message,
-                                  textScaleFactor: 1,
-                                )),
-                                Container(
-                                    child: Text(
-                                  "tap to view conversation",
-                                  textScaleFactor: 1,
-                                ).h4()),
+                                Expanded(
+                                  child: Container(
+                                    // width: Get.width / 3,
+                                    // color: Colors.green,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: Text("Accept"),
+                                        ).accept(),
+                                        TextButton(
+                                                onPressed: () {},
+                                                child: Text("Decline"))
+                                            .decline(),
+                                      ],
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                             decoration: Constants.decoration,
