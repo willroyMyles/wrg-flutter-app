@@ -7,9 +7,13 @@ import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
+import 'package:wrg2/fontend/pages/discover/view.discover.dart';
+import 'package:wrg2/fontend/pages/offers/view.offers.dart';
+import 'package:wrg2/fontend/pages/personal/view.personal.dart';
 import 'package:wrg2/fontend/pages/profile/view.profile.dart';
 import 'package:wrg2/fontend/pages/state.homepage.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
+import 'package:wrg2/fontend/pages/watching/section/view.watchingSection.dart';
 
 class HomePageView extends StatelessWidget {
   final controller = Get.put(HomePageState());
@@ -27,62 +31,116 @@ class HomePageView extends StatelessWidget {
         Scaffold(
           key: controller.scaffoldKey,
           // extendBody: true,
-          bottomNavigationBar: Container(
-            height: 80,
-            width: Get.width,
-            color: Colors.transparent,
-            alignment: Alignment.topCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "fab",
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    height: 60,
-                    width: Get.width / 2,
-                    // padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: ts.grey1,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: -5,
-                              blurRadius: 10,
-                              color: ts.red.withOpacity(.3),
-                              offset: Offset(0, 4)),
-                          BoxShadow(
-                              blurRadius: 10,
-                              color: ts.grey1.withOpacity(.3),
-                              offset: Offset(0, 4))
-                        ]),
-                    child: Container(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          buildTab(CupertinoIcons.house, 0),
-                          buildTab(CupertinoIcons.tray_full, 1),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ).fadeInUp(multiplier: 2),
+          // bottomNavigationBar: Container(
+          //   height: 80,
+          //   width: Get.width,
+          //   color: Colors.transparent,
+          //   alignment: Alignment.topCenter,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Hero(
+          //         tag: "fab",
+          //         child: Container(
+          //           clipBehavior: Clip.antiAlias,
+          //           height: 60,
+          //           width: Get.width / 2,
+          //           // padding: EdgeInsets.symmetric(horizontal: 10),
+          //           decoration: BoxDecoration(
+          //               color: ts.grey1,
+          //               borderRadius: BorderRadius.circular(10),
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                     spreadRadius: -5,
+          //                     blurRadius: 10,
+          //                     color: ts.red.withOpacity(.3),
+          //                     offset: Offset(0, 4)),
+          //                 BoxShadow(
+          //                     blurRadius: 10,
+          //                     color: ts.grey1.withOpacity(.3),
+          //                     offset: Offset(0, 4))
+          //               ]),
+          //           child: Container(
+          //             child: Row(
+          //               crossAxisAlignment: CrossAxisAlignment.start,
+          //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //               children: [
+          //                 buildTab(CupertinoIcons.house, 0),
+          //                 buildTab(CupertinoIcons.tray_full, 1),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ).fadeInUp(multiplier: 2),
           drawer: Drawer(
             child: ProfileView(),
             elevation: 0,
           ),
-          body: PageView(
-            onPageChanged: (value) {
-              controller.updateTabs(value);
-            },
-            controller: controller.pc,
-            // physics: AlwaysScrollableScrollPhysics(),
-            children: [...controller.views],
+          body: CustomScrollView(
+            slivers: [
+              SliverSafeArea(
+                sliver: SliverAppBar(
+                  primary: false,
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: 0,
+                  backgroundColor: Colors.transparent,
+                  bottom: PreferredSize(
+                    preferredSize: Size(Get.width, 90),
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 20),
+                      alignment: Alignment.center,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [Personal()]),
+                    ),
+                  ),
+                  // title: Container(
+                  //   child: Personal(),
+                  // ),
+                ),
+              ),
+              SliverAppBar(
+                primary: false,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 0,
+                backgroundColor: Colors.transparent,
+                bottom: PreferredSize(
+                  preferredSize: Size(Get.width, 150),
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 20),
+                    alignment: Alignment.center,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          OfferView(),
+                          WatchingSection(),
+                        ]),
+                  ),
+                ),
+                // title: Container(
+                //   child: Personal(),
+                // ),
+              ),
+              SliverFillRemaining(
+                hasScrollBody: true,
+                fillOverscroll: true,
+                child: Discover(),
+              )
+            ],
           ),
+          // body: PageView(
+          //   onPageChanged: (value) {
+          //     controller.updateTabs(value);
+          //   },
+          //   controller: controller.pc,
+          //   // physics: AlwaysScrollableScrollPhysics(),
+          //   children: [...controller.views],
+          // ),
         ),
       ],
     );

@@ -23,7 +23,7 @@ extension BTN on FlatButton {
             side: BorderSide(color: ts.red, width: 1.5)));
   }
 
-  Widget btn2() {
+  Widget btn2({Color color}) {
     var child = this.child as Text;
 
     return RaisedButton(
@@ -34,7 +34,7 @@ extension BTN on FlatButton {
         ),
         color: Colors.transparent,
         elevation: 0,
-        splashColor: Colors.red,
+        splashColor: color != null ? color : Colors.red,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(3),
             side: BorderSide(color: ts.white, width: 1)));

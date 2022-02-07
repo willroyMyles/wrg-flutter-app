@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
@@ -7,9 +6,7 @@ import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/feedback/view.feedback.dart';
 import 'package:wrg2/fontend/pages/login/view.login.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:wrg2/fontend/pages/profile/state.profile.dart';
-import 'package:settings_ui/settings_ui.dart';
 
 class ProfileView extends StatelessWidget {
   final infoService = Get.find<InformationService>();

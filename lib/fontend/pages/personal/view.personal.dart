@@ -19,82 +19,63 @@ class _PersonalState extends State<Personal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
+    return Container(
+        // height: 320,
+        padding: EdgeInsets.only(top: 30),
+        alignment: Alignment.center,
         child: Container(
-            padding: EdgeInsets.only(top: 30),
-            alignment: Alignment.center,
-            child: CustomScrollView(
-              physics: BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          child: Obx(
-                            () => infoService.isSignedIn.value
-                                ? Container(
-                                    margin: EdgeInsets.only(left: 25),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(200),
-                                        color: ts.grey1),
-                                    child: CircleAvatar(
-                                      backgroundImage: Image.network(service
-                                              .userInfo.value.userImageUrl)
-                                          .image,
-                                      radius: 20,
-                                    ),
-                                  )
-                                : Container(
-                                    height: 40,
-                                    width: 40,
-                                    margin: EdgeInsets.only(left: 20),
-                                    padding: EdgeInsets.all(0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(200),
-                                        color: ts.grey1),
-                                    child: Icon(
-                                      CupertinoIcons.person_alt_circle,
-                                      color: ts.white,
-                                      size: 40,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        Obx(() => infoService.isSignedIn.value
-                            ? Text(
-                                "Hello ${service.userInfo.value.username}",
-                                textScaleFactor: 1,
-                                style: TextStyle(color: ts.grey),
-                              )
-                            : Text(
-                                "personal",
-                              ).huge()),
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: SizedBox(
-                            width: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: Obx(
+                  () => infoService.isSignedIn.value
+                      ? Container(
+                          margin: EdgeInsets.only(left: 25),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(200),
+                              color: ts.grey1),
+                          child: CircleAvatar(
+                            backgroundImage: Image.network(
+                                    service.userInfo.value.userImageUrl)
+                                .image,
+                            radius: 20,
                           ),
                         )
-                      ],
-                    ),
-                  ),
+                      : Container(
+                          height: 40,
+                          width: 40,
+                          // margin: EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.all(0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(200),
+                              color: ts.grey1),
+                          child: Icon(
+                            CupertinoIcons.person_alt_circle,
+                            color: ts.white,
+                            size: 40,
+                          ),
+                        ),
                 ),
-                SliverToBoxAdapter(
-                  child: OfferView(),
-                ),
-                WatchingSection(),
-              ],
-            )),
-      ),
-    );
+              ),
+              Obx(() => infoService.isSignedIn.value
+                  ? Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Text(
+                        "Hello ${service.userInfo.value.username}",
+                        textScaleFactor: 1,
+                        style: TextStyle(color: ts.grey),
+                      ),
+                    )
+                  : Text(
+                      "",
+                    ).huge()),
+            ],
+          ),
+        ));
   }
 }

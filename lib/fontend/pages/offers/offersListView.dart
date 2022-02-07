@@ -5,12 +5,13 @@ import 'package:wrg2/backend/models/offer.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/fontend/pages/conversation/view.conversation.dart';
+import 'package:wrg2/fontend/pages/offers/state.offers.dart';
 
 class OffersListView extends StatelessWidget {
   final PostModel model;
   final List<OfferModel> offers;
   OffersListView({Key key, this.model, this.offers}) : super(key: key);
-
+  final controller = Get.find<OfferState>();
   //get sender info
 
   @override
@@ -100,31 +101,63 @@ class OffersListView extends StatelessWidget {
                                     ).h5()),
                                   ],
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    // width: Get.width / 3,
-                                    // color: Colors.green,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text("Accept"),
-                                        ).accept(),
-                                        TextButton(
-                                                onPressed: () {},
-                                                child: Text("Decline"))
-                                            .decline(),
-                                      ],
+                                if (!e.accepted)
+                                  Expanded(
+                                    child: Container(
+                                      // width: Get.width / 3,
+                                      // color: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              await controller.acceptOffer(
+                                                  e.id, model.id);
+                                            },
+                                            child: Text("Accept"),
+                                          ).accept(),
+                                          TextButton(
+                                                  onPressed: () async {
+                                                    await controller
+                                                        .decline(e.id);
+                                                  },
+                                                  child: Text("Decline"))
+                                              .decline(),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                )
+                                if (e.accepted)
+                                  Expanded(
+                                    child: Container(
+                                      // width: Get.width / 3,
+                                      // color: Colors.green,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              await controller
+                                                  .updateOffer(e.id);
+                                            },
+                                            child: Text("update"),
+                                          ).accept(),
+                                        ],
+                                      ),
+                                    ),
+                                  )
                               ],
                             ),
-                            decoration: Constants.decoration,
+                            decoration: Constants.decoration.copyWith(
+                                color: e.accepted
+                                    ? Colors.green.withOpacity(.03)
+                                    : Colors.white),
                           ),
                         ))
                   ]),

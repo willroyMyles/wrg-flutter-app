@@ -30,50 +30,52 @@ class WatchingSection extends StatelessWidget {
   Widget buildFull() {
     var length = informationService.watching.length;
 
-    return SliverToBoxAdapter(
-        child: Container(
-            height: 100,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-            decoration: BoxDecoration(
-                color: ts.white,
-                borderRadius: BorderRadius.circular(Constants.br)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text("your watching $length posts"),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  child: FlatButton(
-                    onPressed: () {
-                      Get.to(() => WatchingListView());
-                    },
-                    child: Text("view watching list"),
-                  ).secondary(),
-                )
-              ],
-            )));
+    return Expanded(
+      flex: 1,
+      child: Container(
+          height: 100,
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+          decoration: BoxDecoration(
+              color: ts.white,
+              borderRadius: BorderRadius.circular(Constants.br)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text("your watching $length posts"),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                child: FlatButton(
+                  onPressed: () {
+                    Get.to(() => WatchingListView());
+                  },
+                  child: Text("view watching list"),
+                ).secondary(),
+              )
+            ],
+          )),
+    );
   }
 
   Widget buildList() {
     var length = informationService.watching.length;
     List<String> tags = [];
 
-    return SliverPadding(
+    return Padding(
         padding: EdgeInsets.only(left: 12, right: 12, bottom: 40),
-        sliver: SliverToBoxAdapter(
+        child: Container(
           child: GestureDetector(
             onTap: () {
               Get.to(() => WatchingListView());
             },
             child: Container(
-                height: 300,
-                child: Row(
+                height: 100,
+                child: Column(
                   children: [
                     Container(
                       padding: EdgeInsets.all(15),
@@ -99,7 +101,6 @@ class WatchingSection extends StatelessWidget {
                           var idx = length - 1 - index;
                           PostModel element = informationService.watching.values
                               .toList()
-                              // .reversed
                               .elementAt(idx);
                           tags.add(getTag());
                           return Transform.translate(
@@ -125,25 +126,18 @@ class WatchingSection extends StatelessWidget {
   }
 
   Widget buildEmpty() {
-    return SliverToBoxAdapter(
+    return Expanded(
+      flex: 1,
       child: Container(
         height: 100,
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
             color: ts.white, borderRadius: BorderRadius.circular(Constants.br)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                    "${informationService.watching.length} posts watching")),
-            SizedBox(
-              height: 10,
-            ),
-            Text("Not watching any posts"),
-          ],
+        child: Text(
+          "you're not watching any posts",
+          textAlign: TextAlign.center,
         ),
       ),
     );

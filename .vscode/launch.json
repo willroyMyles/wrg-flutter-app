@@ -9,6 +9,17 @@
             "request": "launch",
             "type": "dart",
             "showMemoryUsage": true
+        },
+        {
+            "name": "web",
+            "request": "launch",
+            "flutterMode": "debug",
+            "type": "dart",
+            "showMemoryUsage": true,
+            "args": [
+                "-d",
+                "chrome"
+            ]
         }
     ]
 }

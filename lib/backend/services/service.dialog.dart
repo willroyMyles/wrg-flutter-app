@@ -94,6 +94,74 @@ class DialogService {
     );
   }
 
+  Future<bool> showQuestion(
+      {String msg,
+      String tag = "",
+      String yes,
+      String no,
+      String title}) async {
+    closeDialog();
+    return await Get.dialog(
+      SimpleDialog(
+        insetPadding: EdgeInsets.all(10),
+        contentPadding: EdgeInsets.zero,
+        backgroundColor: ts.grey1,
+        clipBehavior: Clip.antiAlias,
+        elevation: 10,
+        title:
+            Container(color: ts.grey1, child: Text(title != null ? title : "")),
+        children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            width: double.infinity,
+            // height: 100,
+            color: ts.grey1,
+            child: Text(
+              msg,
+              maxLines: 4,
+              overflow: TextOverflow.fade,
+              textScaleFactor: 1,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FlatButton(
+                  onPressed: () {
+                    Get.back(result: false);
+                    closeDialog();
+                  },
+                  child: Text(no != null ? no : "cancel"),
+                ).btn2(),
+                SizedBox(
+                  width: 10,
+                ),
+                FlatButton(
+                  onPressed: () {
+                    Get.back(result: true);
+
+                    closeDialog();
+                  },
+                  child: Text(yes != null ? yes : "ok"),
+                ).btn2(color: Colors.green),
+              ].reversed.toList(),
+            ),
+          ),
+          Container(
+            height: 5,
+          ).gradient(),
+          BottomLine(
+            height: 5,
+          )
+        ],
+      ).elasticIn(),
+      barrierColor: ts.grey.withOpacity(.2),
+    );
+  }
+
   closeDialog() {
     if (Get.isDialogOpen) {
       Get.close(1);

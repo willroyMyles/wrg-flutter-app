@@ -1,12 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:visibility_detector/visibility_detector.dart';
-import 'package:wrg2/backend/enums/enum.post.dart';
-import 'package:wrg2/backend/models/post.model.dart';
-import 'package:wrg2/backend/services/service.assts.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
@@ -32,6 +26,7 @@ class _DiscoverState extends State<Discover>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.red,
       // floatingActionButtonLocation: Platform.isAndroid
       //     ? FloatingActionButtonLocation.endFloat
       //     : FloatingActionButtonLocation.endDocked,

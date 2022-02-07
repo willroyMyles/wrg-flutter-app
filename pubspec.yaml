@@ -26,7 +26,7 @@ dependencies:
   get: 
   firebase_core: ^1.7.0
   firebase_auth: ^3.1.0
-  firebase_messaging: "^10.0.8"
+  # firebase_messaging: "^10.0.8"
   google_sign_in: ^4.5.1
   uuid:
   timeago: ^3.0.2
@@ -36,7 +36,6 @@ dependencies:
   group_button: ^2.1.2
   csv:
   fluttertoast: null
-  flutter_keyboard_visibility:
   dio:
   progress_state_button: ^1.0.3
   shared_preferences:
@@ -47,12 +46,11 @@ dependencies:
   eventify: ^1.0.0
 
   ### hepler ui
-  settings_ui: ^1.0.0
+  # settings_ui: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  visibility_detector: ^0.2.0
 
 dev_dependencies:
   flutter_test:

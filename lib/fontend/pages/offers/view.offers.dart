@@ -16,51 +16,54 @@ class OfferView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OfferState>(builder: (controller) {
-      return Container(
-          height: 100,
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-          decoration: BoxDecoration(
-              color: ts.white,
-              borderRadius: BorderRadius.circular(Constants.br)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (!controller.status.isLoading)
-                InkWell(
-                  onTap: () {
-                    controller.getOffers();
-                  },
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text("${controller.superMap.length} offers"),
-                  ),
-                ),
-              if (controller.status.isLoading)
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [Text("loading offers..."), LoadingView()],
-                  ),
-                ),
-              if (controller.superMap.length == 0)
-                Container(
-                  child: Text("you have no offers"),
-                ),
-              if (controller.superMap.length > 0)
-                Container(
-                  child: FlatButton(
-                    onPressed: () {
-                      Get.to(() => PostModelList(
-                            models: controller.superMap,
-                          ));
+      return Expanded(
+        flex: 1,
+        child: Container(
+            height: 100,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+            decoration: BoxDecoration(
+                color: ts.white,
+                borderRadius: BorderRadius.circular(Constants.br)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (!controller.status.isLoading)
+                  InkWell(
+                    onTap: () {
+                      controller.getOffers();
                     },
-                    child: Text("view offers"),
-                  ).secondary(),
-                ),
-            ],
-          ));
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text("${controller.superMap.length} offers"),
+                    ),
+                  ),
+                if (controller.status.isLoading)
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [Text("loading offers..."), LoadingView()],
+                    ),
+                  ),
+                if (controller.superMap.length == 0)
+                  Container(
+                    child: Text("you have no offers"),
+                  ),
+                if (controller.superMap.length > 0)
+                  Container(
+                    child: FlatButton(
+                      onPressed: () {
+                        Get.to(() => PostModelList(
+                              models: controller.superMap,
+                            ));
+                      },
+                      child: Text("view offers"),
+                    ).secondary(),
+                  ),
+              ],
+            )),
+      );
     });
   }
 }
