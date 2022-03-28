@@ -35,63 +35,63 @@ class HomePageView extends StatelessWidget {
     return Stack(
       children: [
         Scaffold(
-            floatingActionButton: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Guassian(
-                    child: Container(
-                      child: InkWell(
-                        onTap: () {},
-                        child: Row(
-                            children: [Icon(Icons.add), Text("create post")]),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      margin: EdgeInsets.only(right: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Constants.br),
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  GetBuilder<HomePageState>(
-                    builder: (controller) {
-                      return AnimatedOpacity(
-                        duration: Duration(milliseconds: 150),
-                        opacity: controller.showArrow ? 1 : .0,
-                        child: InkWell(
-                          onTap: () {
-                            controller.animateToTop();
-                          },
-                          child: AnimatedContainer(
-                            height: controller.showArrow ? 30 : 0,
-                            width: controller.showArrow ? 30 : 0,
-                            duration: Duration(milliseconds: 150),
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(left: 0),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(1)),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Icon(
-                                Icons.arrow_upward,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(200),
-                                  color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+            // floatingActionButton: Container(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //       Guassian(
+            //         child: Container(
+            //           child: InkWell(
+            //             onTap: () {},
+            //             child: Row(
+            //                 children: [Icon(Icons.add), Text("create post")]),
+            //           ),
+            //           padding:
+            //               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            //           margin: EdgeInsets.only(right: 5),
+            //           decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(Constants.br),
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       GetBuilder<HomePageState>(
+            //         builder: (controller) {
+            //           return AnimatedOpacity(
+            //             duration: Duration(milliseconds: 150),
+            //             opacity: controller.showArrow ? 1 : .0,
+            //             child: InkWell(
+            //               onTap: () {
+            //                 controller.animateToTop();
+            //               },
+            //               child: AnimatedContainer(
+            //                 height: controller.showArrow ? 30 : 0,
+            //                 width: controller.showArrow ? 30 : 0,
+            //                 duration: Duration(milliseconds: 150),
+            //                 alignment: Alignment.center,
+            //                 margin: EdgeInsets.only(left: 0),
+            //                 clipBehavior: Clip.antiAlias,
+            //                 decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.circular(1)),
+            //                 child: Container(
+            //                   alignment: Alignment.center,
+            //                   child: Icon(
+            //                     Icons.arrow_upward,
+            //                     color: Colors.white,
+            //                     size: 20,
+            //                   ),
+            //                   decoration: BoxDecoration(
+            //                       borderRadius: BorderRadius.circular(200),
+            //                       color: Colors.black),
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
             drawer: Drawer(
               child: ProfileView(),
               elevation: 0,
@@ -148,7 +148,7 @@ class HomePageView extends StatelessWidget {
                   // DiscoverToolBar(),
                 ];
               },
-              body: Discover(),
+              body: Discover(shouldShowUpButton: controller.showArrow),
             )),
       ],
     );
