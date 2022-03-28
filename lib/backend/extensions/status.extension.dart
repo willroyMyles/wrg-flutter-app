@@ -9,11 +9,11 @@ extension StatusExtension on Status {
     return str.toLowerCase();
   }
 
-  MaterialColor color() {
-    if (this == Status.SEEKING) return Colors.red;
-    if (this == Status.IN_PROGRESS) return Colors.amber;
-    if (this == Status.COMPLETED) return Colors.green;
-    if (this == Status.EXPIRED) return Colors.grey;
-    return Colors.grey;
-  }
+  // MaterialColor color() {
+  //   if (this == Status.SEEKING) return Colors.red;
+  //   if (this == Status.IN_PROGRESS) return Colors.amber;
+  //   if (this == Status.COMPLETED) return Colors.green;
+  //   if (this == Status.EXPIRED) return Colors.grey;
+  //   return Colors.grey;
+  // }
 }

@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -24,26 +24,29 @@ dependencies:
   flutter:
     sdk: flutter
   get: 
-  firebase_core: ^0.7.0
-  firebase_auth: ^0.20.1
+  firebase_core: ^1.7.0
+  firebase_auth: ^3.1.0
+  # firebase_messaging: "^10.0.8"
   google_sign_in: ^4.5.1
-  artemis: 6.4.3-beta.1
   uuid:
   timeago: ^3.0.2
   json_annotation: 
   equatable:
-  meta: # only if you have non nullable fields
-  gql:
   flutter_svg: ^0.22.0
-  sliding_up_panel: ^2.0.0+1
   group_button: ^2.1.2
-  animated: ^2.0.0
   csv:
-  oktoast: ^3.0.0
   fluttertoast: null
-  keyboard_visibility: any
+  dio:
+  progress_state_button: ^1.0.3
+  shared_preferences:
+  socket_io_client: ^2.0.0-beta.4-nullsafety.0
+  ### visual
+  fade_shimmer: ^2.0.1
+  animate_do: ^2.0.0
+  eventify: ^1.0.0
 
-
+  ### hepler ui
+  # settings_ui: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -71,6 +74,7 @@ flutter:
     - assets/images/
     - assets/images/edited/
     - assets/svg/
+    - assets/gif/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

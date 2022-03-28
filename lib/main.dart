@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
+import 'package:wrg2/backend/services/service.preferences.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/pages/intro/introScreen.dart';
 import 'package:wrg2/fontend/pages/view.homepage.dart';
 import './backend/extensions/ext.dart';
 
@@ -21,15 +22,24 @@ class _MyAppState extends State<MyApp> {
   ServiceTheme ts;
   Widget home;
   bool building = true;
+  PreferenceService pref;
 
   Future<bool> configure() async {
     await Firebase.initializeApp();
+    pref = Get.put(PreferenceService());
+    await pref.configure();
     Get.put(DialogService());
     ts = Get.put(ServiceTheme());
     Get.put(APIService());
     setState(() {
       building = false;
     });
+
+    Get.config(enableLog: false, defaultTransition: Transition.fadeIn);
+
+    // Get.config(defaultTransition: Transition.fadeIn);
+    // Get.changeThemeMode(ThemeMode.dark);
+
     return Future.value(true);
   }
 
@@ -59,13 +69,19 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         else
-          return MaterialApp(
-              title: 'Flutter Demo',
-              theme: ts.currentTheme.value,
-              home: Container(
-                child: HomePageView(),
-                decoration: BoxDecoration(gradient: ts.gradient.value),
-              ));
+          return Builder(builder: (context) {
+            bool firstStart = pref.getPref(pref.preferences.firstStart);
+
+            return GetMaterialApp(
+                title: 'Flutter Demo',
+                theme: ts.currentTheme,
+                // defaultTransition: Transition.,
+                home: Container(
+                  // child: HomePageView(),
+                  child: !firstStart ? IntroScreen() : HomePageView(),
+                  decoration: BoxDecoration(gradient: ts.gradient),
+                ));
+          });
       },
     );
   }

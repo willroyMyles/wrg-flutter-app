@@ -10,12 +10,11 @@ extension TextModifier on Text {
   Widget h1() {
     return Text(
       this.data,
-      textScaleFactor: 1,
+      textScaleFactor: this.textScaleFactor ?? 1,
       // overflow: TextOverflow.ellipsis,
       softWrap: true,
-      style: TextStyle(
-          fontWeight: FontWeight.w700,
-          color: ts.fgt.value.withOpacity(1).withGreen(60),
+      style: TextStyle(fontWeight: FontWeight.w700,
+          // color: ts.fgt.value.withOpacity(1).withGreen(60),
           shadows: [
             Shadow(
                 blurRadius: 5,
@@ -29,8 +28,9 @@ extension TextModifier on Text {
     return Text(
       this.data,
       textScaleFactor: .9,
-      style:
-          TextStyle(fontWeight: FontWeight.w500, color: ts.fgt.value.lighter()),
+      overflow: TextOverflow.fade,
+      maxLines: 3,
+      style: TextStyle(fontWeight: FontWeight.w500),
     );
   }
 
@@ -38,8 +38,25 @@ extension TextModifier on Text {
     return Text(
       this.data,
       textScaleFactor: .8,
+      style: TextStyle(fontWeight: FontWeight.w500),
+    );
+  }
+
+  Widget h4() {
+    return Text(
+      this.data,
+      textScaleFactor: .8,
       style: TextStyle(
-          fontWeight: FontWeight.w500, color: ts.fgt.value.withOpacity(.6)),
+          fontWeight: FontWeight.w400, color: ts.grey.withOpacity(.8)),
+    );
+  }
+
+  Widget h5() {
+    return Text(
+      this.data,
+      textScaleFactor: .8,
+      style: TextStyle(
+          fontWeight: FontWeight.w400, color: ts.grey.withOpacity(.5)),
     );
   }
 
@@ -47,13 +64,12 @@ extension TextModifier on Text {
     return Text(
       this.data,
       textScaleFactor: .8,
-      style: TextStyle(
-          fontWeight: FontWeight.w800, color: ts.fgt.value.withOpacity(.8)),
+      style: TextStyle(fontWeight: FontWeight.w800),
     );
   }
 
-  Widget hdate(DateTime t) {
-    print(this.data);
+  Text hdate(DateTime t) {
+    if (t == null) t = DateTime.now();
     var tago = timeago.format(t);
     return Text(
       tago,
@@ -62,8 +78,7 @@ extension TextModifier on Text {
       overflow: TextOverflow.fade,
       softWrap: true,
       textAlign: TextAlign.end,
-      style: TextStyle(
-          fontWeight: FontWeight.w700, color: ts.fgt.value.withOpacity(.6)),
+      style: TextStyle(fontWeight: FontWeight.w500, color: ts.grey),
     );
   }
 
@@ -71,8 +86,7 @@ extension TextModifier on Text {
     return Text(
       this.data,
       textScaleFactor: .9,
-      style: TextStyle(
-          fontWeight: FontWeight.w700, color: ts.fgt.value.withOpacity(.9)),
+      style: TextStyle(fontWeight: FontWeight.w700),
     );
   }
 
@@ -81,8 +95,7 @@ extension TextModifier on Text {
       this.data,
       textScaleFactor:
           this.textScaleFactor == null ? 2.0 : this.textScaleFactor,
-      style: TextStyle(
-          fontWeight: FontWeight.w700, color: ts.fgt.value.withOpacity(.9)),
+      style: TextStyle(fontWeight: FontWeight.w700),
     );
   }
 
@@ -90,9 +103,8 @@ extension TextModifier on Text {
     return Text(this.data,
         textScaleFactor:
             this.textScaleFactor == null ? 5 : this.textScaleFactor,
-        style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: ts.fgt.value.withOpacity(.5),
+        style: TextStyle(fontWeight: FontWeight.w700,
+            // color: ts.fgt.value.withOpacity(.5),
             shadows: [
               Shadow(
                   blurRadius: 8,
@@ -105,9 +117,8 @@ extension TextModifier on Text {
     return Text(this.data,
         textScaleFactor:
             this.textScaleFactor == null ? 5 : this.textScaleFactor,
-        style: TextStyle(
-            fontWeight: FontWeight.w300,
-            color: ts.fgt.value.withOpacity(.5),
+        style: TextStyle(fontWeight: FontWeight.w300,
+            // color: ts.fgt.value.withOpacity(.5),
             shadows: [
               Shadow(
                   blurRadius: 8,
@@ -115,4 +126,14 @@ extension TextModifier on Text {
                   offset: Offset(2, 5)),
             ]));
   }
+}
+
+extension StringCasingExtension on String {
+  String capitalized() =>
+      this.length > 0 ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
+  String get toTitleCase => this
+      .replaceAll(RegExp(' +'), ' ')
+      .split(" ")
+      .map((str) => str.capitalized())
+      .join(" ");
 }

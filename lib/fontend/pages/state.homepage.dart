@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.toast.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/discover/view.discover.dart';
@@ -12,14 +12,16 @@ import 'package:get/get.dart';
 class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   PageController pc = PageController(initialPage: 0, keepPage: true);
   RxInt currentIndex = 0.obs;
-  var panelController = PanelController();
   Widget currentPanelWidget = Container();
+  final infoService = Get.find<InformationService>();
 
   TabController tabController;
+  AnimationController animationController;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool panelDraggable = false;
 
-  List<Widget> views = [Personal(), Discover(), ProfileView()];
+  List<Widget> views = [Personal(), Discover()];
 
   List<Icon> icons = [
     Icon(Icons.gps_fixed_rounded),
@@ -28,14 +30,16 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   ];
 
   onIndexTapped(int index) {
-    pc.jumpToPage(
-      index,
-    );
+    pc.animateToPage(index,
+        duration: Duration(milliseconds: 120), curve: Curves.easeInOutCubic);
+
     setCurrentIndex(index);
+    refresh();
   }
 
   void setCurrentIndex(int value) {
     currentIndex.value = value;
+    // infoService.updateFab(value == 1);
     refresh();
   }
 
@@ -49,22 +53,26 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   }
 
   showPanel() {
-    panelController.show();
-    panelController.animatePanelToPosition(1);
+    // panelController.show();
+    // panelController.animatePanelToPosition(1);
     panelDraggable = true;
     refresh();
   }
 
   onAddPost() {
-    setPanelWidget(CreatePost());
-    showPanel();
+    // setPanelWidget(CreatePost());
+    // showPanel();
+    showBottomSheet(
+      context: Get.context,
+      builder: (context) => CreatePost(),
+    );
   }
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: views.length, vsync: this);
+    animationController = AnimationController(vsync: this);
   }
 
   void updateTabs(int value) {

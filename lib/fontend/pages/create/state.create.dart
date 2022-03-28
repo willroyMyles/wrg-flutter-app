@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:wrg2/backend/extensions/text.extension.dart';
 import 'package:wrg2/backend/models/post.model.dart';
 import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.carData.dart';
 import 'package:wrg2/fontend/components/cat-sub.dart';
+import 'package:wrg2/fontend/components/helper%20widgets/progressButton.dart';
 import 'package:wrg2/fontend/components/make-model.dart';
 
 class CreatePostState extends GetxController with StateMixin {
@@ -13,6 +15,8 @@ class CreatePostState extends GetxController with StateMixin {
   List<List<dynamic>> carsList = [];
   // ignore: non_constant_identifier_names
   List<dynamic> sub_catList = [];
+  int make;
+  var submitButton = PBM();
 
   final service = Get.find<APIService>();
 
@@ -30,6 +34,9 @@ class CreatePostState extends GetxController with StateMixin {
     var val = formKey.currentState.validate();
     if (!val) return;
 
+    submitButton.setButtonStateLoading();
+    refresh();
+
     var input = PostModel(
       title: crtls["title"].text,
       content: crtls["content"].text,
@@ -44,35 +51,97 @@ class CreatePostState extends GetxController with StateMixin {
     var ans = await service.createPost(input);
     if (ans) {
       Get.snackbar("success", "post created");
+      submitButton.setButtonStateSuccess(callback: refresh);
       clearInputs();
     } else {
       Get.snackbar("Opps", "Post wasnt created");
+      submitButton.setButtonStateFailed(callback: refresh);
     }
   }
 
   void showMake() async {
     carsList = processCars();
-    var ans = await Get.dialog(
-        Container(
-            height: 330,
-            width: Get.width,
-            alignment: Alignment.center,
-            child: MakeModelView()),
-        barrierColor: Colors.black.withOpacity(.4),
-        useRootNavigator: true);
-    print(ans);
+    var ans = await Get.bottomSheet(
+      BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: .9,
+            minChildSize: .4,
+            maxChildSize: .9,
+            builder: (context, scrollController) {
+              return MakeList(
+                  callback: (value) => setMake, scroll: scrollController);
+            },
+          );
+        },
+      ),
+      isScrollControlled: false,
+    );
+
+    if (make == null) return;
+
+    await Get.bottomSheet(
+      BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: .9,
+            minChildSize: .4,
+            maxChildSize: .9,
+            builder: (context, scrollController) {
+              return ModelList(
+                callback: (value) => setModel,
+                scroll: scrollController,
+                idx: make,
+              );
+            },
+          );
+        },
+      ),
+      isScrollControlled: false,
+    );
   }
 
   void showCat() async {
     sub_catList = processList();
-    await Get.dialog(
-        Container(
-            height: 330,
-            width: Get.width,
-            alignment: Alignment.center,
-            child: CatSubView()),
-        barrierColor: Colors.black.withOpacity(.4),
-        useRootNavigator: true);
+    await Get.bottomSheet(
+      BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: .9,
+            minChildSize: .4,
+            maxChildSize: .9,
+            builder: (context, scrollController) {
+              return CatSubView(scroll: scrollController);
+            },
+          );
+        },
+      ),
+      isScrollControlled: false,
+    );
+    // await showModalBottomSheet(
+    //   context: Get.context,
+    //   isDismissible: true,
+    //   isScrollControlled: true,
+    //   // barrierColor: ts.fgt.value,
+    //   builder: (context) {
+    //     return CatSubView();
+    //   },
+    // );
+  }
+
+  void setMake(dynamic make) {
+    crtls["make"].text = carsList.elementAt(make).elementAt(0).toString();
+    this.make = make;
+  }
+
+  void setModel(dynamic model) {
+    crtls["model"].text = carsList.elementAt(make).elementAt(model).toString();
   }
 
   void setMakeAndModel(int make, int model) {

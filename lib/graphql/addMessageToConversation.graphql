@@ -1,4 +1,0 @@
-mutation addMessageToConversation($messages:AddMessageToConversationInput!){
-    addMessageToConversation(input: $messages)
-}
-

@@ -1,94 +1,131 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wrg2/backend/models/post.model.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/components/avatar.dart';
+import 'package:wrg2/fontend/components/loadingButton.dart';
 import 'package:wrg2/fontend/pages/comment/state.comment.dart';
-import 'package:wrg2/fontend/pages/comment/view.comment.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/fontend/pages/discover_details/state.details.dart';
 
 class DiscoverDetails extends StatelessWidget {
   final PostModel item;
+  final String tag;
 
-  DiscoverDetails({Key key, this.item}) : super(key: key);
+  DiscoverDetails({Key key, this.item, this.tag = "tag"}) : super(key: key);
 
   final ts = Get.find<ServiceTheme>();
-  final commentController = Get.put(CommentState());
   final controller = Get.put(FeedDetailsState());
 
   @override
   Widget build(BuildContext context) {
+    controller.setPostModel(item);
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
+      // backgroundColor: ts.grey1,
+      bottomNavigationBar: InkWell(
+        onTap: () {
+          controller.onCommentPressed(item);
+        },
+        child: Container(
+          margin: EdgeInsets.only(bottom: 40),
+          width: Get.width,
+          child: GetBuilder<FeedDetailsState>(
+            init: controller,
+            builder: (controller) => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 0),
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${item.watching}"),
+                      Icon(CupertinoIcons.eyeglasses),
+                    ],
+                  ),
+                ).fadeInDown(multiplier: 2),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${item.views}"),
+                      Icon(CupertinoIcons.eye),
+                    ],
+                  ),
+                ).fadeInDown(multiplier: 3),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 0),
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.0),
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 1, color: Colors.black.withOpacity(.0))
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${item.commentss}"),
+                      Icon(CupertinoIcons.chat_bubble),
+                    ],
+                  ),
+                ).fadeInDown(multiplier: 4),
+              ],
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ts.fg.value,
+        backgroundColor: ts.white,
         centerTitle: true,
         title: Text(
           item.title,
           maxLines: 1,
           overflow: TextOverflow.fade,
-          style: TextStyle(color: ts.fgt.value),
+          style: TextStyle(color: ts.grey2),
         ),
       ),
-      body: SafeArea(
-        child: SlidingUpPanel(
-          controller: commentController.pc,
-          minHeight: 80,
-          parallaxEnabled: true,
-          boxShadow: [],
-          backdropOpacity: 0.2,
-          backdropEnabled: true,
-          backdropColor: Colors.black,
-          parallaxOffset: .01,
-          isDraggable: true,
-          onPanelSlide: (position) {
-            if (position >= .95) {
-              commentController.configure(item.id);
-              commentController.setCanFetch(false);
-            }
-
-            if (position <= .2) {
-              commentController.setEmpty();
-              commentController.setCanFetch(true);
-            }
-          },
-          onPanelOpened: () {
-            commentController.updatePadding(0);
-          },
-          onPanelClosed: () {
-            commentController.updatePadding(40);
-          },
-          collapsed: Container(
-            alignment: Alignment.center,
-            child: InkWell(
-                onTap: () {
-                  commentController.pc.open();
-                },
-                child: Text("view comments").h2()),
-          ),
-          panel: Container(
-            alignment: Alignment.center,
-            child: CommentView(
-              postId: item.id,
-            ),
-          ),
-          body: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8),
-                color: ts.fg.value,
+      body: Container(
+        child: Column(
+          children: [
+            Hero(
+              tag: tag,
+              child: Container(
+                // margin: EdgeInsets.only(top: 100),
+                padding: EdgeInsets.all(18),
+                color: ts.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 20,
+                      height: 0,
                     ),
-                    Text(item.title).h1(),
                     Divider(),
-                    Text(item.content).h2(),
+                    Text(item.content).h1(),
                     Divider(),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
@@ -106,43 +143,47 @@ class DiscoverDetails extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 20),
                       child: Row(
                         children: [
-                          WRGAvatar(
-                            size: 25,
-                            imgSrc: item.userInfo.userImageUrl,
-                          ),
-                          Text(item.userInfo.username).h2(),
+                          if (item.userInfo?.userImageUrl != null)
+                            WRGAvatar(
+                              size: 25,
+                              imgSrc: item.userInfo.userImageUrl,
+                            ),
+                          if (item.userInfo?.username != null)
+                            Text(item.userInfo.username).h2(),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              GetBuilder(
-                init: controller,
-                builder: (controller) => Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FlatButton(
-                        onPressed: () {
+            ),
+            GetBuilder<FeedDetailsState>(
+              init: controller,
+              builder: (controller) => Container(
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                      onPressed: () {
+                        crazy.loginguard("watch this item", () {
                           controller.onWatchPressed(item);
-                        },
-                        child:
-                            Text(item.isWatching() ? "stop watching" : "watch"),
-                        color: ts.fg.value,
-                      ).secondary(),
-                      // FlatButton(
-                      //   onPressed: () {},
-                      //   child: Text("comment"),
-                      //   color: ts.fg.value,
-                      // ).secondary(),
-                    ],
-                  ),
+                        });
+                      },
+                      child:
+                          Text(item.isWatching() ? "stop watching" : "watch"),
+                      // color: ts.fg.value,
+                    ).secondary(),
+                    // FlatButton(
+                    //   onPressed: () {},
+                    //   child: Text("comment"),
+                    //   color: ts.fg.value,
+                    // ).secondary(),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     ).gradient();

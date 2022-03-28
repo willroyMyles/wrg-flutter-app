@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 import 'package:wrg2/backend/enums/enum.tags.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/components/make-model.dart';
 import 'package:wrg2/fontend/pages/create/state.create.dart';
 
 class CreatePost extends StatelessWidget {
@@ -14,10 +16,6 @@ class CreatePost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Container(
-              alignment: Alignment.centerLeft,
-              child: Text("create post").huge()),
-          centerTitle: true,
           backgroundColor: Colors.transparent,
           flexibleSpace: FlexibleSpaceBar(),
           elevation: 0,
@@ -29,6 +27,22 @@ class CreatePost extends StatelessWidget {
               key: cps.formKey,
               child: Column(
                 children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 9),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Seek your parts".capitalize,
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 9),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "post what your looking for".capitalize,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                   Container(
                     padding: EdgeInsets.all(9),
                     margin: EdgeInsets.all(2),
@@ -105,10 +119,11 @@ class CreatePost extends StatelessWidget {
                                           width: Get.width,
                                           alignment: Alignment.center,
                                           child: Material(
+                                            color: ts.grey1,
                                             child: YearPicker(
                                               firstDate: DateTime.now()
-                                                  .subtract(Duration(
-                                                      days: 365 * 100)),
+                                                  .subtract(
+                                                      Duration(days: 365 * 50)),
                                               lastDate: DateTime.now()
                                                   .add(Duration(days: 365 * 2)),
                                               selectedDate: DateTime.now(),
@@ -116,9 +131,11 @@ class CreatePost extends StatelessWidget {
                                                 cps.setYear(value);
                                                 Get.close(1);
                                               },
+                                              currentDate: DateTime.now(),
+                                              initialDate: DateTime.now(),
                                             ),
                                           ),
-                                        ).background(),
+                                        ),
                                         barrierColor:
                                             Colors.black.withOpacity(.4),
                                         useRootNavigator: false);
@@ -171,30 +188,55 @@ class CreatePost extends StatelessWidget {
                     ),
                   ),
                   Container(
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(top: 5),
-                      child: GroupButton(
-                        isRadio: false,
-                        buttons: Tags.values.map((e) => e.name),
-                        onSelected: (index, isSelected) {
-                          //should add to selected
-                        },
-                      )),
-                  Container(
                     padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.only(top: 10),
-                    child: FlatButton(
-                            onPressed: () {
-                              cps.onSubmit();
-                            },
-                            color: ts.fg.value,
-                            child: Text("submit"))
-                        .primary(),
+                    margin: EdgeInsets.only(top: 5),
+                    // child: GroupButton(
+                    //   isRadio: false,
+                    //   buttons: Tags.values.map((e) => e.name),
+                    //   onSelected: (index, isSelected) {
+                    //     //should add to selected
+                    //   },
+                    // )
+                  ),
+                  Hero(
+                    tag: "detail view fab",
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(top: 10),
+                      child: ProgressButton(
+                        maxWidth: Get.width / 2,
+                        radius: 5.0,
+                        stateWidgets: {
+                          ButtonState.idle: Text(
+                            "submit",
+                            textScaleFactor: 1,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          ButtonState.loading: Container(),
+                          ButtonState.success: Text("success"),
+                          ButtonState.fail: Text("Oops"),
+                        },
+                        stateColors: cps.submitButton.stateColors,
+                        onPressed: () {
+                          cps.onSubmit();
+                        },
+                        state: cps.submitButton.buttonState,
+                      ),
+                      // child: FlatButton(
+                      //         onPressed: () {
+                      //           cps.onSubmit();
+                      //         },
+                      //         color: ts.fg.value,
+                      //         child: Text("submit"))
+                      //     .primary(),
+                    ),
                   )
                 ],
               ),
             ),
           ),
-        )).background();
+        ));
   }
 }
