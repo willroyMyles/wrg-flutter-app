@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -20,25 +22,28 @@ import 'package:wrg2/backend/services/service.websocket.dart';
 import 'service.toast.dart';
 
 class HttpExecutor extends GetxController
-    with ApiAuth, BaseExecutor, OfferService {
+    with BaseExecutor, OfferService, ApiAuth {
   var _informationService = Get.put(InformationService());
   var _toastService = Get.put(ToastService());
   bool updated = false;
 
   HttpExecutor() {
-    auth.authStateChanges().listen((event) {
-      if (event != null && !updated) {
-        //get user info
-        updated = true;
-        getUserInfo(event);
-      }
-      if (event == null) {
-        updated = false;
-        _informationService.setIsSIgnedIn(false);
-        userInfo.value = null;
-        userInfo.refresh();
-      }
-    });
+    if (!Platform.isWindows) {
+      auth = FirebaseAuth.instance;
+      auth.authStateChanges().listen((event) {
+        if (event != null && !updated) {
+          //get user info
+          updated = true;
+          getUserInfo(event);
+        }
+        if (event == null) {
+          updated = false;
+          _informationService.setIsSIgnedIn(false);
+          userInfo.value = null;
+          userInfo.refresh();
+        }
+      });
+    }
   }
 
   var userInfo = UserInfoModel.empty().obs;

@@ -117,8 +117,8 @@ class DiscoverState extends GetxController with StateMixin {
   setNoMorePosts() {
     noMorePosts = true;
     change("", status: RxStatus.success());
-    controller.animateTo(controller.position.pixels + 80,
-        duration: Constants.durationLong, curve: Curves.decelerate);
+    // controller.animateTo(controller.position.pixels + 80,
+    //     duration: Constants.durationLong, curve: Curves.decelerate);
   }
 
   showBottomFilter() async {

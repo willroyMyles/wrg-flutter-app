@@ -8,6 +8,7 @@ import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/discover/view.discover.dart';
+import 'package:wrg2/fontend/pages/discover/view.discover.toolbar.dart';
 import 'package:wrg2/fontend/pages/discover/view.discoverSliver.dart';
 import 'package:wrg2/fontend/pages/offers/view.offers.dart';
 import 'package:wrg2/fontend/pages/personal/view.personal.dart';
@@ -33,7 +34,7 @@ class HomePageView extends StatelessWidget {
     return Stack(
       children: [
         Scaffold(
-            key: controller.scaffoldKey,
+            // key: controller.scaffoldKey,
             // extendBody: true,
             // bottomNavigationBar: Container(
             //   height: 80,
@@ -131,6 +132,7 @@ class HomePageView extends StatelessWidget {
                     //   child: Personal(),
                     // ),
                   ),
+                  DiscoverToolBar(),
                   DiscoverSliver()
                 ])
 

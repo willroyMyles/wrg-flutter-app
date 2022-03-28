@@ -14,7 +14,7 @@ class ProfileView extends StatelessWidget {
   final ts = Get.find<ServiceTheme>();
   final controller = Get.put(ProfileState());
 
-  var navKey = GlobalKey<NavigatorState>();
+  static final navKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return Container(

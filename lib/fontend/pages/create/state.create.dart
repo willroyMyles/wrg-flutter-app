@@ -11,7 +11,7 @@ import 'package:wrg2/fontend/components/make-model.dart';
 
 class CreatePostState extends GetxController with StateMixin {
   Map<String, TextEditingController> crtls = Map();
-  var formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   List<List<dynamic>> carsList = [];
   // ignore: non_constant_identifier_names
   List<dynamic> sub_catList = [];

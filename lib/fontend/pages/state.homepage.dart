@@ -17,7 +17,7 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
 
   TabController tabController;
   AnimationController animationController;
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalObjectKey<ScaffoldState>("scaffold");
 
   bool panelDraggable = false;
 

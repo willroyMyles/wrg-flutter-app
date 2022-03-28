@@ -43,7 +43,6 @@ dependencies:
   ### visual
   fade_shimmer: ^2.0.1
   animate_do: ^2.0.0
-  eventify: ^1.0.0
 
   ### hepler ui
   # settings_ui: ^1.0.0
@@ -51,6 +50,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  get_storage: ^2.0.3
 
 dev_dependencies:
   flutter_test:

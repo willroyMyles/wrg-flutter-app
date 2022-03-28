@@ -26,7 +26,7 @@ class InfoScreenState extends GetxController {
     controller.animateToPage(val,
         duration: Duration(milliseconds: 150), curve: Curves.easeInOutCubic);
     if (val > 2) {
-      prefs.prefs.setBool(prefs.preferences.firstStart, true);
+      prefs.prefs.write(prefs.preferences.firstStart, true);
       Get.to(() => HomePageView());
     }
   }

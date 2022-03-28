@@ -26,7 +26,9 @@ class OfferView extends StatelessWidget {
                 color: ts.white,
                 borderRadius: BorderRadius.circular(Constants.br)),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: controller.infoService.isSignedIn.value
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
               children: [
                 if (!controller.status.isLoading)
                   InkWell(
@@ -38,7 +40,8 @@ class OfferView extends StatelessWidget {
                       child: Text("${controller.superMap.length} offers"),
                     ),
                   ),
-                if (controller.status.isLoading)
+                if (controller.status.isLoading &&
+                    controller.infoService.isSignedIn.value)
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Row(
@@ -46,9 +49,19 @@ class OfferView extends StatelessWidget {
                       children: [Text("loading offers..."), LoadingView()],
                     ),
                   ),
-                if (controller.superMap.length == 0)
+                if (controller.superMap.length == 0 &&
+                    controller.infoService.isSignedIn.value)
                   Container(
                     child: Text("you have no offers"),
+                  ),
+                if (!controller.infoService.isSignedIn.value)
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "you need to be signed in to view offers",
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 if (controller.superMap.length > 0)
                   Container(

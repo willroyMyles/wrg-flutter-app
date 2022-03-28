@@ -1,7 +1,4 @@
-import 'package:eventify/eventify.dart';
-
 class EventService {
-  EventEmitter emitter = EventEmitter();
   final names = EventNames();
 }
 

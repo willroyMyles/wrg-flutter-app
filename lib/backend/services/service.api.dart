@@ -25,7 +25,7 @@ class APIService extends GetxController with SlackExecutor {
       dynamic res;
       switch (provider) {
         case 0:
-          var ans = await _apiInterface.signInWithGoogle();
+          // var ans = await _apiInterface.signInWithGoogle();
           // var user = await _apiInterface.getUser(ans.user);
           // if (user.value == null || user.value.id == null) {
           //   return Future.value(false);
@@ -37,7 +37,7 @@ class APIService extends GetxController with SlackExecutor {
   }
 
   logout() {
-    return _apiInterface.logout();
+    // return _apiInterface.logout();
   }
 
   getCategories() {
