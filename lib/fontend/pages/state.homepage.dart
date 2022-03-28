@@ -18,6 +18,8 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
   TabController tabController;
   AnimationController animationController;
   final scaffoldKey = GlobalObjectKey<ScaffoldState>("scaffold");
+  final scrollController = ScrollController();
+  bool showArrow = false;
 
   bool panelDraggable = false;
 
@@ -28,6 +30,11 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
     Icon(Icons.all_inbox_sharp),
     Icon(Icons.face),
   ];
+
+  animateToTop() {
+    scrollController.animateTo(0.0,
+        duration: Duration(milliseconds: 250), curve: Curves.easeIn);
+  }
 
   onIndexTapped(int index) {
     pc.animateToPage(index,
@@ -73,6 +80,22 @@ class HomePageState extends GetxController with SingleGetTickerProviderMixin {
     super.onInit();
     tabController = TabController(length: views.length, vsync: this);
     animationController = AnimationController(vsync: this);
+    Future.delayed(Duration(milliseconds: 250), () {
+      scrollController.position.isScrollingNotifier.addListener(() {
+        if (scrollController.positions.first.pixels > 20) {
+          print("off");
+          if (!showArrow) {
+            showArrow = true;
+            refresh();
+          }
+        } else {
+          if (showArrow) {
+            showArrow = false;
+            refresh();
+          }
+        }
+      });
+    });
   }
 
   void updateTabs(int value) {

@@ -20,6 +20,7 @@ class OffersListView extends StatelessWidget {
       child: Container(
         color: ts.white,
         child: CustomScrollView(
+          primary: false,
           slivers: [
             SliverAppBar(
               pinned: true,

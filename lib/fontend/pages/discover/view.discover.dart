@@ -177,47 +177,6 @@ class Discover extends StatelessWidget {
             // controller: controller.controller,
             // physics: AlwaysScrollableScrollPhysics(),
             children: [
-              // if (false)
-              // SliverPadding(
-              //   padding: EdgeInsets.only(top: 30),
-              //   sliver: SliverAppBar(
-              //     floating: true,
-              //     title: Container(
-              //         height: 50,
-              //         width: Get.width,
-              //         margin: EdgeInsets.only(top: 0),
-              //         alignment: Alignment.center,
-              //         child: Row(
-              //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //           children: [
-              //             ...controller.states.map(
-              //               (e) {
-              //                 var index = controller.states.indexOf(e);
-              //                 var isSelected =
-              //                     index == controller.currentStateIndex;
-              //                 return InkWell(
-              //                   onTap: () {
-              //                     controller.onStateTapped(index);
-              //                   },
-              //                   child: Container(
-              //                     padding: EdgeInsets.all(5),
-              //                     child: Text(
-              //                       e.capitalize,
-              //                       textScaleFactor: 1,
-              //                       style: TextStyle(
-              //                           color:
-              //                               isSelected ? ts.red : ts.grey,
-              //                           fontWeight: FontWeight.w600,
-              //                           fontSize: 16),
-              //                     ),
-              //                   ),
-              //                 );
-              //               },
-              //             )
-              //           ],
-              //         )),
-              //   ),
-              // ),
               if (true)
                 Container(
                     decoration: BoxDecoration(
@@ -259,7 +218,6 @@ class Discover extends StatelessWidget {
                         ),
                       ],
                     )),
-
               if (controller.status.isSuccess)
                 Expanded(
                   child: ListView.builder(
@@ -270,11 +228,9 @@ class Discover extends StatelessWidget {
                     },
                   ),
                 ),
-
               if (controller.status.isLoadingMore ||
                   controller.status.isLoading)
-                Padding(
-                  padding: EdgeInsets.only(),
+                Expanded(
                   child: ListView(
                     children: [
                       ...[1, 2, 3].map(
@@ -288,8 +244,6 @@ class Discover extends StatelessWidget {
                     ],
                   ),
                 ),
-              
-
               if (controller.status.isEmpty)
                 Container(
                   alignment: Alignment.center,

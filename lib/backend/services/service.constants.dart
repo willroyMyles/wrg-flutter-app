@@ -13,7 +13,7 @@ class Constants {
   static final from = 50.0;
   static empty({String msg}) => empty(msg: msg);
   static final decoration = BoxDecoration(
-      color: ts.white,
+      // color: ts.white,
       borderRadius: BorderRadius.circular(Constants.br),
       border: Border.all(width: 1, color: ts.grey.withOpacity(.2)),
       boxShadow: [BoxShadow(blurRadius: 10, color: ts.grey.withOpacity(.1))]);

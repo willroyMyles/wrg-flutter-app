@@ -19,6 +19,7 @@ class PostModelList extends StatelessWidget {
       body: SafeArea(
         child: Container(
           child: CustomScrollView(
+            primary: false,
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate([

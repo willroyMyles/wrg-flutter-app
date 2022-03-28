@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
@@ -26,10 +27,20 @@ class OfferView extends StatelessWidget {
                 color: ts.white,
                 borderRadius: BorderRadius.circular(Constants.br)),
             child: Column(
-              mainAxisAlignment: controller.infoService.isSignedIn.value
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: 35,
+                    width: 35,
+                    alignment: Alignment.center,
+                    child: Icon(CupertinoIcons.sparkles),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.1),
+                        borderRadius: BorderRadius.circular(Constants.br)),
+                  ),
+                ),
                 if (!controller.status.isLoading)
                   InkWell(
                     onTap: () {

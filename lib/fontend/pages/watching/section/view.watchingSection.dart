@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
@@ -135,9 +136,26 @@ class WatchingSection extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: ts.white, borderRadius: BorderRadius.circular(Constants.br)),
-        child: Text(
-          "you're not watching any posts",
-          textAlign: TextAlign.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                height: 35,
+                width: 35,
+                alignment: Alignment.center,
+                child: Icon(CupertinoIcons.eyeglasses),
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(Constants.br)),
+              ),
+            ),
+            Text(
+              "you're not watching any posts",
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

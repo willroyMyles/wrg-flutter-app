@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wrg2/backend/services/service.api.dart';
+import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.information.dart';
 import 'package:wrg2/backend/services/service.theme.dart';
+import 'package:wrg2/fontend/components/helper%20widgets/Gaussian.dart';
 import 'package:wrg2/fontend/pages/create/view.create.dart';
 import 'package:wrg2/fontend/pages/discover/view.discover.dart';
 import 'package:wrg2/fontend/pages/discover/view.discover.toolbar.dart';
@@ -26,7 +28,6 @@ class HomePageView extends StatelessWidget {
   final double padding = 20.0;
   final col = Colors.green;
 
-  final scrollCOntroller = ScrollController();
   @override
   Widget build(BuildContext context) {
     infoService.updateFab(true);
@@ -34,59 +35,71 @@ class HomePageView extends StatelessWidget {
     return Stack(
       children: [
         Scaffold(
-            // key: controller.scaffoldKey,
-            // extendBody: true,
-            // bottomNavigationBar: Container(
-            //   height: 80,
-            //   width: Get.width,
-            //   color: Colors.transparent,
-            //   alignment: Alignment.topCenter,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Hero(
-            //         tag: "fab",
-            //         child: Container(
-            //           clipBehavior: Clip.antiAlias,
-            //           height: 60,
-            //           width: Get.width / 2,
-            //           // padding: EdgeInsets.symmetric(horizontal: 10),
-            //           decoration: BoxDecoration(
-            //               color: ts.grey1,
-            //               borderRadius: BorderRadius.circular(10),
-            //               boxShadow: [
-            //                 BoxShadow(
-            //                     spreadRadius: -5,
-            //                     blurRadius: 10,
-            //                     color: ts.red.withOpacity(.3),
-            //                     offset: Offset(0, 4)),
-            //                 BoxShadow(
-            //                     blurRadius: 10,
-            //                     color: ts.grey1.withOpacity(.3),
-            //                     offset: Offset(0, 4))
-            //               ]),
-            //           child: Container(
-            //             child: Row(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //               children: [
-            //                 buildTab(CupertinoIcons.house, 0),
-            //                 buildTab(CupertinoIcons.tray_full, 1),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ).fadeInUp(multiplier: 2),
+            floatingActionButton: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Guassian(
+                    child: Container(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Row(
+                            children: [Icon(Icons.add), Text("create post")]),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      margin: EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Constants.br),
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  GetBuilder<HomePageState>(
+                    builder: (controller) {
+                      return AnimatedOpacity(
+                        duration: Duration(milliseconds: 150),
+                        opacity: controller.showArrow ? 1 : .0,
+                        child: InkWell(
+                          onTap: () {
+                            controller.animateToTop();
+                          },
+                          child: AnimatedContainer(
+                            height: controller.showArrow ? 30 : 0,
+                            width: controller.showArrow ? 30 : 0,
+                            duration: Duration(milliseconds: 150),
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(left: 0),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(1)),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.arrow_upward,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(200),
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
             drawer: Drawer(
               child: ProfileView(),
               elevation: 0,
             ),
-            body: CustomScrollView(controller: scrollCOntroller,
-                // headerSliverBuilder: (context, innerBoxIsScrolled) {
-                slivers: [
+            body: NestedScrollView(
+              controller: controller.scrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
                   SliverSafeArea(
                     sliver: SliverAppBar(
                       primary: false,
@@ -132,19 +145,11 @@ class HomePageView extends StatelessWidget {
                     //   child: Personal(),
                     // ),
                   ),
-                  DiscoverToolBar(),
-                  DiscoverSliver()
-                ])
-
-            // body: PageView(
-            //   onPageChanged: (value) {
-            //     controller.updateTabs(value);
-            //   },
-            //   controller: controller.pc,
-            //   // physics: AlwaysScrollableScrollPhysics(),
-            //   children: [...controller.views],
-            // ),
-            ),
+                  // DiscoverToolBar(),
+                ];
+              },
+              body: Discover(),
+            )),
       ],
     );
   }
