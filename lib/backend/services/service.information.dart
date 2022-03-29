@@ -100,6 +100,7 @@ class InformationService extends GetxController {
 
   setOffer(List<dynamic> list) {
     offers.set(list);
+    offers.announce();
   }
 
   updateOffer(OfferModel model) {

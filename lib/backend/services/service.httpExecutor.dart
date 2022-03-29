@@ -224,7 +224,7 @@ class HttpExecutor extends GetxController
       _informationService.setWatching(userInfo.value.watching);
       _informationService.setConversation(
           [...userInfo.value.incomings, ...userInfo.value.outgoings]);
-      getUserOffers();
+      // getUserOffers();
     } on DioError catch (e) {
       print(e);
       if (e.response.statusCode == 404) {
@@ -246,7 +246,7 @@ class HttpExecutor extends GetxController
       _informationService.setWatching(userInfo.value.watching);
       _informationService.setConversation(
           [...userInfo.value.incomings, ...userInfo.value.outgoings]);
-      getUserOffers();
+      // getUserOffers();
     } on DioError catch (e) {
       print(e);
       if (e.response.statusCode == 404) {
@@ -260,6 +260,8 @@ class HttpExecutor extends GetxController
 
   Future<bool> getUserOffers() async {
     try {
+      // if (!_informationService.isSignedIn.value) return Future.value(false);
+
       var res = await getOffers(userInfo.value.userId);
       if (acceptable(res.statusCode)) {
         List<OfferModel> list = [];

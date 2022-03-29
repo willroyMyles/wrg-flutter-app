@@ -29,39 +29,56 @@ class OfferView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    height: 35,
-                    width: 35,
-                    alignment: Alignment.center,
-                    child: Icon(CupertinoIcons.sparkles),
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(.1),
-                        borderRadius: BorderRadius.circular(Constants.br)),
-                  ),
-                ),
-                if (!controller.status.isLoading)
-                  InkWell(
-                    onTap: () {
-                      controller.getOffers();
-                    },
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text("${controller.superMap.length} offers"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        alignment: Alignment.center,
+                        child: Icon(CupertinoIcons.sparkles),
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(.1),
+                            borderRadius: BorderRadius.circular(Constants.br)),
+                      ),
                     ),
-                  ),
+                    if (!controller.status.isLoading)
+                      InkWell(
+                        onTap: () {
+                          controller.getOffers();
+                        },
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("${controller.superMap.length} offers"),
+                        ),
+                      ),
+                  ],
+                ),
                 if (controller.status.isLoading &&
                     controller.infoService.isSignedIn.value)
                   Container(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [Text("loading offers..."), LoadingView()],
-                    ),
-                  ),
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        children: [
+                          Text("loading offers"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(3),
+                            child: LinearProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                              minHeight: 8,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                        ],
+                      )),
                 if (controller.superMap.length == 0 &&
-                    controller.infoService.isSignedIn.value)
+                    controller.infoService.isSignedIn.value &&
+                    !controller.status.isLoading)
                   Container(
                     child: Text("you have no offers"),
                   ),

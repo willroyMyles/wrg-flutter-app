@@ -51,6 +51,8 @@ class OfferState extends GetxController with StateMixin {
       else
         change(null, status: RxStatus.success());
     });
+
+    getOffers();
   }
 
   acceptOffer(String id, String postId) async {
