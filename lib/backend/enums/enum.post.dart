@@ -23,23 +23,29 @@ extension StatusHelper on Status {
   Widget get textName => Container(
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         alignment: Alignment.centerRight,
+        height: 20,
+        width: 20,
         decoration: BoxDecoration(
-            // color: this.getColor().lighter().withOpacity(.5),
-            border: Border(
-          right: BorderSide(
-            color: this.getColor(),
-            width: 6,
-          ),
+          color: this.getColor().lighter().withOpacity(.5),
+          borderRadius: BorderRadius.circular(30),
+          // boxShadow: [
+          //   BoxShadow(color: this.getColor().darker(), blurRadius: 5)
+          // ]
+          //   border: Border(
+          // right: BorderSide(
+          //   color: this.getColor(),
+          //   width: 6,
+          // ),
           // left: BorderSide(color: this.getColor(), width: 0),
           // top: BorderSide(color: this.getColor(), width: 0),
           // bottom: BorderSide(color: this.getColor(), width: 0),
-        )),
-        child: Text(this.name,
-            style: TextStyle(
-              color: this.getColor(),
-              fontWeight: FontWeight.w700,
-              fontSize: 20,
-            )),
+        ),
+        // child: Text(this.name,
+        //     style: TextStyle(
+        //       color: this.getColor(),
+        //       fontWeight: FontWeight.w700,
+        //       fontSize: 20,
+        //     )),
       );
 
   String get name => this.toString().toLowerCase().replaceAll("status.", "");

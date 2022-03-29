@@ -182,8 +182,8 @@ class PostItem extends StatelessWidget {
                 ),
               ),
               Positioned(
-                right: 0,
-                top: 5,
+                right: 10,
+                top: 10,
                 child: item.status.textName,
               )
             ],

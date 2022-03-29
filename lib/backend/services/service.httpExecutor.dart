@@ -28,22 +28,22 @@ class HttpExecutor extends GetxController
   bool updated = false;
 
   HttpExecutor() {
-    if (!Platform.isWindows) {
-      auth = FirebaseAuth.instance;
-      auth.authStateChanges().listen((event) {
-        if (event != null && !updated) {
-          //get user info
-          updated = true;
-          getUserInfo(event);
-        }
-        if (event == null) {
-          updated = false;
-          _informationService.setIsSIgnedIn(false);
-          userInfo.value = null;
-          userInfo.refresh();
-        }
-      });
-    }
+    // auth = FirebaseAuth.instance;
+    // auth.authStateChanges().listen((event) {
+    //   if (event != null && !updated) {
+    //     //get user info
+    //     updated = true;
+    //     getUserInfo(event);
+    //   }
+    //   if (event == null) {
+    //     updated = false;
+    //     _informationService.setIsSIgnedIn(false);
+    //     userInfo.value = null;
+    //     userInfo.refresh();
+    //   }
+    // });
+
+    silentlyGetUserInfo();
   }
 
   var userInfo = UserInfoModel.empty().obs;
@@ -211,6 +211,28 @@ class HttpExecutor extends GetxController
       return Future.value(false);
     } catch (e) {
       return Future.value(false);
+    }
+  }
+
+  silentlyGetUserInfo() async {
+    try {
+      var info = await findOne(userinfo, "7lDbikBqXCZc6dBgsvp9nFcsuzu2");
+
+      userInfo.value = UserInfoModel.fromMap(info.data);
+      userInfo.refresh();
+      _informationService.setIsSIgnedIn(true);
+      _informationService.setWatching(userInfo.value.watching);
+      _informationService.setConversation(
+          [...userInfo.value.incomings, ...userInfo.value.outgoings]);
+      getUserOffers();
+    } on DioError catch (e) {
+      print(e);
+      if (e.response.statusCode == 404) {
+        // await createUserInfo(user);
+      }
+    } on Exception catch (e) {
+      print(e);
+      print("Could not get user");
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
+import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:wrg2/backend/enums/enum.tags.dart';
 import 'package:wrg2/backend/extensions/ext.dart';
@@ -119,7 +120,7 @@ class CreatePost extends StatelessWidget {
                                           width: Get.width,
                                           alignment: Alignment.center,
                                           child: Material(
-                                            color: ts.grey1,
+                                            color: Colors.white,
                                             child: YearPicker(
                                               firstDate: DateTime.now()
                                                   .subtract(
@@ -203,27 +204,34 @@ class CreatePost extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.all(10),
                       margin: EdgeInsets.only(top: 10),
-                      child: ProgressButton(
-                        maxWidth: Get.width / 2,
-                        radius: 5.0,
-                        stateWidgets: {
-                          ButtonState.idle: Text(
-                            "submit",
-                            textScaleFactor: 1,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          ButtonState.loading: Container(),
-                          ButtonState.success: Text("success"),
-                          ButtonState.fail: Text("Oops"),
-                        },
-                        stateColors: cps.submitButton.stateColors,
-                        onPressed: () {
-                          cps.onSubmit();
-                        },
-                        state: cps.submitButton.buttonState,
-                      ),
+                      child: GetBuilder<CreatePostState>(builder: (con) {
+                        return ProgressButton.icon(
+                          iconedButtons: {
+                            ButtonState.idle: IconedButton(
+                                text: "Submit",
+                                icon: Icon(Icons.send, color: Colors.white),
+                                color: Colors.black),
+                            ButtonState.loading: IconedButton(
+                                text: "Loading", color: Colors.black),
+                            ButtonState.fail: IconedButton(
+                                text: "Retry?",
+                                icon: Icon(Icons.cancel, color: Colors.white),
+                                color: Colors.red.shade300),
+                            ButtonState.success: IconedButton(
+                                text: "Success",
+                                icon: Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white,
+                                ),
+                                color: Colors.green.shade400)
+                          },
+                          // stateColors: cps.submitButton.stateColors,
+                          onPressed: () {
+                            cps.onSubmit();
+                          },
+                          state: cps.submitButton.buttonState,
+                        );
+                      }),
                       // child: FlatButton(
                       //         onPressed: () {
                       //           cps.onSubmit();

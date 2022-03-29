@@ -163,38 +163,45 @@ class Discover extends StatelessWidget {
                           : MainAxisAlignment.center,
                       children: [
                         Spacer(),
-                        AnimatedContainer(
-                          duration: Constants.durationShort,
-                          width: con.showArrow ? 40 : Get.width / 3,
-                          height: 40,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  CupertinoIcons.add_circled,
-                                  size: 25,
-                                ),
-                                if (!con.showArrow)
-                                  SizedBox(
-                                    width: 10,
+                        InkWell(
+                          onTap: () {
+                            crazy.loginguard("create a post", () {
+                              Get.to(() => CreatePost());
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: Constants.durationShort,
+                            width: con.showArrow ? 40 : Get.width / 3,
+                            height: 40,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.add_circled,
+                                    size: 25,
                                   ),
-                                AnimatedDefaultTextStyle(
-                                  duration: Constants.durationShort,
-                                  child: Text("create post"),
-                                  style: con.showArrow
-                                      ? TextStyle(
-                                          fontSize: 0, color: Colors.black)
-                                      : TextStyle(
-                                          fontSize: 16, color: Colors.black),
-                                ),
-                              ],
+                                  if (!con.showArrow)
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                  AnimatedDefaultTextStyle(
+                                    duration: Constants.durationShort,
+                                    child: Text("create post"),
+                                    style: con.showArrow
+                                        ? TextStyle(
+                                            fontSize: 0, color: Colors.black)
+                                        : TextStyle(
+                                            fontSize: 16, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(.9),
+                                  borderRadius: BorderRadius.circular(
+                                      con.showArrow ? 100 : Constants.br)),
                             ),
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(.9),
-                                borderRadius: BorderRadius.circular(
-                                    con.showArrow ? 100 : Constants.br)),
                           ),
                         ),
                         AnimatedContainer(
