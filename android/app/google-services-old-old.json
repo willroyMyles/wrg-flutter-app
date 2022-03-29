@@ -22,14 +22,6 @@
           }
         },
         {
-          "client_id": "884301694869-bcl9mckbsbjsslfqm86vd26gp20s73s7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.myles.wrg2",
-            "certificate_hash": "d7055022fd70ca685951aa71d68be46219e16d43"
-          }
-        },
-        {
           "client_id": "884301694869-tudifs9o95pevm57g3c6bmo8jfui5qg3.apps.googleusercontent.com",
           "client_type": 3
         }
