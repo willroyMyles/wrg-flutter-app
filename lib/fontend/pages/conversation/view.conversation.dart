@@ -30,6 +30,111 @@ class ConversationView extends StatelessWidget {
     var remaining = Get.height - appbarHeight - inputHeight;
     var bottom = MediaQuery.of(context).viewInsets.bottom;
 
+    return GetBuilder<ConversationState>(builder: (con) {
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          elevation: 0,
+          title: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(right: 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Text("meassges with"), Text(other.username)],
+              )),
+        ),
+
+        // backgroundColor: Colors.white,
+
+        body: Container(
+          child: Column(children: [
+            Expanded(
+              child: CustomScrollView(
+                controller: con.listViewController,
+                slivers: [
+                  if (controller.list.isNotEmpty &&
+                          !item.amISender(controller.list?.elementAt(0)) ??
+                      false)
+                    SliverAppBar(
+                      primary: true,
+                      automaticallyImplyLeading: false,
+                      floating: true,
+                      snap: true,
+                      title: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            FlatButton(
+                              onPressed: () {},
+                              child: Text(
+                                "accept".capitalize,
+                                textScaleFactor: 1,
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 18),
+                              ),
+                              color: Colors.transparent,
+                            ),
+                            FlatButton(
+                              onPressed: () {},
+                              child: Text(
+                                "decline".capitalize,
+                                textScaleFactor: 1,
+                                style: TextStyle(color: ts.red, fontSize: 18),
+                              ),
+                              // color: Colors.transparent,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  SliverList(
+                      delegate: SliverChildListDelegate([
+                    ...controller.list.map((e) => MessageItem(
+                        model: e,
+                        other: other,
+                        amISender: item.amISender(e),
+                        index: controller.list.indexOf(e))),
+                    Container(
+                      height: 10,
+                      width: 10,
+                      color: Colors.transparent,
+                    )
+                  ]))
+                ],
+              ),
+            ),
+            Container(
+                height: 100,
+                width: Get.width,
+                padding: EdgeInsets.only(bottom: 20, left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        width: Get.width - 100,
+                        child: TextFormField(
+                          controller: controller.textControler,
+                          onTap: () {
+                            controller.scrolltobottom();
+                          },
+                        ).input(label: "send a message...")),
+                    LoadingButton(
+                      icon: CupertinoIcons.paperplane,
+                      loading: controller.loading,
+                      callback: () {
+                        controller.sendMessage(item);
+                      },
+                    )
+                  ],
+                )),
+          ]),
+        ),
+      );
+    });
+
     return Scaffold(
         appBar: AppBar(
           title: Text.rich(TextSpan(children: [
@@ -42,11 +147,11 @@ class ConversationView extends StatelessWidget {
           ])),
           automaticallyImplyLeading: true,
           backgroundColor: ts.grey1,
-          toolbarHeight: 100,
+          toolbarHeight: 50,
           bottom: PreferredSize(
             preferredSize: Size(Get.width, 80),
             child: Container(
-              color: ts.grey1,
+              color: ts.grey,
               child: Column(
                 children: [
                   if (controller.list.isNotEmpty &&

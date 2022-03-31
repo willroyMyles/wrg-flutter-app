@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 
+String baseUrl =
+    "https://a90e-2605-a200-9301-84ed-3508-3ad8-422d-6d8b.ngrok.io";
 mixin BaseExecutor {
   final dio = Dio();
 
   // String baseUrl = "http://localhost:3000";
-  String baseUrl = "http://192.168.100.75:3000";
+  // String baseUrl = "http://192.168.100.75:3000";
   // String baseUrl = "https://wrg-nest.herokuapp.com";
   String userinfo = "/user-info";
   String post = "/post";

@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:wrg2/backend/models/messages.dart';
+import 'package:wrg2/backend/services/service.baseExecutor.dart';
 
-String baseUrl2 = 'http://192.168.100.194:3000/msg';
+String baseUrl2 = '$baseUrl/msg';
 
 class WebSocketOperations {
   IO.Socket socket = IO.io(

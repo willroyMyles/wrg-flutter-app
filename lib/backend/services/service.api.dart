@@ -37,7 +37,7 @@ class APIService extends GetxController with SlackExecutor {
   }
 
   logout() {
-    // return _apiInterface.logout();
+    return _apiInterface.logout();
   }
 
   getCategories() {

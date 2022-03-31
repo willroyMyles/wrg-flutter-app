@@ -43,9 +43,26 @@ class WatchingSection extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text("your watching $length posts"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      height: 35,
+                      width: 35,
+                      alignment: Alignment.center,
+                      child: Icon(CupertinoIcons.eyeglasses),
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(.1),
+                          borderRadius: BorderRadius.circular(Constants.br)),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text("$length posts"),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 15,

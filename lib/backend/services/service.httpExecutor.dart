@@ -28,22 +28,23 @@ class HttpExecutor extends GetxController
   bool updated = false;
 
   HttpExecutor() {
-    // auth = FirebaseAuth.instance;
-    // auth.authStateChanges().listen((event) {
-    //   if (event != null && !updated) {
-    //     //get user info
-    //     updated = true;
-    //     getUserInfo(event);
-    //   }
-    //   if (event == null) {
-    //     updated = false;
-    //     _informationService.setIsSIgnedIn(false);
-    //     userInfo.value = null;
-    //     userInfo.refresh();
-    //   }
-    // });
-
-    silentlyGetUserInfo();
+    if (!Platform.isWindows) {
+      auth = FirebaseAuth.instance;
+      auth.authStateChanges().listen((event) {
+        if (event != null && !updated) {
+          //get user info
+          updated = true;
+          getUserInfo(event);
+        }
+        if (event == null) {
+          updated = false;
+          _informationService.setIsSIgnedIn(false);
+          userInfo.value = null;
+          userInfo.refresh();
+        }
+      });
+    } else
+      silentlyGetUserInfo();
   }
 
   var userInfo = UserInfoModel.empty().obs;

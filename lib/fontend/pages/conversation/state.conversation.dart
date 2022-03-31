@@ -9,6 +9,7 @@ import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class ConversationState extends GetxController with StateMixin {
   var infoServcie = Get.find<InformationService>();
@@ -26,11 +27,26 @@ class ConversationState extends GetxController with StateMixin {
 
   FocusNode fn = FocusNode();
 
+  StreamSubscription<bool> keyboardSub;
+
   @override
   void onInit() {
     super.onInit();
     getMessages();
     initWebSockets();
+
+    keyboardSub = KeyboardVisibilityController().onChange.listen((event) {
+      KeyboardStateChanged(event);
+    });
+  }
+
+  void KeyboardStateChanged(bool showing) {
+    print(showing);
+    if (showing)
+      Future.delayed(Duration(milliseconds: 250), () {
+        listViewController
+            .jumpTo(listViewController.position.maxScrollExtent + 250);
+      });
   }
 
   void initWebSockets() async {
@@ -43,12 +59,13 @@ class ConversationState extends GetxController with StateMixin {
     service.websocketOps.createRoom(id, stream);
   }
 
-  void updateListWithMessage(dynamic msg) {
+  void updateListWithMessage(dynamic msg) async {
     MessagesModel model = MessagesModel.fromMap(msg);
 
     list.add(model);
     loading = false;
     refresh();
+    await Future.delayed(Constants.durationShort);
     scrolltobottom();
   }
 
@@ -56,6 +73,7 @@ class ConversationState extends GetxController with StateMixin {
   void onClose() {
     super.onClose();
     service.websocketOps.leaveRoom(id);
+    keyboardSub.cancel();
   }
 
   void getMessages() async {
@@ -110,14 +128,13 @@ class ConversationState extends GetxController with StateMixin {
     }
   }
 
-  scrolltobottom() {
-    // listViewController.animateTo(
-    //     listViewController.position.maxScrollExtent + 100,
-    //     duration: Constants.durationShort,
-    //     curve: Curves.decelerate);
+  scrolltobottom() async {
+    listViewController.animateTo(
+        listViewController.position.maxScrollExtent + 100,
+        duration: Constants.durationShort,
+        curve: Curves.decelerate);
 
-    listViewController
-        .jumpTo(listViewController.position.maxScrollExtent + 130);
+    // listViewController.jumpTo(listViewController.position.maxScrollExtent + 10);
   }
 
   void setId(String id) {
