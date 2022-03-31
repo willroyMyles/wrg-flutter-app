@@ -9,7 +9,6 @@ import 'package:wrg2/backend/services/service.api.dart';
 import 'package:wrg2/backend/services/service.constants.dart';
 import 'package:wrg2/backend/services/service.dialog.dart';
 import 'package:wrg2/backend/services/service.information.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class ConversationState extends GetxController with StateMixin {
   var infoServcie = Get.find<InformationService>();
@@ -27,17 +26,11 @@ class ConversationState extends GetxController with StateMixin {
 
   FocusNode fn = FocusNode();
 
-  StreamSubscription<bool> keyboardSub;
-
   @override
   void onInit() {
     super.onInit();
     getMessages();
     initWebSockets();
-
-    keyboardSub = KeyboardVisibilityController().onChange.listen((event) {
-      KeyboardStateChanged(event);
-    });
   }
 
   void KeyboardStateChanged(bool showing) {
@@ -73,7 +66,6 @@ class ConversationState extends GetxController with StateMixin {
   void onClose() {
     super.onClose();
     service.websocketOps.leaveRoom(id);
-    keyboardSub.cancel();
   }
 
   void getMessages() async {
